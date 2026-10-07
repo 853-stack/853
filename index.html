@@ -209,6 +209,20 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 .pwd-tip.ok{color:#8A5A5A;}
 .pwd-actions{display:flex;gap:10px;justify-content:center;}
 .pwd-actions .btn{flex:1;margin:0;}
+/* ===== 自动报价面板 ===== */
+.quote-panel{display:none;margin-top:6px;margin-bottom:16px;border-radius:16px;border:1px solid #F5D8D8;background:linear-gradient(135deg,#FFF8F8 0%,#FDF0F0 100%);padding:16px 16px 14px;box-shadow:0 4px 16px rgba(245,168,166,.14);}
+.quote-panel.show{display:block;animation:foldIn .28s ease;}
+.quote-panel h3{font-size:13.5px;color:#2A2930;margin-bottom:10px;font-weight:800;display:flex;align-items:center;gap:6px;letter-spacing:.3px;}
+.quote-line{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:6px 0;border-bottom:1px dashed #F2E0E0;line-height:1.6;}
+.quote-line:last-of-type{border-bottom:none;}
+.quote-line span:first-child{color:#8A8590;flex-shrink:0;}
+.quote-line b{color:#2A2930;font-feature-settings:"tnum";text-align:right;word-break:break-all;}
+.quote-line.accent b{color:#C0392B;}
+.quote-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:12px;border-top:2px solid #F0DEDE;}
+.quote-total span{font-size:13px;font-weight:800;color:#403F44;}
+.quote-total b{font-size:24px;font-weight:800;color:#C0392B;font-feature-settings:"tnum";letter-spacing:.5px;}
+.quote-total b small{font-size:12px;font-weight:600;margin-left:2px;}
+.quote-note{margin-top:10px;font-size:11px;color:#A39AA5;line-height:1.7;padding-top:2px;}
 @media (max-width:380px){
   .home-grid{grid-template-columns:1fr;}
   .card{padding:16px;margin:12px;}
@@ -217,6 +231,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   .dim-row{gap:4px;}
   .zip-row{flex-direction:column;}
   .zip-row .zip-input{flex:1;}
+  .quote-total b{font-size:20px;}
 }
 </style>
 </head>
@@ -240,7 +255,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <div class="card">
     <h2 data-zh="快捷功能" data-en="Quick Functions">快捷功能</h2>
     <div class="home-grid">
-      <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="按渠道快速询价" data-en="Quick inquiry by channel">按渠道快速询价</div></div></div>
+      <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="填写即自动报价" data-en="Instant auto-quote">填写即自动报价</div></div></div>
       <div class="home-item" data-goto="fcl"><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div><div class="icon green">🚢</div></div>
       <div class="home-item" data-goto="calc"><div class="icon orange">🧮</div><div><div class="name" data-zh="计算器" data-en="Calculator">计算器</div><div class="desc" data-zh="渠道计费 / CBM" data-en="Billing / CBM">渠道计费 / CBM</div></div></div>
       <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表 🔒" data-en="Freight Rates 🔒">运费价格表 🔒</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
@@ -314,6 +329,11 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
     </div>
   </div>
 
+  <div class="form-row" id="quoteOptRow" style="display:none;margin-top:16px;">
+    <label id="quoteOptLabel" data-zh="价格类型 / 目的地" data-en="Price Type / Destination">价格类型 / 目的地</label>
+    <select id="quoteOpt"></select>
+  </div>
+
   <div class="form-row" style="margin-top:16px;">
     <label data-zh="品名" data-en="Product Name">品名</label>
     <input type="text" id="productName"
@@ -380,6 +400,10 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
     <label data-zh="总件数" data-en="Total Packages">总件数</label>
     <input type="number" id="packageCount" value="1">
   </div>
+
+  <!-- 自动报价面板 -->
+  <div class="quote-panel" id="lclQuotePanel"></div>
+
   <div class="form-row">
     <label data-zh="图片" data-en="Image">图片</label>
     <input type="text" id="imgUrl" data-ph-zh="选填" data-ph-en="Optional" placeholder="选填">
@@ -607,7 +631,6 @@ const pwdInput = document.getElementById('pwdInput');
 const pwdTip = document.getElementById('pwdTip');
 const pwdDesc = document.getElementById('pwdDesc');
 
-/* 记录弹窗上下文：'price' 表示打开价格表，'detail' 表示展开被锁的细则 */
 let pwdContext = 'price';
 let pendingDetailTarget = null;
 
@@ -641,16 +664,13 @@ function tryUnlockPrice(){
     setTimeout(()=>{
       closePwdModal();
       if(pwdContext === 'price'){
-        /* 打开价格表 */
         document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
         document.querySelector('.tab-item[data-target="home"]').classList.add('active');
         showPageRaw('price');
       } else if(pwdContext === 'detail' && pendingDetailTarget){
-        /* 展开刚才被锁的那一条细则 */
         pendingDetailTarget.parentElement.classList.add('open');
       }
       pendingDetailTarget = null;
-      /* 解锁后，散货询价的渠道细则也重新渲染一次，便于第一条默认展开 */
       if(typeof updateChannelDetails === 'function'){
         updateChannelDetails(getCurrentChannel());
       }
@@ -1738,7 +1758,6 @@ document.querySelectorAll('.pbtn').forEach(b=>{
     renderPrice(b.dataset.pf);
   };
 });
-/* 价格表点击：卡片折叠 + 渠道细则折叠（价格表本身已解锁，直接 toggle） */
 document.getElementById('priceList').addEventListener('click', function(e){
   const dtHead = e.target.closest('.dt-head');
   if(dtHead){ dtHead.parentElement.classList.toggle('open'); return; }
@@ -1893,6 +1912,8 @@ function updateChannelUI(){
     updateBillingUI(null);
     updateZipUI(null);
     updateChannelDetails(null);
+    updateQuoteOpt();
+    renderLclQuote();
     return;
   }
 
@@ -1912,9 +1933,10 @@ function updateChannelUI(){
   updateBillingUI(c);
   updateZipUI(c);
   updateChannelDetails(c);
+  updateQuoteOpt();
+  renderLclQuote();
 }
 
-/* 散货询价中的「渠道细则」：未解锁时点击标题会触发密码弹窗 */
 function updateChannelDetails(channel){
   if(!channel){
     endServiceEl.classList.remove('show');
@@ -1935,7 +1957,6 @@ function updateChannelDetails(channel){
 endServiceEl.addEventListener('click', function(e){
   const h = e.target.closest('.dt-head');
   if(!h) return;
-  /* 未解锁：弹出密码框，记录目标细则标题，验证成功后自动展开 */
   if(!priceUnlocked){
     openPwdModal('detail', h);
     return;
@@ -2159,10 +2180,12 @@ function updateDimSummary(){
 zipEl.addEventListener('input', ()=>{
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  renderLclQuote();
 });
 zipEl.addEventListener('blur', ()=>{
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  renderLclQuote();
 });
 
 channelSelect.addEventListener('change', ()=>{
@@ -2177,9 +2200,300 @@ countrySelect.addEventListener('change', ()=>{
   autoSelectFirstChannel(countrySelect.value);
 });
 
+/* ================================================================
+   散货询价 · 自动报价引擎
+   ================================================================ */
+
+/* 每个渠道的报价规则（按中文渠道名索引） */
+const QUOTE_RULES = {
+  "马来西亚空运包税专线":     { basis:'weight', divisor:6000, foam:'auto', roundUnit:1 },
+  "马来西亚西马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.3, overweightRatio:500, remoteSurcharge:2, remoteDivisor:6000 },
+  "马来西亚东马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "新加坡空运专线（不包税）": { basis:'weight', divisor:6000, foam:'half', roundUnit:1 },
+  "新加坡空运专线（包税）":   { basis:'weight', divisor:6000, foam:'half', roundUnit:1 },
+  "新加坡海运专线":           { basis:'volume', roundUnit:0.1, minCbm:0.1, minCharge:150, fixedCol:'1方' },
+  "新加坡海运小包（包税到门）": { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "菲律宾空运包税专线":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "菲律宾海运包税专线":       { basis:'volume', roundUnit:0.1, minCbm:1 },
+  "泰国陆运双清包税":         { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "泰国海运双清包税 (DDP)":   { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "越南陆运大货双清包税":     { basis:'volume', roundUnit:0.1, minCbm:1, overweightRatio:230 },
+  "越南陆运小货双清包税":     { basis:'weight', divisor:5000, foam:'none', roundUnit:1 },
+  "印度尼西亚空运包税":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "印度尼西亚海运包税":       { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "柬埔寨陆运小包专线":       { basis:'weight', divisor:5000, foam:'none', roundUnit:1 },
+  "柬埔寨陆运大货包税":       { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "老挝陆运包税":             { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:350 },
+  "阿联酋空运包税":           { basis:'weight', divisor:6000, foam:'none', roundUnit:0.5, bigFrom:16, bigUnit:1, firstUnit:0.5 }
+};
+
+function getQuoteRule(c){ return c ? (QUOTE_RULES[c.name.zh] || null) : null; }
+
+/* 解析价格表列：识别 首重 / 续重 / 区间列 / 命名列 */
+function parsePriceCols(headZh, headEn){
+  const cols = [];
+  for(let i=1;i<headZh.length;i++){
+    const h = String(headZh[i]||'').trim();
+    const e = String((headEn && headEn[i]) || '').trim();
+    const txt = h + '|' + e;
+    let type = 'named', start = null;
+    if(/首|first/i.test(txt)){
+      type = 'first';
+    } else if(/续|additional|^add/i.test(txt)){
+      type = 'add';
+    } else {
+      let m = h.match(/^(\d+(?:\.\d+)?)\s*(?:KG|kg|方|CBM|cbm)?\s*\+/);
+      if(m){ type='tier'; start = parseFloat(m[1]); }
+      else {
+        m = h.match(/^(\d+(?:\.\d+)?)\s*[-~～]\s*(\d+(?:\.\d+)?)/);
+        if(m){ type='tier'; start = parseFloat(m[1]); }
+        else {
+          m = h.match(/^(\d+(?:\.\d+)?)\s*(?:KG|kg|方|CBM|cbm)?$/);
+          if(m){ type='tier'; start = parseFloat(m[1]); }
+        }
+      }
+    }
+    cols.push({idx:i, header:h, headerEn:e, type, start});
+  }
+  return cols;
+}
+
+/* 根据计费量选择单价 */
+function pickRate(cols, row, qty, rule, optIdx){
+  /* 1. 固定列 */
+  if(rule && rule.fixedCol){
+    const col = cols.find(cc => cc.header === rule.fixedCol || cc.headerEn === rule.fixedCol);
+    if(col){
+      const r = parseFloat(row[col.idx]);
+      if(!isNaN(r)) return {rate:r, total:r*qty, label: col.header, mode:'tier'};
+    }
+  }
+  /* 2. 命名列（目的地 / 价格类型） */
+  const named = cols.filter(cc => cc.type==='named' && !isNaN(parseFloat(row[cc.idx])));
+  if(named.length){
+    let col = named[0];
+    if(optIdx != null){
+      const f = named.find(cc => String(cc.idx) === String(optIdx));
+      if(f) col = f;
+    }
+    const r = parseFloat(row[col.idx]);
+    return {rate:r, total:r*qty, label: (LANG==='zh' ? col.header : (col.headerEn||col.header)), mode:'tier'};
+  }
+  /* 3. 首重 + 续重 / 区间列 */
+  const firstCol = cols.find(cc=>cc.type==='first');
+  const addCol = cols.find(cc=>cc.type==='add');
+  const tierCols = cols.filter(cc=>cc.type==='tier' && !isNaN(parseFloat(row[cc.idx]))).sort((a,b)=>a.start-b.start);
+  const minStart = tierCols.length ? tierCols[0].start : Infinity;
+
+  if(firstCol && addCol && qty < minStart){
+    const first = parseFloat(row[firstCol.idx]);
+    const add = parseFloat(row[addCol.idx]);
+    const fu = (rule && rule.firstUnit) || 1;
+    const steps = Math.max(0, qty/fu - 1);
+    const total = first + add * steps;
+    return {rate:first, total, label:t('首重','First'), mode:'firstAdd', first, add, fu, steps};
+  }
+  if(tierCols.length){
+    let chosen = tierCols[0];
+    tierCols.forEach(cc=>{ if(qty >= cc.start) chosen = cc; });
+    const r = parseFloat(row[chosen.idx]);
+    return {rate:r, total:r*qty, label:(LANG==='zh'?chosen.header:(chosen.headerEn||chosen.header)), mode:'tier'};
+  }
+  return null;
+}
+
+/* 计算报价 */
+function computeLclQuote(){
+  const info = parseChannelVal(channelSelect.value);
+  if(!info) return {err:'nochannel'};
+  const c = info.channel;
+  const rule = getQuoteRule(c);
+  if(!rule) return {err:'norule'};
+
+  const L = parseFloat(dimLEl.value)||0;
+  const W = parseFloat(dimWEl.value)||0;
+  const H = parseFloat(dimHEl.value)||0;
+  const Q = Math.max(1, parseInt(pkgCountEl.value)||1);
+  const unitWeight = parseFloat(weightEl.value)||0;
+
+  if(!(L>0 && W>0 && H>0)) return {err:'nodim'};
+
+  const rowZh = c.rows.zh[info.rowIdx];
+  const rowEn = c.rows.en[info.rowIdx];
+  const cols = parsePriceCols(c.head.zh, c.head.en);
+  const optEl = document.getElementById('quoteOpt');
+  const optIdx = (optEl && optEl.value) ? optEl.value : null;
+
+  const unitVol = L*W*H/1000000;
+  const totalVol = unitVol*Q;
+  const totalWeight = unitWeight*Q;
+
+  let chargeQty = 0, qtyUnit = '', qtyLines = [], chargeLabel = '';
+
+  if(rule.basis === 'weight'){
+    if(unitWeight <= 0) return {err:'noweight'};
+    const divisor = rule.divisor || 6000;
+    const volW = (L*W*H/divisor)*Q;
+    let foam = rule.foam;
+    if(foam === 'auto') foam = (rowZh[0].indexOf('东马') >= 0) ? 'none' : 'half';
+
+    let charge = Math.max(volW, totalWeight);
+    let halfVal = null;
+    if(foam === 'half'){
+      halfVal = (volW + totalWeight)/2;
+      charge = Math.max(totalWeight, halfVal);
+    }
+
+    let rUnit = rule.roundUnit || 1;
+    if(rule.bigUnit && charge >= (rule.bigFrom||16)) rUnit = rule.bigUnit;
+    chargeQty = Math.ceil(charge/rUnit)*rUnit;
+    qtyUnit = 'KG';
+    chargeLabel = t('计费重','Chargeable weight');
+
+    qtyLines.push({label: t('体积重（÷'+divisor+'）','Volumetric (÷'+divisor+')'), value: volW.toFixed(2)+' KG'});
+    qtyLines.push({label: t('实重（'+Q+'件）','Actual ('+Q+' pcs)'), value: totalWeight.toFixed(2)+' KG'});
+    if(halfVal !== null) qtyLines.push({label: t('半泡','Half-volumetric'), value: halfVal.toFixed(2)+' KG'});
+    qtyLines.push({label: chargeLabel+'（取大）', value: chargeQty.toFixed(2)+' KG', strong:true});
+  } else {
+    let billed = totalVol;
+    if(rule.overweightRatio && totalWeight > 0){
+      const wVol = totalWeight/rule.overweightRatio;
+      if(wVol > billed) billed = wVol;
+    }
+    const minCbm = rule.minCbm || 0;
+    const rawBilled = billed;
+    if(minCbm && billed < minCbm) billed = minCbm;
+    const rUnit = rule.roundUnit || 0.1;
+    billed = Math.ceil(billed/rUnit)*rUnit;
+    chargeQty = billed;
+    qtyUnit = 'CBM';
+    chargeLabel = t('计费体积','Chargeable volume');
+
+    qtyLines.push({label: t('单件体积','Unit volume'), value: unitVol.toFixed(4)+' CBM'});
+    qtyLines.push({label: t('总体积（'+Q+'件）','Total ('+Q+' pcs)'), value: totalVol.toFixed(4)+' CBM'});
+    if(totalWeight > 0) qtyLines.push({label: t('总实重','Total actual'), value: totalWeight.toFixed(2)+' KG'});
+    if(minCbm && rawBilled < minCbm){
+      qtyLines.push({label: t('最低起收','Minimum'), value: minCbm+' CBM'});
+    }
+    qtyLines.push({label: chargeLabel, value: chargeQty.toFixed(3)+' CBM', strong:true});
+  }
+
+  const rateInfo = pickRate(cols, rowZh, chargeQty, rule, optIdx);
+  if(!rateInfo) return {err:'norate'};
+
+  let amount = rateInfo.total;
+  let minApplied = false;
+  if(rule.minCharge && amount < rule.minCharge){
+    amount = rule.minCharge;
+    minApplied = true;
+  }
+
+  const extras = [];
+  if(rule.remoteSurcharge && isRemoteNow(c) && totalWeight > 0){
+    const div = rule.remoteDivisor || 6000;
+    const volW = (L*W*H/div)*Q;
+    const cw = Math.max(volW, totalWeight);
+    const sur = cw * rule.remoteSurcharge;
+    extras.push({
+      label: t('偏远派送费（'+rule.remoteSurcharge+'元/KG × '+cw.toFixed(2)+'KG）',
+               'Remote surcharge ('+rule.remoteSurcharge+' CNY/KG × '+cw.toFixed(2)+'KG)'),
+      value: sur
+    });
+  }
+
+  const total = amount + extras.reduce((s,e)=>s+e.value,0);
+
+  return {
+    ok:true, channel:c,
+    rowName: LANG==='zh' ? rowZh[0] : rowEn[0],
+    qtyLines, chargeQty, qtyUnit,
+    rateInfo, amount, minApplied, extras, total
+  };
+}
+
+/* 渲染报价面板 */
+function renderLclQuote(){
+  const panel = document.getElementById('lclQuotePanel');
+  if(!panel) return;
+  const r = computeLclQuote();
+  if(!r || r.err){
+    panel.classList.remove('show');
+    panel.innerHTML = '';
+    return;
+  }
+
+  let html = '<h3>📊 '+t('预估运费','Estimated Freight')+'</h3>';
+  html += '<div class="quote-line"><span>'+t('渠道 / 货类','Channel / Category')+'</span><b>'+
+          tObj(r.channel.name)+(LANG==='zh' ? ' · '+r.rowName : ' · '+r.rowName)+'</b></div>';
+
+  r.qtyLines.forEach(l=>{
+    html += '<div class="quote-line"><span>'+l.label+'</span><b>'+l.value+'</b></div>';
+  });
+
+  const rl = r.rateInfo;
+  if(rl.mode === 'firstAdd'){
+    html += '<div class="quote-line"><span>'+t('计费方式','Billing')+'</span><b>'+
+            t('首重 '+rl.first+' 元 + 续重 '+rl.add+' 元 × '+rl.steps.toFixed(1),
+              'First '+rl.first+' + Add '+rl.add+' × '+rl.steps.toFixed(1))+'</b></div>';
+  } else {
+    html += '<div class="quote-line"><span>'+t('适用单价','Unit price')+'</span><b>'+
+            rl.rate+' 元/'+r.qtyUnit+'（'+rl.label+'）</b></div>';
+  }
+
+  html += '<div class="quote-line"><span>'+t('基础运费','Base freight')+'</span><b>'+r.amount.toFixed(2)+' 元</b></div>';
+  if(r.minApplied){
+    html += '<div class="quote-line"><span>'+t('最低消费已生效','Minimum charge applied')+'</span><b>—</b></div>';
+  }
+  r.extras.forEach(e=>{
+    html += '<div class="quote-line accent"><span>'+e.label+'</span><b>+'+e.value.toFixed(2)+' 元</b></div>';
+  });
+
+  html += '<div class="quote-total"><span>'+t('预估合计','Estimated Total')+'</span><b>'+r.total.toFixed(2)+'<small> 元</small></b></div>';
+  html += '<div class="quote-note">'+t(
+    '⚠️ 以上为系统自动估算，仅供参考。最终运费以仓库实测、附加费以 Emily 确认为准。',
+    '⚠️ Auto-estimated for reference only. Final freight subject to warehouse measurement and Emily\'s confirmation.')+'</div>';
+
+  panel.innerHTML = html;
+  panel.classList.add('show');
+}
+
+/* 目的地 / 价格类型选择器 */
+function updateQuoteOpt(){
+  const row = document.getElementById('quoteOptRow');
+  const sel = document.getElementById('quoteOpt');
+  const label = document.getElementById('quoteOptLabel');
+  const info = parseChannelVal(channelSelect.value);
+  if(!info){ row.style.display='none'; sel.innerHTML=''; return; }
+
+  const c = info.channel;
+  const rowData = c.rows.zh[info.rowIdx];
+  const cols = parsePriceCols(c.head.zh, c.head.en);
+  const named = cols.filter(col => col.type==='named' && !isNaN(parseFloat(rowData[col.idx])));
+
+  if(named.length <= 1){ row.style.display='none'; sel.innerHTML=''; return; }
+
+  const prev = sel.value;
+  sel.innerHTML = named.map(col=>{
+    const h = LANG==='zh' ? col.header : (col.headerEn || col.header);
+    return '<option value="'+col.idx+'">'+h+'</option>';
+  }).join('');
+  if(named.some(col=>String(col.idx)===prev)) sel.value = prev;
+  row.style.display = '';
+  label.textContent = t('请选择价格类型 / 目的地','Select price type / destination');
+}
+
+document.getElementById('quoteOpt').addEventListener('change', renderLclQuote);
+
+/* 尺寸 / 件数 / 重量变化时同步刷新报价 */
+[dimLEl, dimWEl, dimHEl, weightEl, pkgCountEl].forEach(el=>{
+  el.addEventListener('input', renderLclQuote);
+  el.addEventListener('change', renderLclQuote);
+});
+
 function showPageRaw(id){
   ['home','price','lcl','fcl','calc'].forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
+  if(id === 'lcl') renderLclQuote();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showPage(id){
@@ -2256,6 +2570,8 @@ function applyLang(lang){
   updateChannelUI();
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  updateQuoteOpt();
+  renderLclQuote();
 }
 document.querySelectorAll('.lang-btn').forEach(btn=>{
   btn.onclick=()=>{
@@ -2332,6 +2648,18 @@ document.getElementById('genLcl').onclick=function(){
     ? (dimL || '—') + ' × ' + (dimW || '—') + ' × ' + (dimH || '—') + ' cm'
     : '';
 
+  /* 附加自动估算结果 */
+  const q = computeLclQuote();
+  let quoteTxtZh = '', quoteTxtEn = '';
+  if(q && q.ok){
+    quoteTxtZh = '\n—— 系统预估 ——\n' +
+      '计费' + (q.qtyUnit === 'KG' ? '重量' : '体积') + '：' + (q.qtyUnit === 'KG' ? q.chargeQty.toFixed(2)+' KG' : q.chargeQty.toFixed(3)+' CBM') + '\n' +
+      '预估运费：' + q.total.toFixed(2) + ' 元（仅供参考）';
+    quoteTxtEn = '\n—— Auto Estimate ——\n' +
+      'Chargeable: ' + (q.qtyUnit === 'KG' ? q.chargeQty.toFixed(2)+' KG' : q.chargeQty.toFixed(3)+' CBM') + '\n' +
+      'Estimated freight: ' + q.total.toFixed(2) + ' CNY (reference only)';
+  }
+
   if (LANG === 'zh') {
     const txt =
 '品名：'+g('productName')+'\n'+
@@ -2340,7 +2668,7 @@ document.getElementById('genLcl').onclick=function(){
 '包装后单件重量：'+g('weight')+' KG\n'+
 '图片：'+g('imgUrl')+'\n'+
 'hs：'+g('hsCode')+'\n'+
-'是否带电池/磁/品牌/有报告直接提供报告出来：'+(g('otherInfo')||'未填写');
+'是否带电池/磁/品牌/有报告直接提供报告出来：'+(g('otherInfo')||'未填写')+quoteTxtZh;
     document.getElementById('lclResult').value=txt;
   } else {
     const txt =
@@ -2350,7 +2678,7 @@ document.getElementById('genLcl').onclick=function(){
 'Packed Unit Weight: '+g('weight')+' KG\n'+
 'Image: '+g('imgUrl')+'\n'+
 'HS: '+g('hsCode')+'\n'+
-'Battery/Magnetic/Branded/Report if any: '+(g('otherInfo')||'Not filled');
+'Battery/Magnetic/Branded/Report if any: '+(g('otherInfo')||'Not filled')+quoteTxtEn;
     document.getElementById('lclResult').value=txt;
   }
 };
