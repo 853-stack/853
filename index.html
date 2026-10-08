@@ -255,7 +255,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
       <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="填写即自动报价" data-en="Instant auto-quote">填写即自动报价</div></div></div>
       <div class="home-item" data-goto="fcl"><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div><div class="icon green">🚢</div></div>
       <div class="home-item" data-goto="calc"><div class="icon orange">🧮</div><div><div class="name" data-zh="计算器" data-en="Calculator">计算器</div><div class="desc" data-zh="渠道计费 / CBM" data-en="Billing / CBM">渠道计费 / CBM</div></div></div>
-      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表 🔒" data-en="Freight Rates 🔒">运费价格表 🔒</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
+      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表" data-en="Freight Rates">运费价格表</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
     </div>
   </div>
 
@@ -294,7 +294,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   </div>
 </div>
 
-<!-- 运费价格表（密码保护） -->
+<!-- 运费价格表 -->
 <div id="price" class="card hidden">
   <h2 data-zh="运费价格表（9.18执行）" data-en="Freight Rate Table (Effective 9.18)">运费价格表（9.18执行）</h2>
   <div class="tip-orange" style="margin-bottom:14px;"
@@ -593,9 +593,8 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <span data-zh="所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认" data-en="All prices refer to the current channel table. Final freight subject to warehouse measurement; surcharges confirmed by Emily.">所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认</span>
 </div>
 
-<footer>
-  <a class="footer-link" href="https://hgzx.kingtrans.cn/WebTrack?action=list" target="_blank" rel="noopener" data-zh="📦 查询货物轨迹" data-en="📦 Track Shipment">📦 查询货物轨迹</a>
-</footer>
+<!-- 查询货物轨迹链接已隐藏 -->
+<footer style="display:none;"></footer>
 
 </div>
 
@@ -607,8 +606,8 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
-<!-- 密码弹窗 -->
-<div class="pwd-modal hidden" id="pwdModal">
+<!-- 密码弹窗（已隐藏，保留结构但永不显示） -->
+<div class="pwd-modal hidden" id="pwdModal" style="display:none!important;">
   <div class="pwd-box">
     <h3>🔒 访问受限</h3>
     <p id="pwdDesc" data-zh="请输入密码查看运费价格表" data-en="Enter password to view freight rates">请输入密码查看运费价格表</p>
@@ -619,78 +618,24 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
       <button class="btn btn-primary" id="pwdConfirm" data-zh="确认" data-en="Confirm">确认</button>
     </div>
   </div>
-</div><script>
+</div>
+
+<script>
 const WX_ACCOUNT = "GZjcyt006";
 let LANG = "zh";
 
-/* ============ 密码保护（价格表 + 渠道细则统一锁） ============ */
-const PRICE_PASSWORD = "Emily Wu";
-let priceUnlocked = false;
+/* ============ 密码保护已彻底解除 ============ */
+let priceUnlocked = true;
 
 const pwdModal = document.getElementById('pwdModal');
-const pwdInput = document.getElementById('pwdInput');
-const pwdTip = document.getElementById('pwdTip');
-const pwdDesc = document.getElementById('pwdDesc');
-
-let pwdContext = 'price';
-let pendingDetailTarget = null;
-
-function openPwdModal(context, target){
-  pwdContext = context || 'price';
-  pendingDetailTarget = target || null;
-  if(pwdDesc){
-    if(pwdContext === 'detail'){
-      pwdDesc.textContent = t('请输入密码解锁渠道细则','Enter password to unlock channel details');
-    } else {
-      pwdDesc.textContent = t('请输入密码查看运费价格表','Enter password to view freight rates');
-    }
-  }
-  pwdModal.classList.remove('hidden');
-  pwdInput.value = '';
-  pwdTip.textContent = '';
-  pwdTip.className = 'pwd-tip';
-  setTimeout(()=>pwdInput.focus(), 120);
-}
-function closePwdModal(){
+if (pwdModal) {
   pwdModal.classList.add('hidden');
-  pwdTip.textContent = '';
-  pwdTip.className = 'pwd-tip';
+  pwdModal.style.display = 'none';
+  pwdModal.remove();
 }
-function tryUnlockPrice(){
-  const v = pwdInput.value.trim();
-  if(v === PRICE_PASSWORD){
-    priceUnlocked = true;
-    pwdTip.textContent = '✅ 验证成功';
-    pwdTip.className = 'pwd-tip ok';
-    setTimeout(()=>{
-      closePwdModal();
-      if(pwdContext === 'price'){
-        document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
-        document.querySelector('.tab-item[data-target="home"]').classList.add('active');
-        showPageRaw('price');
-      } else if(pwdContext === 'detail' && pendingDetailTarget){
-        pendingDetailTarget.parentElement.classList.add('open');
-      }
-      pendingDetailTarget = null;
-      if(typeof updateChannelDetails === 'function'){
-        updateChannelDetails(getCurrentChannel());
-      }
-    }, 260);
-  } else {
-    pwdTip.textContent = '❌ 密码错误，请重试';
-    pwdTip.className = 'pwd-tip error';
-    pwdInput.select();
-  }
-}
-document.getElementById('pwdConfirm').onclick = tryUnlockPrice;
-document.getElementById('pwdCancel').onclick = ()=>{ pendingDetailTarget = null; closePwdModal(); };
-pwdInput.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter') tryUnlockPrice();
-  if(e.key === 'Escape'){ pendingDetailTarget = null; closePwdModal(); }
-});
-pwdModal.addEventListener('click', (e)=>{
-  if(e.target === pwdModal){ pendingDetailTarget = null; closePwdModal(); }
-});
+function openPwdModal(){}
+function closePwdModal(){}
+function tryUnlockPrice(){}
 
 const t = (zh, en) => (LANG === "zh" ? zh : en);
 const tObj = (o) => (o ? (LANG === "zh" ? o.zh : o.en) : '');
@@ -823,7 +768,9 @@ function zoneOf(channel){
   if(n.indexOf('老挝') === 0) return 'la';
   if(n.indexOf('阿联酋') === 0) return 'ae';
   return null;
-}function evaluateZip(zone, raw){
+}
+
+function evaluateZip(zone, raw){
   if(!zone) return null;
   raw = (raw || '').trim();
   if(!raw) return null;
@@ -968,7 +915,6 @@ function zoneOf(channel){
     }
     case 'ph_sea': {
       if(L !== 4) return needLen(4);
-      // ===== Metro Manila（按表格精确匹配，先匹配先命中）=====
       const metroCities = [
         {min:1000, max:1018, name:'Manila'},
         {min:1100, max:1128, name:'Quezon City'},
@@ -994,7 +940,6 @@ function zoneOf(channel){
           desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。木箱/木架/托盘的普货 +50RMB/CBM。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
         };
       }
-      // ===== LAGUNA =====
       const lagunaMap = {
         4023:'San Pedro', 4024:'Binan', 4025:'Cabuyao',
         4026:'Sta Rosa', 4027:'Calamba'
@@ -1007,7 +952,6 @@ function zoneOf(channel){
           desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
         };
       }
-      // ===== BULACAN =====
       const bulacanMap = {
         3005:'Pulilan', 3019:'Marilao',
         3020:'Meycauayan', 3023:'San Jose del Monte'
@@ -1020,7 +964,6 @@ function zoneOf(channel){
           desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
         };
       }
-      // ===== CAVITE =====
       const caviteMap = {
         4100:'Cavite City', 4102:'Bacoor', 4103:'Imus',
         4104:'Kawit', 4107:'Gen Tri', 4108:'Tanza',
@@ -1053,7 +996,6 @@ function zoneOf(channel){
       }
       return { level:'info', tag:{zh:'曼谷以外',en:'Outside Bangkok'}, title:{zh:'曼谷以外区域',en:'Outside Bangkok'}, desc:{zh:'曼谷以外派送费用需单独咨询。超重货 1 立方 = 500KG。',en:'Delivery on request. Overweight 1 CBM = 500KG.'} };
     }
-    /* ==================== 越南（支持 5 位 / 6 位邮编）==================== */
     case 'vn': {
       if(L !== 5 && L !== 6){
         return {
@@ -1063,7 +1005,6 @@ function zoneOf(channel){
           desc:{zh:'越南新版邮编为 6 位（如 100000），旧版为 5 位（如 10000）。请核对后重新输入。',en:'Vietnam new postcode is 6-digit (e.g. 100000), old is 5-digit (e.g. 10000). Please check.'}
         };
       }
-      // 5 位时补 0 变成 6 位后再判断首位
       const norm = L === 5 ? (raw + '0') : raw;
       const p = norm.charAt(0);
       const lenTip = (L === 5) ? t('（5位邮编已按 '+norm+' 处理）',' (5-digit treated as '+norm+')') : '';
@@ -1114,7 +1055,9 @@ function zoneOf(channel){
     }
   }
   return null;
-}/* ==================== 渠道细则公共文本 ==================== */
+}
+
+/* ==================== 渠道细则公共文本 ==================== */
 const COMP_STD = {
   zh:"1. 物品遗失或者扣关按运费两倍且退回已支付运费或者申报货值，取低者规则理赔。如因客户的资料与实际货物不符或货物本身质量问题，以及涉及具体认证问题等均不受理赔偿；如遇战争、自然灾害等不可抗力因素导致货物破坏或丢失不受理赔偿；运输过程中如遇航班延误/清关延误等引起的总体时效延误均不受理赔偿；货物部分破损不赔偿，只对货件遗失进行赔偿。一旦交付货物即默认本条款规则。\n2. 经香港的货物，如在出口口岸经我司确认被海关查扣，按40RMB/Kg赔偿，不作其它任何连带责任或价值赔偿。\n3. 在运输过程中如遇到航班延误、清关延误等引起的总体时效延误均不受理赔偿。\n4. 如有查获烟酒、银行卡4件套等违禁品，罚款5000RMB/票，并且报警处理。\n5. 如发现冲货行为，没收货物并罚款1000RMB-10000RMB，其他后果自负。敏感货冲普货，一经发现没收货物，并罚款5000/票，如海关查验由此产生的所有费用均由发货方全部承担。\n6. 客户虚报、瞒报、漏报货物信息以及敏感货充当普货的情况下，若出现丢件、少件情况，我司概不赔偿。",
   en:"1. Loss or customs seizure: compensation = the lower of (2× freight + refund of paid freight) or declared value. No compensation for document mismatch, product quality issues, certification issues, force majeure, or transit/customs delays. Partial damage is not compensated — only total loss. Handing over the goods means acceptance of these terms.\n2. Goods via Hong Kong seized at export: 40 CNY/kg, no other liability.\n3. No compensation for flight or customs delays.\n4. Tobacco/alcohol or bank-card sets found: 5,000 CNY/ticket fine + police report.\n5. False declaration: goods confiscated + 1,000–10,000 CNY fine; sensitive goods declared as general: confiscated + 5,000 CNY/ticket, all customs-related costs borne by the shipper.\n6. No compensation for loss/shortage if the shipper mis-declared or shipped sensitive goods as general cargo."
@@ -1506,7 +1449,9 @@ const PRICE_CHANNELS = [
    rows:{
      zh:[["普货(含电/配套电池)","90","34","48","48","45","45","43"],["敏感(A类/CCTV/医疗)","95","38","51","51","49","49","46"],["特货(纯电池/部分食品液体)","125","48","56","56","54","54","51"]],
      en:[["General (battery/with battery)","90","34","48","48","45","45","43"],["Sensitive (Class A/CCTV/medical)","95","38","51","51","49","49","46"],["Special (pure battery/some food & liquid)","125","48","56","56","54","54","51"]]}}
-];const typeIconMap = {air:"✈️", sea:"🚢", land:"🚚"};
+];
+
+const typeIconMap = {air:"✈️", sea:"🚢", land:"🚚"};
 const typeName = (tp) => LANG === "zh" ? ({air:"空运",sea:"海运",land:"陆运"}[tp]) : ({air:"Air",sea:"Sea",land:"Land"}[tp]);
 
 const COUNTRY_ZH = {my:"马来西亚",sg:"新加坡",th:"泰国",vn:"越南",ph:"菲律宾",id:"印尼",kh:"柬埔寨",la:"老挝",ae:"阿联酋"};
@@ -1558,7 +1503,7 @@ function renderPrice(filter){
       rows.map(r=>'<tr><td class="key">'+r[0]+'</td>'+r.slice(1).map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+
       '</tbody></table>';
     const noteText = tObj(c.note);
-    const detailHTML = buildDetailHTML(channelDetailObj(c), priceUnlocked);
+    const detailHTML = buildDetailHTML(channelDetailObj(c), true);
     const tailNote = t("⚠️ 仅参考，最终运费以仓库实测、Emily确认为准", "⚠️ Reference only. Final freight subject to warehouse measurement and Emily's confirmation.");
     return '<div class="price-card" id="pc-'+i+'">'+
       '<div class="price-head">'+
@@ -1765,23 +1710,18 @@ function updateChannelDetails(channel){
     return;
   }
   const d = channelDetailObj(channel);
-  const html = buildDetailHTML(d, priceUnlocked);
+  const html = buildDetailHTML(d, true);
   if(!html){
     endServiceEl.classList.remove('show');
     endServiceEl.innerHTML = '';
     return;
   }
-  const lockHint = priceUnlocked ? '' : '<span class="lock-hint">🔒 '+t('点击需密码','Password required')+'</span>';
-  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span>'+lockHint+'</div>' + html;
+  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span></div>' + html;
   endServiceEl.classList.add('show');
 }
 endServiceEl.addEventListener('click', function(e){
   const h = e.target.closest('.dt-head');
   if(!h) return;
-  if(!priceUnlocked){
-    openPwdModal('detail', h);
-    return;
-  }
   h.parentElement.classList.toggle('open');
 });
 function updateBillingUI(channel){
@@ -1832,7 +1772,6 @@ function updateZipUI(channel){
     zipEl.removeAttribute('maxlength');
     zipEl.setAttribute('placeholder', t('邮编 / 城市','Postcode / City'));
   }
-  // 越南特殊处理：允许 5 位或 6 位（不限制 maxlength）
   if(code === 'vn'){
     zipEl.removeAttribute('maxlength');
     zipEl.setAttribute('placeholder', t('5位或6位邮编，如 10000 / 100000','5 or 6-digit postcode, e.g. 10000 / 100000'));
@@ -2379,19 +2318,11 @@ function showPageRaw(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showPage(id){
-  if(id === 'price' && !priceUnlocked){
-    openPwdModal('price');
-    return;
-  }
   showPageRaw(id);
 }
 document.querySelectorAll('.tab-item').forEach(tab=>{
   tab.onclick=function(){
     const target = this.getAttribute('data-target');
-    if(target === 'price' && !priceUnlocked){
-      openPwdModal('price');
-      return;
-    }
     document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
     this.classList.add('active');
     showPageRaw(target);
@@ -2400,10 +2331,6 @@ document.querySelectorAll('.tab-item').forEach(tab=>{
 document.querySelectorAll('.home-item[data-goto]').forEach(item=>{
   item.onclick=()=>{
     const tgt=item.dataset.goto;
-    if(tgt === 'price' && !priceUnlocked){
-      openPwdModal('price');
-      return;
-    }
     document.querySelectorAll('.tab-item').forEach(x=>x.classList.remove('active'));
     document.querySelector('.tab-item[data-target="'+(tgt==='price'?'home':tgt)+'"]').classList.add('active');
     showPageRaw(tgt);
@@ -2619,6 +2546,7 @@ document.getElementById('calcFsBtn').onclick=()=>{
 applyLang('zh');
 refreshLclBadge();
 refreshFclBadge();
+renderPrice('all');
 </script>
 </body>
 </html>
@@ -2628,4 +2556,6 @@ refreshFclBadge();
 document.oncontextmenu = function(){return false;}
 document.onselectstart = function(){return false;}
 </script>
+
+
 
