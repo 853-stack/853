@@ -185,7 +185,6 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 .price-note{font-size:11px;color:#A39AA5;margin-top:8px;line-height:1.75;}
 .pbtn.active{background:linear-gradient(135deg,#FECBCA,#F5A8A6);color:#2A2930;border-color:transparent;box-shadow:0 4px 12px rgba(245,168,166,.35);font-weight:700;}
 #channelSelect optgroup{font-weight:700;color:#403F44;font-size:12.5px;padding:6px 0;}
-/* ===== 渠道细则折叠（带锁） ===== */
 .dt-accordion{margin-top:14px;border-top:1px dashed var(--border);padding-top:4px;}
 .dt-item{border-bottom:1px solid #F7EFEF;}
 .dt-item:last-child{border-bottom:none;}
@@ -209,6 +208,19 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 .pwd-tip.ok{color:#8A5A5A;}
 .pwd-actions{display:flex;gap:10px;justify-content:center;}
 .pwd-actions .btn{flex:1;margin:0;}
+.quote-panel{display:none;margin-top:6px;margin-bottom:16px;border-radius:16px;border:1px solid #F5D8D8;background:linear-gradient(135deg,#FFF8F8 0%,#FDF0F0 100%);padding:16px 16px 14px;box-shadow:0 4px 16px rgba(245,168,166,.14);}
+.quote-panel.show{display:block;animation:foldIn .28s ease;}
+.quote-panel h3{font-size:13.5px;color:#2A2930;margin-bottom:10px;font-weight:800;display:flex;align-items:center;gap:6px;letter-spacing:.3px;}
+.quote-line{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:6px 0;border-bottom:1px dashed #F2E0E0;line-height:1.6;}
+.quote-line:last-of-type{border-bottom:none;}
+.quote-line span:first-child{color:#8A8590;flex-shrink:0;}
+.quote-line b{color:#2A2930;font-feature-settings:"tnum";text-align:right;word-break:break-all;}
+.quote-line.accent b{color:#C0392B;}
+.quote-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:12px;border-top:2px solid #F0DEDE;}
+.quote-total span{font-size:13px;font-weight:800;color:#403F44;}
+.quote-total b{font-size:24px;font-weight:800;color:#C0392B;font-feature-settings:"tnum";letter-spacing:.5px;}
+.quote-total b small{font-size:12px;font-weight:600;margin-left:2px;}
+.quote-note{margin-top:10px;font-size:11px;color:#A39AA5;line-height:1.7;padding-top:2px;}
 @media (max-width:380px){
   .home-grid{grid-template-columns:1fr;}
   .card{padding:16px;margin:12px;}
@@ -217,10 +229,10 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   .dim-row{gap:4px;}
   .zip-row{flex-direction:column;}
   .zip-row .zip-input{flex:1;}
+  .quote-total b{font-size:20px;}
 }
 </style>
-</head>
-<body>
+</head><body>
 <div class="container">
 
 <!-- 顶部栏 -->
@@ -240,10 +252,10 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <div class="card">
     <h2 data-zh="快捷功能" data-en="Quick Functions">快捷功能</h2>
     <div class="home-grid">
-      <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="按渠道快速询价" data-en="Quick inquiry by channel">按渠道快速询价</div></div></div>
+      <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="填写即自动报价" data-en="Instant auto-quote">填写即自动报价</div></div></div>
       <div class="home-item" data-goto="fcl"><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div><div class="icon green">🚢</div></div>
       <div class="home-item" data-goto="calc"><div class="icon orange">🧮</div><div><div class="name" data-zh="计算器" data-en="Calculator">计算器</div><div class="desc" data-zh="渠道计费 / CBM" data-en="Billing / CBM">渠道计费 / CBM</div></div></div>
-      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表 🔒" data-en="Freight Rates 🔒">运费价格表 🔒</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
+      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表" data-en="Freight Rates">运费价格表</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
     </div>
   </div>
 
@@ -282,7 +294,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   </div>
 </div>
 
-<!-- 运费价格表（密码保护） -->
+<!-- 运费价格表 -->
 <div id="price" class="card hidden">
   <h2 data-zh="运费价格表（9.18执行）" data-en="Freight Rate Table (Effective 9.18)">运费价格表（9.18执行）</h2>
   <div class="tip-orange" style="margin-bottom:14px;"
@@ -312,6 +324,18 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
       <div class="tip-orange" id="channelBrief"></div>
       <div class="end-service" id="endService"></div>
     </div>
+  </div>
+
+  <div class="form-row" id="quoteOptRow" style="display:none;margin-top:16px;">
+    <label id="quoteOptLabel" data-zh="价格类型 / 目的地" data-en="Price Type / Destination">价格类型 / 目的地</label>
+    <select id="quoteOpt"></select>
+  </div>
+
+  <!-- 越南目的地省份（仅越南渠道显示） -->
+  <div class="form-row" id="vnProvinceRow" style="display:none;">
+    <label id="vnProvinceLabel" data-zh="越南目的地省份（派送费按省份计算）" data-en="Vietnam Destination Province (delivery by province)">越南目的地省份（派送费按省份计算）</label>
+    <select id="vnProvinceSelect"></select>
+    <div class="tip-orange" id="vnProvinceTip" style="margin-top:6px;"></div>
   </div>
 
   <div class="form-row" style="margin-top:16px;">
@@ -380,6 +404,9 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
     <label data-zh="总件数" data-en="Total Packages">总件数</label>
     <input type="number" id="packageCount" value="1">
   </div>
+
+  <div class="quote-panel" id="lclQuotePanel"></div>
+
   <div class="form-row">
     <label data-zh="图片" data-en="Image">图片</label>
     <input type="text" id="imgUrl" data-ph-zh="选填" data-ph-en="Optional" placeholder="选填">
@@ -566,9 +593,8 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <span data-zh="所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认" data-en="All prices refer to the current channel table. Final freight subject to warehouse measurement; surcharges confirmed by Emily.">所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认</span>
 </div>
 
-<footer>
-  <a class="footer-link" href="https://hgzx.kingtrans.cn/WebTrack?action=list" target="_blank" rel="noopener" data-zh="📦 查询货物轨迹" data-en="📦 Track Shipment">📦 查询货物轨迹</a>
-</footer>
+<!-- 查询货物轨迹链接已隐藏 -->
+<footer style="display:none;"></footer>
 
 </div>
 
@@ -580,8 +606,8 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
-<!-- 密码弹窗 -->
-<div class="pwd-modal hidden" id="pwdModal">
+<!-- 密码弹窗（已隐藏，保留结构但永不显示） -->
+<div class="pwd-modal hidden" id="pwdModal" style="display:none!important;">
   <div class="pwd-box">
     <h3>🔒 访问受限</h3>
     <p id="pwdDesc" data-zh="请输入密码查看运费价格表" data-en="Enter password to view freight rates">请输入密码查看运费价格表</p>
@@ -598,78 +624,18 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 const WX_ACCOUNT = "GZjcyt006";
 let LANG = "zh";
 
-/* ============ 密码保护（价格表 + 渠道细则统一锁） ============ */
-const PRICE_PASSWORD = "Emily Wu";
-let priceUnlocked = false;
+/* ============ 密码保护已彻底解除 ============ */
+let priceUnlocked = true;
 
 const pwdModal = document.getElementById('pwdModal');
-const pwdInput = document.getElementById('pwdInput');
-const pwdTip = document.getElementById('pwdTip');
-const pwdDesc = document.getElementById('pwdDesc');
-
-/* 记录弹窗上下文：'price' 表示打开价格表，'detail' 表示展开被锁的细则 */
-let pwdContext = 'price';
-let pendingDetailTarget = null;
-
-function openPwdModal(context, target){
-  pwdContext = context || 'price';
-  pendingDetailTarget = target || null;
-  if(pwdDesc){
-    if(pwdContext === 'detail'){
-      pwdDesc.textContent = t('请输入密码解锁渠道细则','Enter password to unlock channel details');
-    } else {
-      pwdDesc.textContent = t('请输入密码查看运费价格表','Enter password to view freight rates');
-    }
-  }
-  pwdModal.classList.remove('hidden');
-  pwdInput.value = '';
-  pwdTip.textContent = '';
-  pwdTip.className = 'pwd-tip';
-  setTimeout(()=>pwdInput.focus(), 120);
-}
-function closePwdModal(){
+if (pwdModal) {
   pwdModal.classList.add('hidden');
-  pwdTip.textContent = '';
-  pwdTip.className = 'pwd-tip';
+  pwdModal.style.display = 'none';
+  pwdModal.remove();
 }
-function tryUnlockPrice(){
-  const v = pwdInput.value.trim();
-  if(v === PRICE_PASSWORD){
-    priceUnlocked = true;
-    pwdTip.textContent = '✅ 验证成功';
-    pwdTip.className = 'pwd-tip ok';
-    setTimeout(()=>{
-      closePwdModal();
-      if(pwdContext === 'price'){
-        /* 打开价格表 */
-        document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
-        document.querySelector('.tab-item[data-target="home"]').classList.add('active');
-        showPageRaw('price');
-      } else if(pwdContext === 'detail' && pendingDetailTarget){
-        /* 展开刚才被锁的那一条细则 */
-        pendingDetailTarget.parentElement.classList.add('open');
-      }
-      pendingDetailTarget = null;
-      /* 解锁后，散货询价的渠道细则也重新渲染一次，便于第一条默认展开 */
-      if(typeof updateChannelDetails === 'function'){
-        updateChannelDetails(getCurrentChannel());
-      }
-    }, 260);
-  } else {
-    pwdTip.textContent = '❌ 密码错误，请重试';
-    pwdTip.className = 'pwd-tip error';
-    pwdInput.select();
-  }
-}
-document.getElementById('pwdConfirm').onclick = tryUnlockPrice;
-document.getElementById('pwdCancel').onclick = ()=>{ pendingDetailTarget = null; closePwdModal(); };
-pwdInput.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter') tryUnlockPrice();
-  if(e.key === 'Escape'){ pendingDetailTarget = null; closePwdModal(); }
-});
-pwdModal.addEventListener('click', (e)=>{
-  if(e.target === pwdModal){ pendingDetailTarget = null; closePwdModal(); }
-});
+function openPwdModal(){}
+function closePwdModal(){}
+function tryUnlockPrice(){}
 
 const t = (zh, en) => (LANG === "zh" ? zh : en);
 const tObj = (o) => (o ? (LANG === "zh" ? o.zh : o.en) : '');
@@ -697,17 +663,79 @@ const MY_EAST_REMOTE = [
   {zh:'纳闽岛 LABUAN',en:'Labuan',r:[[87000,87033]]},
   {zh:'老越 Lawas',en:'Lawas',r:[[98700,98859]]}
 ];
+
 const POSTAL_META = {
   my:{len:5, ph:{zh:'5位邮编，如 50000',en:'5-digit postcode, e.g. 50000'}},
   sg:{len:6, ph:{zh:'6位邮编，如 018956',en:'6-digit postcode, e.g. 018956'}},
   th:{len:5, ph:{zh:'5位邮编，如 10110',en:'5-digit postcode, e.g. 10110'}},
   ph:{len:4, ph:{zh:'4位邮编，如 1000',en:'4-digit postcode, e.g. 1000'}},
-  vn:{len:6, ph:{zh:'6位邮编，如 100000',en:'6-digit postcode, e.g. 100000'}},
+  vn:{len:6, ph:{zh:'5位或6位邮编，如 10000 / 100000',en:'5 or 6-digit postcode, e.g. 10000 / 100000'}},
   id:{len:5, ph:{zh:'5位邮编，如 10110',en:'5-digit postcode, e.g. 10110'}},
   kh:{len:5, ph:{zh:'5位邮编（选填）',en:'5-digit postcode (optional)'}},
   la:{len:5, ph:{zh:'5位邮编（选填）',en:'5-digit postcode (optional)'}},
   ae:{len:0, ph:{zh:'填写城市名（迪拜 / 沙迦 等）',en:'Enter city name (Dubai / Sharjah etc.)'}}
 };
+
+const VN_DELIVERY_PROVINCES = [
+  {zh:"北江", vi:"Bắc Giang", region:"north", kg:1, cbm:200},
+  {zh:"和平", vi:"Hòa Bình", region:"north", kg:1, cbm:200},
+  {zh:"太平", vi:"Thái Bình", region:"north", kg:1, cbm:200},
+  {zh:"河江", vi:"Hà Giang", region:"north", kg:2, cbm:400},
+  {zh:"清化", vi:"Thanh Hóa", region:"north", kg:1.5, cbm:300},
+  {zh:"富寿", vi:"Phú Thọ", region:"north", kg:1, cbm:200},
+  {zh:"永福", vi:"Vĩnh Phúc", region:"north", kg:1, cbm:200},
+  {zh:"河南", vi:"Hà Nam", region:"north", kg:1, cbm:200},
+  {zh:"莱州", vi:"Lai Châu", region:"north", kg:2.5, cbm:500},
+  {zh:"老街", vi:"Lào Cai", region:"north", kg:2, cbm:400},
+  {zh:"高平", vi:"Cao Bằng", region:"north", kg:2, cbm:400},
+  {zh:"奠边", vi:"Điện Biên", region:"north", kg:2.5, cbm:500},
+  {zh:"安沛", vi:"Yên Bái", region:"north", kg:1.5, cbm:300},
+  {zh:"宣光", vi:"Tuyên Quang", region:"north", kg:1.5, cbm:200},
+  {zh:"北浒", vi:"Bắc Kạn", region:"north", kg:2, cbm:400},
+  {zh:"山萝", vi:"Sơn La", region:"north", kg:2, cbm:400},
+  {zh:"太原", vi:"Thái Nguyên", region:"north", kg:1, cbm:200},
+  {zh:"谅山", vi:"Lạng Sơn", region:"north", kg:1.5, cbm:300},
+  {zh:"广宁", vi:"Quảng Ninh", region:"north", kg:1.5, cbm:300},
+  {zh:"兴安", vi:"Hưng Yên", region:"north", kg:1, cbm:200},
+  {zh:"宁平", vi:"Ninh Bình", region:"north", kg:1.5, cbm:300},
+  {zh:"南定", vi:"Nam Định", region:"north", kg:1.5, cbm:300},
+  {zh:"岘港", vi:"Đà Nẵng", region:"central", kg:1.5, cbm:300},
+  {zh:"河静", vi:"Hà Tĩnh", region:"central", kg:1, cbm:200},
+  {zh:"得乐", vi:"Đắk Lắk", region:"central", kg:2.5, cbm:500},
+  {zh:"嘉莱", vi:"Gia Lai", region:"central", kg:2.5, cbm:500},
+  {zh:"义安", vi:"Nghệ An", region:"central", kg:1, cbm:200},
+  {zh:"广平", vi:"Quảng Bình", region:"central", kg:1.5, cbm:300},
+  {zh:"广治", vi:"Quảng Trị", region:"central", kg:1.5, cbm:300},
+  {zh:"顺化", vi:"Thừa Thiên Huế", region:"central", kg:1.5, cbm:300},
+  {zh:"广南", vi:"Quảng Nam", region:"central", kg:1.7, cbm:340},
+  {zh:"崑嵩", vi:"Kon Tum", region:"central", kg:2, cbm:400},
+  {zh:"广义", vi:"Quảng Ngãi", region:"central", kg:2, cbm:400},
+  {zh:"平定", vi:"Bình Định", region:"central", kg:2, cbm:400},
+  {zh:"富安", vi:"Phú Yên", region:"central", kg:2.5, cbm:500},
+  {zh:"庆和", vi:"Khánh Hòa", region:"central", kg:2.5, cbm:500},
+  {zh:"薄辽", vi:"Bạc Liêu", region:"south", kg:2, cbm:400},
+  {zh:"芹苴", vi:"Cần Thơ", region:"south", kg:1.5, cbm:300},
+  {zh:"金瓯", vi:"Cà Mau", region:"south", kg:2.5, cbm:500},
+  {zh:"同塔", vi:"Đồng Tháp", region:"south", kg:1.5, cbm:300},
+  {zh:"得农", vi:"Đắc Nông", region:"south", kg:2.5, cbm:500},
+  {zh:"林同", vi:"Lâm Đồng", region:"south", kg:2, cbm:400},
+  {zh:"宁顺", vi:"Ninh Thuận", region:"south", kg:2, cbm:400},
+  {zh:"西宁", vi:"Tây Ninh", region:"south", kg:1.5, cbm:300},
+  {zh:"平福", vi:"Bình Phước", region:"south", kg:1.5, cbm:300},
+  {zh:"平顺", vi:"Bình Thuận", region:"south", kg:1.5, cbm:300},
+  {zh:"巴地头顿", vi:"Bà Rịa Vũng Tàu", region:"south", kg:1.5, cbm:300, note:"不包上岛"},
+  {zh:"槟椥", vi:"Bến Tre", region:"south", kg:1.5, cbm:300},
+  {zh:"前江", vi:"Tiền Giang", region:"south", kg:1.5, cbm:300, note:"不包上岛"},
+  {zh:"永隆", vi:"Vĩnh Long", region:"south", kg:1.5, cbm:300},
+  {zh:"安江", vi:"An Giang", region:"south", kg:2, cbm:400},
+  {zh:"坚江", vi:"Kiên Giang", region:"south", kg:2, cbm:400, note:"不包上岛"},
+  {zh:"后江", vi:"Hậu Giang", region:"south", kg:2, cbm:400},
+  {zh:"朔庄", vi:"Sóc Trăng", region:"south", kg:2, cbm:400},
+  {zh:"茶荣", vi:"Trà Vinh", region:"south", kg:2, cbm:400}
+];
+const VN_REGION_ZH = {north:"北部", central:"中部", south:"南部"};
+const VN_REGION_EN = {north:"North", central:"Central", south:"South"};
+
 function matchArea(n, list){
   for(let i=0;i<list.length;i++){
     const item = list[i];
@@ -717,6 +745,7 @@ function matchArea(n, list){
   }
   return null;
 }
+
 function zoneOf(channel){
   if(!channel || !channel.name) return null;
   const n = channel.name.zh || '';
@@ -740,6 +769,7 @@ function zoneOf(channel){
   if(n.indexOf('阿联酋') === 0) return 'ae';
   return null;
 }
+
 function evaluateZip(zone, raw){
   if(!zone) return null;
   raw = (raw || '').trim();
@@ -869,8 +899,12 @@ function evaluateZip(zone, raw){
     }
     case 'ph_air': {
       if(L !== 4) return needLen(4);
-      if(n >= 1000 && n <= 1799){
-        return { level:'ok', tag:{zh:'马尼拉',en:'Manila'}, title:{zh:'马尼拉大都会（邮编 1000-1799）包派',en:'Metro Manila covered'}, desc:{zh:'该邮编在马尼拉包派范围内，无需额外派送费。',en:'Within the covered Manila area.'} };
+      const airCovered = (n >= 1000 && n <= 1812) ||
+                         (n >= 4023 && n <= 4027) ||
+                         [3005,3019,3020,3023].includes(n) ||
+                         [4100,4102,4103,4104,4107,4108,4109,4114,4118].includes(n);
+      if(airCovered){
+        return { level:'ok', tag:{zh:'马尼拉包派',en:'Manila Covered'}, title:{zh:'马尼拉大都会 / Laguna / Bulacan / Cavite 包派（邮编 '+raw+'）',en:'Metro Manila / Laguna / Bulacan / Cavite covered ('+raw+')'}, desc:{zh:'该邮编在包派范围内，无需额外派送费。',en:'Within the covered area.'} };
       }
       return {
         level:'remote', tag:{zh:'马尼拉以外',en:'Outside Manila'},
@@ -881,8 +915,67 @@ function evaluateZip(zone, raw){
     }
     case 'ph_sea': {
       if(L !== 4) return needLen(4);
-      if(n >= 1000 && n <= 1799){
-        return { level:'ok', tag:{zh:'马尼拉',en:'Manila'}, title:{zh:'马尼拉（邮编 1000-1799）',en:'Manila'}, desc:{zh:'马尼拉最低消费 500 元，不足 1 个方另加收 100 元。木箱/木架/托盘的普货 +50RMB/CBM。',en:'Manila min 500 CNY; <1 CBM +100 CNY.'} };
+      const metroCities = [
+        {min:1000, max:1018, name:'Manila'},
+        {min:1100, max:1128, name:'Quezon City'},
+        {min:1200, max:1235, name:'Makati'},
+        {min:1300, max:1309, name:'Pasay'},
+        {min:1400, max:1428, name:'Caloocan'},
+        {min:1409, max:1480, name:'Malabon'},
+        {min:1409, max:1490, name:'Navotas'},
+        {min:1440, max:1469, name:'Valenzuela'},
+        {min:1500, max:1504, name:'San Juan'},
+        {min:1550, max:1556, name:'Mandaluyong'},
+        {min:1600, max:1612, name:'Pasig'},
+        {min:1620, max:1621, name:'Pateros'},
+        {min:1770, max:1799, name:'Muntinlupa'},
+        {min:1800, max:1812, name:'Marikina'}
+      ];
+      const mHit = metroCities.find(cc => n >= cc.min && n <= cc.max);
+      if(mHit){
+        return {
+          level:'ok',
+          tag:{zh:'马尼拉包派',en:'Manila Covered'},
+          title:{zh:'Metro Manila 包派区域：'+mHit.name+'（邮编 '+raw+'）',en:'Metro Manila covered: '+mHit.name+' ('+raw+')'},
+          desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。木箱/木架/托盘的普货 +50RMB/CBM。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
+        };
+      }
+      const lagunaMap = {
+        4023:'San Pedro', 4024:'Binan', 4025:'Cabuyao',
+        4026:'Sta Rosa', 4027:'Calamba'
+      };
+      if(lagunaMap[n]){
+        return {
+          level:'ok',
+          tag:{zh:'Laguna包派',en:'Laguna Covered'},
+          title:{zh:'Laguna 包派区域：'+lagunaMap[n]+'（邮编 '+raw+'）',en:'Laguna covered: '+lagunaMap[n]+' ('+raw+')'},
+          desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
+        };
+      }
+      const bulacanMap = {
+        3005:'Pulilan', 3019:'Marilao',
+        3020:'Meycauayan', 3023:'San Jose del Monte'
+      };
+      if(bulacanMap[n]){
+        return {
+          level:'ok',
+          tag:{zh:'Bulacan包派',en:'Bulacan Covered'},
+          title:{zh:'Bulacan 包派区域：'+bulacanMap[n]+'（邮编 '+raw+'）',en:'Bulacan covered: '+bulacanMap[n]+' ('+raw+')'},
+          desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
+        };
+      }
+      const caviteMap = {
+        4100:'Cavite City', 4102:'Bacoor', 4103:'Imus',
+        4104:'Kawit', 4107:'Gen Tri', 4108:'Tanza',
+        4109:'Trece Martires', 4114:'Dasmariñas', 4118:'Silang'
+      };
+      if(caviteMap[n]){
+        return {
+          level:'ok',
+          tag:{zh:'Cavite包派',en:'Cavite Covered'},
+          title:{zh:'Cavite 包派区域：'+caviteMap[n]+'（邮编 '+raw+'）',en:'Cavite covered: '+caviteMap[n]+' ('+raw+')'},
+          desc:{zh:'属于菲律宾海运包派范围，按马尼拉价格计费。最低消费 500 元，不足 1 个方另加收 100 元。',en:'Covered by PH sea DDP, Manila rate applies. Min 500 CNY; <1 CBM +100 CNY.'}
+        };
       }
       return { level:'info', tag:{zh:'其它城市',en:'Other Cities'}, title:{zh:'达沃 / 宿务 / 卡加延等其它城市',en:'Davao / Cebu / Cagayan'}, desc:{zh:'宿务/达沃/卡加延最低消费 1 个方，不足 1 方按 1 个方计。未含的城市请咨询派送费。',en:'Cebu/Davao/Cagayan min 1 CBM.'} };
     }
@@ -904,24 +997,33 @@ function evaluateZip(zone, raw){
       return { level:'info', tag:{zh:'曼谷以外',en:'Outside Bangkok'}, title:{zh:'曼谷以外区域',en:'Outside Bangkok'}, desc:{zh:'曼谷以外派送费用需单独咨询。超重货 1 立方 = 500KG。',en:'Delivery on request. Overweight 1 CBM = 500KG.'} };
     }
     case 'vn': {
-      if(L !== 6) return needLen(6);
-      const p = raw.charAt(0);
+      if(L !== 5 && L !== 6){
+        return {
+          level:'error',
+          tag:{zh:'位数',en:'Digits'},
+          title:{zh:'越南邮编应为 5 位或 6 位数字（当前 '+L+' 位）',en:'Vietnam postcode should be 5 or 6 digits (got '+L+')'},
+          desc:{zh:'越南新版邮编为 6 位（如 100000），旧版为 5 位（如 10000）。请核对后重新输入。',en:'Vietnam new postcode is 6-digit (e.g. 100000), old is 5-digit (e.g. 10000). Please check.'}
+        };
+      }
+      const norm = L === 5 ? (raw + '0') : raw;
+      const p = norm.charAt(0);
+      const lenTip = (L === 5) ? t('（5位邮编已按 '+norm+' 处理）',' (5-digit treated as '+norm+')') : '';
       if(p === '1'){
-        return { level:'ok', tag:{zh:'北部 / 河内',en:'North / Hanoi'}, title:{zh:'越南北部区域（河内等）',en:'Northern Vietnam'}, desc:{zh:'河内免费派送；海防、海阳、北宁、平阳、隆安、同奈派送费 50 元/立方 或 0.3 元/kg 取大，最低 300 元。',en:'Hanoi free; others 50 CNY/CBM or 0.3 CNY/kg (max), min 300 CNY.'} };
+        return { level:'ok', tag:{zh:'北部 / 河内',en:'North / Hanoi'}, title:{zh:'越南北部区域（河内等）'+lenTip,en:'Northern Vietnam'+lenTip}, desc:{zh:'河内免费派送；海防、海阳、北宁、平阳、隆安、同奈派送费 50 元/立方 或 0.3 元/kg 取大，最低 300 元。其他省份请在下方「越南目的地省份」选择，系统自动计算派送费。',en:'Hanoi free; others 50 CNY/CBM or 0.3 CNY/kg (max), min 300 CNY. Select province below for auto calculation.'} };
       }
       if(p === '2' || p === '3'){
-        return { level:'info', tag:{zh:'北部',en:'North'}, title:{zh:'越南北部区域',en:'Northern Vietnam'}, desc:{zh:'派送费按省份计算：毛重金额与立方数金额取大结算，派送费最低 1 方起收。',en:'Delivery by province: max(weight, CBM), min 1 CBM.'} };
+        return { level:'info', tag:{zh:'北部',en:'North'}, title:{zh:'越南北部区域'+lenTip,en:'Northern Vietnam'+lenTip}, desc:{zh:'派送费按省份计算：毛重金额与立方数金额取大结算，派送费最低 1 方起收。请在下方选择省份。',en:'Delivery by province: max(weight, CBM), min 1 CBM. Select province below.'} };
       }
       if(p === '4' || p === '5' || p === '6'){
-        return { level:'info', tag:{zh:'中部',en:'Central'}, title:{zh:'越南中部区域',en:'Central Vietnam'}, desc:{zh:'中部陆运 = 南部运费 + 派送费；派送费按省份计算，毛重与立方取大值。',en:'Central = South freight + delivery.'} };
+        return { level:'info', tag:{zh:'中部',en:'Central'}, title:{zh:'越南中部区域'+lenTip,en:'Central Vietnam'+lenTip}, desc:{zh:'中部陆运 = 南部运费 + 派送费；派送费按省份计算，毛重与立方取大值。请在下方选择省份。',en:'Central = South freight + delivery. Select province below.'} };
       }
       if(p === '7'){
-        return { level:'info', tag:{zh:'南部 / 胡志明',en:'South / HCMC'}, title:{zh:'胡志明及南部区域',en:'HCMC & Southern Vietnam'}, desc:{zh:'胡志明派送费 50 元/立方 或 0.3 元/kg 取大，最低 200 元，封顶 1500 元/票。',en:'HCMC: 50 CNY/CBM or 0.3 CNY/kg (max), min 200, cap 1500.'} };
+        return { level:'info', tag:{zh:'南部 / 胡志明',en:'South / HCMC'}, title:{zh:'胡志明及南部区域'+lenTip,en:'HCMC & Southern Vietnam'+lenTip}, desc:{zh:'胡志明派送费 50 元/立方 或 0.3 元/kg 取大，最低 200 元，封顶 1500 元/票。其他省份请在下方选择。',en:'HCMC: 50 CNY/CBM or 0.3 CNY/kg (max), min 200, cap 1500. Select province below.'} };
       }
       if(p === '8' || p === '9'){
-        return { level:'info', tag:{zh:'南部',en:'South'}, title:{zh:'越南南部 / 湄公河区域',en:'Southern Vietnam / Mekong'}, desc:{zh:'派送费按省份计算：毛重金额与立方数金额取大结算，派送费最低 1 方起收。',en:'Delivery by province: max(weight, CBM), min 1 CBM.'} };
+        return { level:'info', tag:{zh:'南部',en:'South'}, title:{zh:'越南南部 / 湄公河区域'+lenTip,en:'Southern Vietnam / Mekong'+lenTip}, desc:{zh:'派送费按省份计算：毛重金额与立方数金额取大结算，派送费最低 1 方起收。请在下方选择省份。',en:'Delivery by province: max(weight, CBM), min 1 CBM. Select province below.'} };
       }
-      return { level:'info', tag:{zh:'越南',en:'Vietnam'}, title:{zh:'越南派送区域',en:'Vietnam delivery zone'}, desc:{zh:'派送费按省份/城市计算，具体以城市确认为准。',en:'Delivery by province/city.'} };
+      return { level:'info', tag:{zh:'越南',en:'Vietnam'}, title:{zh:'越南派送区域'+lenTip,en:'Vietnam delivery zone'+lenTip}, desc:{zh:'派送费按省份/城市计算，具体以城市确认为准。请在下方选择省份。',en:'Delivery by province/city. Select province below.'} };
     }
     case 'id_air': {
       if(L !== 5) return needLen(5);
@@ -962,265 +1064,108 @@ const COMP_STD = {
 };
 
 const SG_AIR_DETAIL = {
-  billing:{
-    zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值：\nA. 除6000不分泡：体积重 = 长(cm)×宽(cm)×高(cm) ÷ 6000\nB. 除6000半泡：体积重 = 【实重 + 长×宽×高÷6000】÷ 2",
-    en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, volumetric).\nA. No-foam (÷6000): Vol = L×W×H ÷ 6000\nB. Half-foam (÷6000): Vol = (Actual + L×W×H ÷ 6000) ÷ 2"
-  },
-  size:{
-    zh:"1. 单边超120cm，或单件重量超过40Kg的货物，加收附加费200RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",
-    en:"1. Single side >120cm or single piece >40KG: +200 CNY/ticket.\n2. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps, otherwise cannot ship."
-  },
-  customs:{
-    zh:"1. 独立清关费 50 新币/票。\n2. 普货单独报关：单票最低100Kg起，不分抛；报关费350RMB/票；在报价基础上加2RMB/Kg。\n3. 敏感单独报关：单票最低100Kg起，不分抛；报关费250RMB/票；中港费1RMB/Kg，香港操作费350RMB/票；最低消费850RMB/票。\n4. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。\n5. 价值CIF超过SGD400同等货币为高价值，将产生GST 9%费用，申报手续费50新币，此费用为收件人支付。",
-    en:"1. Independent clearance: SGD 50/ticket.\n2. General formal declaration: min 100KG/ticket, no half-foam; 350 CNY/ticket + 2 CNY/kg.\n3. Sensitive formal declaration: min 100KG/ticket; 250 CNY/ticket + 1 CNY/kg (China-HK) + 350 CNY/ticket HK handling; min 850 CNY/ticket.\n4. All costs from incorrect declaration documents are borne by the customer.\n5. CIF value over SGD 400 counts as high value: 9% GST + SGD 50 declaration fee, paid by the receiver."
-  },
-  prohibited:{
-    zh:"1. 食品不能含有肉类、海鲜类成分；食品单票超过10公斤，会产生借证费60新币/票。\n2. 拒收：玩具枪（枪模型类）、香烟、毒品、鲜活动植物、药品、易燃易爆、腐蚀品、光碟、军火武器等国际航空运输协会(IATA)限制的物品。",
-    en:"1. Food must not contain meat or seafood; food over 10kg/ticket incurs a SGD 60 certificate fee.\n2. Rejected: toy guns, cigarettes, drugs, live plants/animals, medicines, flammable/explosive/corrosive goods, discs, weapons and other IATA-restricted items."
-  },
+  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值：\nA. 除6000不分泡：体积重 = 长(cm)×宽(cm)×高(cm) ÷ 6000\nB. 除6000半泡：体积重 = 【实重 + 长×宽×高÷6000】÷ 2",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, volumetric).\nA. No-foam (÷6000): Vol = L×W×H ÷ 6000\nB. Half-foam (÷6000): Vol = (Actual + L×W×H ÷ 6000) ÷ 2"},
+  size:{zh:"1. 单边超120cm，或单件重量超过40Kg的货物，加收附加费200RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",en:"1. Single side >120cm or single piece >40KG: +200 CNY/ticket.\n2. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps, otherwise cannot ship."},
+  customs:{zh:"1. 独立清关费 50 新币/票。\n2. 普货单独报关：单票最低100Kg起，不分抛；报关费350RMB/票；在报价基础上加2RMB/Kg。\n3. 敏感单独报关：单票最低100Kg起，不分抛；报关费250RMB/票；中港费1RMB/Kg，香港操作费350RMB/票；最低消费850RMB/票。\n4. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。\n5. 价值CIF超过SGD400同等货币为高价值，将产生GST 9%费用，申报手续费50新币，此费用为收件人支付。",en:"1. Independent clearance: SGD 50/ticket.\n2. General formal declaration: min 100KG/ticket, no half-foam; 350 CNY/ticket + 2 CNY/kg.\n3. Sensitive formal declaration: min 100KG/ticket; 250 CNY/ticket + 1 CNY/kg (China-HK) + 350 CNY/ticket HK handling; min 850 CNY/ticket.\n4. All costs from incorrect declaration documents are borne by the customer.\n5. CIF value over SGD 400 counts as high value: 9% GST + SGD 50 declaration fee, paid by the receiver."},
+  prohibited:{zh:"1. 食品不能含有肉类、海鲜类成分；食品单票超过10公斤，会产生借证费60新币/票。\n2. 拒收：玩具枪（枪模型类）、香烟、毒品、鲜活动植物、药品、易燃易爆、腐蚀品、光碟、军火武器等国际航空运输协会(IATA)限制的物品。",en:"1. Food must not contain meat or seafood; food over 10kg/ticket incurs a SGD 60 certificate fee.\n2. Rejected: toy guns, cigarettes, drugs, live plants/animals, medicines, flammable/explosive/corrosive goods, discs, weapons and other IATA-restricted items."},
   compensation: COMP_STD
 };
 
 const SG_SEA_DETAIL = {
-  billing:{
-    zh:"1. 新加坡海运专线：以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费；0.4个CBM以上或不足1CBM的部分按1CBM计费。\n2. 新加坡海运小包：以Kg为单位进位，不足1Kg按1Kg计，计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",
-    en:"1. Sea line: billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500). Above 0.4 CBM, any part under 1 CBM rounds up to 1 CBM.\n2. Sea parcel: billed per KG, rounded up; chargeable = max(actual, L×W×H÷6000)."
-  },
-  size:{
-    zh:"1. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。\n2. 海运单件重量超过200KG，或者单边超过200CM，需要加收RMB150/票附加费用。\n3. 易碎品包装要求必须打木架/木箱，并提供易碎保函。",
-    en:"1. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps.\n2. Single piece >200KG or single side >200CM: +150 CNY/ticket.\n3. Fragile items must be packed in wooden crate/rack with a fragile-goods guarantee letter."
-  },
-  customs:{
-    zh:"1. 独立清关费35新币/票。\n2. 单独报关费用500RMB/票；最低消费1CBM。\n3. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。\n4. 不包税渠道不含GST 9%。",
-    en:"1. Independent clearance: SGD 35/ticket.\n2. Formal declaration: 500 CNY/ticket; min 1 CBM.\n3. All costs from incorrect declaration documents are borne by the customer.\n4. Non-DDP channels exclude 9% GST."
-  },
-  prohibited:{
-    zh:"新加坡海运小包：纯电、无人机、玩具枪、烟酒等易燃易爆物品不接。",
-    en:"SG sea parcel rejects pure batteries, drones, toy guns, tobacco/alcohol and other flammable or explosive goods."
-  },
+  billing:{zh:"1. 新加坡海运专线：以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费；0.4个CBM以上或不足1CBM的部分按1CBM计费。\n2. 新加坡海运小包：以Kg为单位进位，不足1Kg按1Kg计，计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",en:"1. Sea line: billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500). Above 0.4 CBM, any part under 1 CBM rounds up to 1 CBM.\n2. Sea parcel: billed per KG, rounded up; chargeable = max(actual, L×W×H÷6000)."},
+  size:{zh:"1. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。\n2. 海运单件重量超过200KG，或者单边超过200CM，需要加收RMB150/票附加费用。\n3. 易碎品包装要求必须打木架/木箱，并提供易碎保函。",en:"1. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps.\n2. Single piece >200KG or single side >200CM: +150 CNY/ticket.\n3. Fragile items must be packed in wooden crate/rack with a fragile-goods guarantee letter."},
+  customs:{zh:"1. 独立清关费35新币/票。\n2. 单独报关费用500RMB/票；最低消费1CBM。\n3. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。\n4. 不包税渠道不含GST 9%。",en:"1. Independent clearance: SGD 35/ticket.\n2. Formal declaration: 500 CNY/ticket; min 1 CBM.\n3. All costs from incorrect declaration documents are borne by the customer.\n4. Non-DDP channels exclude 9% GST."},
+  prohibited:{zh:"新加坡海运小包：纯电、无人机、玩具枪、烟酒等易燃易爆物品不接。",en:"SG sea parcel rejects pure batteries, drones, toy guns, tobacco/alcohol and other flammable or explosive goods."},
   compensation: COMP_STD
 };
 
 const KH_COMMON = {
-  size:{
-    zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 液体/膏状类货物要求用封闭型木箱包装。",
-    en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm).\n3. Liquid/paste goods must be packed in sealed wooden crates."
-  },
-  customs:{
-    zh:"1. 单证报关退税 +800元/票，商检费 +1000元/票。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. Formal declaration with tax refund: +800 CNY/ticket; inspection fee: +1,000 CNY/ticket.\n2. All costs from incorrect declaration documents are borne by the customer."
-  },
-  endService:{
-    zh:"1. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n2. 派送只到楼下，不上楼。",
-    en:"1. Single side >2m or single piece >1t: destination delivery fee to be confirmed.\n2. Delivery to ground floor only."
-  },
-  prohibited:{
-    zh:"禁运鲜活、易燃易爆产品及海关规定不允许出口的产品。",
-    en:"Rejected: fresh/perishable goods, flammable or explosive products, and items prohibited from export by customs."
-  },
+  size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 液体/膏状类货物要求用封闭型木箱包装。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm).\n3. Liquid/paste goods must be packed in sealed wooden crates."},
+  customs:{zh:"1. 单证报关退税 +800元/票，商检费 +1000元/票。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Formal declaration with tax refund: +800 CNY/ticket; inspection fee: +1,000 CNY/ticket.\n2. All costs from incorrect declaration documents are borne by the customer."},
+  endService:{zh:"1. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n2. 派送只到楼下，不上楼。",en:"1. Single side >2m or single piece >1t: destination delivery fee to be confirmed.\n2. Delivery to ground floor only."},
+  prohibited:{zh:"禁运鲜活、易燃易爆产品及海关规定不允许出口的产品。",en:"Rejected: fresh/perishable goods, flammable or explosive products, and items prohibited from export by customs."},
   compensation: COMP_STD
 };
 
 const TH_LAND_DETAIL = {
-  billing:{
-    zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",
-    en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."
-  },
-  size:{
-    zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",
-    en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."
-  },
-  customs:{
-    zh:"泰国陆运不接收报关件。因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"Thailand land line does not accept formal declaration. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"我司拒绝接收的物品为：玩具枪（枪模型类）、香烟、毒品、鲜活动植物、药品、易燃易爆、腐蚀品、光碟、军火武器等国际航空运输协会(IATA)限制的物品。",
-    en:"Rejected: toy guns (gun models), cigarettes, drugs, live plants/animals, medicines, flammable/explosive/corrosive goods, discs, weapons and other IATA-restricted items."
-  },
+  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."},
+  size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
+  customs:{zh:"泰国陆运不接收报关件。因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"Thailand land line does not accept formal declaration. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"我司拒绝接收的物品为：玩具枪（枪模型类）、香烟、毒品、鲜活动植物、药品、易燃易爆、腐蚀品、光碟、军火武器等国际航空运输协会(IATA)限制的物品。",en:"Rejected: toy guns (gun models), cigarettes, drugs, live plants/animals, medicines, flammable/explosive/corrosive goods, discs, weapons and other IATA-restricted items."},
   compensation: COMP_STD
 };
 
 const TH_SEA_DETAIL = {
-  billing:{
-    zh:"以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。",
-    en:"Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500)."
-  },
-  size:{
-    zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",
-    en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."
-  },
-  customs:{
-    zh:"1. 单独报关件：陆运不接收报关件，海运可以报关；报关费+500元/票，续页费50元/页，最低消费1CBM起；单价要在报价基础上加100元/CBM。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. Formal declaration: only sea line. +500 CNY/ticket, +50 CNY/extra page, min 1 CBM; unit price +100 CNY/CBM.\n2. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"可接受货物类型：\n· 普货渠道：服装、拉杆箱、拖鞋、布匹、雨伞、帽子、塑料模特、布鞋、塑料餐具、塑料管、文具、普通木门、普通家具、五金配件、普通建材、手机壳、玻璃（需打木架、需自提）、手机外置配件、假睫毛、薄膜包装袋、普通工艺品（不含电、磁、仿牌、液体等敏感品）。\n· 商检渠道：带电类、蓝牙类、插电类、机器类。\n· 敏感渠道：食品、化妆品、品牌商品（电子烟、充电宝、移动电源等出货前请单独确认）。\n拒收：酒、烟草(电子烟)、鲜活食品、易燃易爆危险品、任何气体类、动植物标本、杀虫剂、除草剂、管制刀具、弓弩、纯电池如充电宝、不明液体粉末等国家禁止货物。",
-    en:"Accepted: General — apparel, luggage, fabric, hardware, ordinary furniture, phone cases, etc. (no battery/magnet/brand/liquid). Inspection — battery/Bluetooth/plug-in/machines. Sensitive — food, cosmetics, branded goods.\nRejected: alcohol, tobacco/e-cigarettes, fresh food, flammable/explosive, gases, specimens, pesticides, controlled knives, crossbows, pure batteries, unknown liquids/powders."
-  },
+  billing:{zh:"以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。",en:"Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500)."},
+  size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
+  customs:{zh:"1. 单独报关件：陆运不接收报关件，海运可以报关；报关费+500元/票，续页费50元/页，最低消费1CBM起；单价要在报价基础上加100元/CBM。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Formal declaration: only sea line. +500 CNY/ticket, +50 CNY/extra page, min 1 CBM; unit price +100 CNY/CBM.\n2. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"可接受货物类型：\n· 普货渠道：服装、拉杆箱、拖鞋、布匹、雨伞、帽子、塑料模特、布鞋、塑料餐具、塑料管、文具、普通木门、普通家具、五金配件、普通建材、手机壳、玻璃（需打木架、需自提）、手机外置配件、假睫毛、薄膜包装袋、普通工艺品（不含电、磁、仿牌、液体等敏感品）。\n· 商检渠道：带电类、蓝牙类、插电类、机器类。\n· 敏感渠道：食品、化妆品、品牌商品（电子烟、充电宝、移动电源等出货前请单独确认）。\n拒收：酒、烟草(电子烟)、鲜活食品、易燃易爆危险品、任何气体类、动植物标本、杀虫剂、除草剂、管制刀具、弓弩、纯电池如充电宝、不明液体粉末等国家禁止货物。",en:"Accepted: General — apparel, luggage, fabric, hardware, ordinary furniture, phone cases, etc. (no battery/magnet/brand/liquid). Inspection — battery/Bluetooth/plug-in/machines. Sensitive — food, cosmetics, branded goods.\nRejected: alcohol, tobacco/e-cigarettes, fresh food, flammable/explosive, gases, specimens, pesticides, controlled knives, crossbows, pure batteries, unknown liquids/powders."},
   compensation: COMP_STD
 };
 
 const PH_AIR_DETAIL = {
-  billing:{
-    zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",
-    en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."
-  },
-  size:{
-    zh:"1. 单件重量超过68Kg或尺寸超过150×80×80cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",
-    en:"1. Single piece >68KG or size >150×80×80cm: +150 CNY/ticket.\n2. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps."
-  },
-  customs:{
-    zh:"1. 普货单独报关：单票最低100Kg起；报关费500RMB/票；单价要在报价基础上加2RMB/Kg。\n2. 敏感单独报关：单票最低100Kg起；报关费250RMB/票，中港费1RMB/Kg，香港操作费350RMB/票；最低消费950RMB/票；单价要在报价基础上加2RMB/Kg。\n3. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. General formal declaration: min 100KG/ticket; 500 CNY/ticket + 2 CNY/kg.\n2. Sensitive formal declaration: min 100KG/ticket; 250 CNY/ticket + 1 CNY/kg (China-HK) + 350 CNY/ticket HK handling; min 950 CNY/ticket; +2 CNY/kg.\n3. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"如发现冲货行为，没收货物并罚款5000RMB/票以上，由此产生的其他费用（例如海关相关费用）和责任全部由发货方承担。",
-    en:"False declaration: goods confiscated + 5,000 CNY/ticket minimum fine; all resulting costs and liabilities borne by the shipper."
-  },
+  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."},
+  size:{zh:"1. 单件重量超过68Kg或尺寸超过150×80×80cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",en:"1. Single piece >68KG or size >150×80×80cm: +150 CNY/ticket.\n2. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps."},
+  customs:{zh:"1. 普货单独报关：单票最低100Kg起；报关费500RMB/票；单价要在报价基础上加2RMB/Kg。\n2. 敏感单独报关：单票最低100Kg起；报关费250RMB/票，中港费1RMB/Kg，香港操作费350RMB/票；最低消费950RMB/票；单价要在报价基础上加2RMB/Kg。\n3. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. General formal declaration: min 100KG/ticket; 500 CNY/ticket + 2 CNY/kg.\n2. Sensitive formal declaration: min 100KG/ticket; 250 CNY/ticket + 1 CNY/kg (China-HK) + 350 CNY/ticket HK handling; min 950 CNY/ticket; +2 CNY/kg.\n3. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"如发现冲货行为，没收货物并罚款5000RMB/票以上，由此产生的其他费用（例如海关相关费用）和责任全部由发货方承担。",en:"False declaration: goods confiscated + 5,000 CNY/ticket minimum fine; all resulting costs and liabilities borne by the shipper."},
   compensation: COMP_STD
 };
 
 const PH_SEA_DETAIL = {
-  billing:{
-    zh:"1. 以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。\n2. 马尼拉最低消费500RMB，不足1个方要另外加收100元的费用；宿务/达沃/卡加延最低消费1个方，不足1个方按1个方计。\n3. 木箱、木架、托盘的普货货物单价 +50RMB/CBM。",
-    en:"1. Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500).\n2. Manila min 500 CNY, under 1 CBM +100 CNY; Cebu/Davao/Cagayan min 1 CBM.\n3. Wooden crate/rack/pallet general cargo: +50 CNY/CBM."
-  },
-  size:{
-    zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",
-    en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."
-  },
-  customs:{
-    zh:"1. 单独报关+500元/票，加页费50元/页；报关件在报价基础上加100元/CBM。\n2. 单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。\n3. 我司可提供加盖熏蒸章服务，费用300RMB/票（盖章不出证）。",
-    en:"1. Formal declaration +500 CNY/ticket, +50 CNY/extra page; declared cargo +100 CNY/CBM.\n2. All costs from incorrect declaration documents are borne by the customer.\n3. Fumigation stamp service available: 300 CNY/ticket (stamp only, no certificate)."
-  },
-  prohibited:{
-    zh:"拒接：易燃易爆、古董、武器、车辆、毒品、冻肉等违禁品。",
-    en:"Rejected: flammable/explosive goods, antiques, weapons, vehicles, drugs, frozen meat and other prohibited items."
-  },
+  billing:{zh:"1. 以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。\n2. 马尼拉最低消费500RMB，不足1个方要另外加收100元的费用；宿务/达沃/卡加延最低消费1个方，不足1个方按1个方计。\n3. 木箱、木架、托盘的普货货物单价 +50RMB/CBM。",en:"1. Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500).\n2. Manila min 500 CNY, under 1 CBM +100 CNY; Cebu/Davao/Cagayan min 1 CBM.\n3. Wooden crate/rack/pallet general cargo: +50 CNY/CBM."},
+  size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
+  customs:{zh:"1. 单独报关+500元/票，加页费50元/页；报关件在报价基础上加100元/CBM。\n2. 单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。\n3. 我司可提供加盖熏蒸章服务，费用300RMB/票（盖章不出证）。",en:"1. Formal declaration +500 CNY/ticket, +50 CNY/extra page; declared cargo +100 CNY/CBM.\n2. All costs from incorrect declaration documents are borne by the customer.\n3. Fumigation stamp service available: 300 CNY/ticket (stamp only, no certificate)."},
+  prohibited:{zh:"拒接：易燃易爆、古董、武器、车辆、毒品、冻肉等违禁品。",en:"Rejected: flammable/explosive goods, antiques, weapons, vehicles, drugs, frozen meat and other prohibited items."},
   compensation: COMP_STD
 };
 
 const VN_BULK_DETAIL = {
-  billing:{
-    zh:"以CBM为单位进位，不足1CBM按1CBM计。超重货1立方=230KG，如超出方数按 实际重量/230KG 计费；最低1立方金额计费。",
-    en:"Billed per CBM, under 1 CBM rounds up to 1 CBM. Overweight 1 CBM = 230KG (charge by actual weight/230). Minimum billing = 1 CBM."
-  },
-  size:{
-    zh:"1. 木箱/木架要求为三合板，所有包装要求方方正正。\n2. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票。\n3. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",
-    en:"1. Wooden crates/racks must be plywood; all packing must be square and regular.\n2. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n3. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."
-  },
-  customs:{
-    zh:"1. 报关件单独咨询。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. Formal declaration: consult separately.\n2. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"未特别列明，具体请咨询业务确认。",
-    en:"Not specifically listed; please confirm with our sales team."
-  },
-  compensation: COMP_STD
+  billing:{zh:"以CBM为单位进位，不足1CBM按1CBM计。超重货1立方=230KG，如超出方数按 实际重量/230KG 计费；最低1立方金额计费。",en:"Billed per CBM, under 1 CBM rounds up to 1 CBM. Overweight 1 CBM = 230KG (charge by actual weight/230). Minimum billing = 1 CBM."},
+  size:{zh:"1. 木箱/木架要求为三合板，所有包装要求方方正正。\n2. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票。\n3. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Wooden crates/racks must be plywood; all packing must be square and regular.\n2. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n3. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
+  customs:{zh:"1. 报关件单独咨询。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Formal declaration: consult separately.\n2. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"未特别列明，具体请咨询业务确认。",en:"Not specifically listed; please confirm with our sales team."},
+  compensation: COMP_STD,
+  endService:{zh:"1. 海阳、海防、平阳、隆安、同奈、北宁，派送费 50 元/立方 或 0.3 元/kg，取大值，最低 300 元派送费。\n2. 胡志明派送费 50 元/立方 或 0.3 元/kg，取大值，最低 200 元派送费，封顶 1500 元/票。\n3. 河内免费派送；其他地区参考下方各省份派送费明细。\n4. 未含的城市请咨询派送费，单件长度超 4 米或超 2 吨派送费用另计。\n5. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n6. 派送只到楼下，不上楼。\n7. 【各省份派送费】毛重金额（毛重×KG单价）与 立方数金额（立方×CBM单价）取金额大的结算；派送费最低 1 方起收。请在询价页面「越南目的地省份」选择器中选择省份，系统会自动计算派送费。",en:"1. Haiyang/Haiphong/Pingyang/Longan/Dongnai/Beining: 50 CNY/CBM or 0.3 CNY/kg (max), min 300 CNY.\n2. HCMC: 50 CNY/CBM or 0.3 CNY/kg (max), min 200 CNY, cap 1,500 CNY/ticket.\n3. Hanoi free; others consult the province delivery table below.\n4. Cities not listed: consult; single piece length >4m or >2t: separate calculation.\n5. Single side >2m or single piece >1.5t: to be confirmed.\n6. Delivery to ground floor only.\n7. 【Province delivery】max(weight×KG rate, CBM×CBM rate); minimum 1 CBM. Select a province in the inquiry form to auto-calculate."}
 };
 
 const VN_PARCEL_DETAIL = {
-  billing:{
-    zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷5000。",
-    en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷5000)."
-  },
-  size:{
-    zh:"1. 单件超重/超大货物需加收叉车费（单件尺寸超过150CM或实重超过100KG）150元/票；单件超过1吨的需要单独咨询。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 液体/膏状类货物要求用封闭型木箱包装。",
-    en:"1. Oversize/overweight single piece (>150cm or >100KG): +150 CNY/ticket; over 1t: consult separately.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm).\n3. Liquid/paste goods must be packed in sealed wooden crates."
-  },
-  customs:{
-    zh:"1. 转关渠道不提供越南本地通关单证，贵重物品请自行购买保险；如需出口报关普货+800元/票报关费，最低3立方计费，内置电池+200/立方。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. Transit channel does not provide local Vietnam clearance documents; insure valuables yourself. Export formal declaration: +800 CNY/ticket, min 3 CBM; built-in battery +200/CBM.\n2. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"1. 可接一线仿牌、药品、性用品、酒水、电子烟等，请单询；此类货物没收或丢失，只退运费无任何赔偿。\n2. 不能转运物品：粉末类/液体/手机/照相机/MP3/U盘/手提电脑/无线网卡等高价物品及越南海关禁止进口的各类物品，如有此类物品请来电咨询。",
-    en:"1. First-line replicas, medicines, adult products, alcohol, e-cigarettes: consult first; if confiscated or lost, only freight is refunded — no compensation.\n2. Cannot ship: powders, liquids, phones, cameras, MP3s, USB drives, laptops, wireless cards and other high-value items prohibited by Vietnam customs."
-  },
-  compensation: COMP_STD
+  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷5000。",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷5000)."},
+  size:{zh:"1. 单件超重/超大货物需加收叉车费（单件尺寸超过150CM或实重超过100KG）150元/票；单件超过1吨的需要单独咨询。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 液体/膏状类货物要求用封闭型木箱包装。",en:"1. Oversize/overweight single piece (>150cm or >100KG): +150 CNY/ticket; over 1t: consult separately.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm).\n3. Liquid/paste goods must be packed in sealed wooden crates."},
+  customs:{zh:"1. 转关渠道不提供越南本地通关单证，贵重物品请自行购买保险；如需出口报关普货+800元/票报关费，最低3立方计费，内置电池+200/立方。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Transit channel does not provide local Vietnam clearance documents; insure valuables yourself. Export formal declaration: +800 CNY/ticket, min 3 CBM; built-in battery +200/CBM.\n2. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"1. 可接一线仿牌、药品、性用品、酒水、电子烟等，请单询；此类货物没收或丢失，只退运费无任何赔偿。\n2. 不能转运物品：粉末类/液体/手机/照相机/MP3/U盘/手提电脑/无线网卡等高价物品及越南海关禁止进口的各类物品，如有此类物品请来电咨询。",en:"1. First-line replicas, medicines, adult products, alcohol, e-cigarettes: consult first; if confiscated or lost, only freight is refunded — no compensation.\n2. Cannot ship: powders, liquids, phones, cameras, MP3s, USB drives, laptops, wireless cards and other high-value items prohibited by Vietnam customs."},
+  compensation: COMP_STD,
+  endService:{zh:"1. 派送费参考「散货未含派送费用城市」表格：北部/中部/南部各省份按 毛重金额（毛重×KG单价）与 立方金额（立方×CBM单价）取大值计费，派送费最低 1 方起收。\n2. 未含的城市请咨询派送费；单件长度超 4 米或超 2 吨派送费用另计。\n3. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n4. 派送只到楼下，不上楼。\n5. 请在询价页面「越南目的地省份」选择器中选择省份，系统会自动计算派送费。",en:"1. Delivery fee refers to the city table: for North/Central/South provinces, charged by max(weight×KG rate, CBM×CBM rate); minimum 1 CBM.\n2. Cities not listed: consult.\n3. Single side >2m or single piece >1.5t: to be confirmed.\n4. Delivery to ground floor only.\n5. Select a province in the inquiry form to auto-calculate the delivery fee."}
 };
 
 const ID_AIR_DETAIL = {
-  billing:{
-    zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",
-    en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."
-  },
-  size:{
-    zh:"1. 单件重量超过68Kg或尺寸超过150×80×80cm的，加收附加费150RMB/票。\n2. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",
-    en:"1. Single piece >68KG or size >150×80×80cm: +150 CNY/ticket.\n2. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps."
-  },
-  customs:{
-    zh:"单独报关单询。",
-    en:"Formal declaration: consult separately."
-  },
-  prohibited:{
-    zh:"不接受产品：军火武器、易燃易爆品、医疗设备、液体、粉末。一经发现冲货行为，我司将向发货方追究责任以及罚款！",
-    en:"Rejected: weapons, flammable/explosive goods, medical equipment, liquids, powders. False declaration will lead to penalties against the shipper."
-  },
+  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."},
+  size:{zh:"1. 单件重量超过68Kg或尺寸超过150×80×80cm的，加收附加费150RMB/票。\n2. 木箱、木架包装的货物需要打卡脚（11-15CM之间）；其中打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",en:"1. Single piece >68KG or size >150×80×80cm: +150 CNY/ticket.\n2. Wooden crate/rack needs forklift feet (11-15cm); general cargo in wooden crate/rack/pallet/air box also needs cross iron straps."},
+  customs:{zh:"单独报关单询。",en:"Formal declaration: consult separately."},
+  prohibited:{zh:"不接受产品：军火武器、易燃易爆品、医疗设备、液体、粉末。一经发现冲货行为，我司将向发货方追究责任以及罚款！",en:"Rejected: weapons, flammable/explosive goods, medical equipment, liquids, powders. False declaration will lead to penalties against the shipper."},
   compensation: COMP_STD
 };
 
 const ID_SEA_DETAIL = {
-  billing:{
-    zh:"以CBM为单位进位，不足0.5CBM按0.5CBM计。超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。",
-    en:"Billed per CBM, under 0.5 CBM rounds up to 0.5 CBM. Overweight 1 CBM = 500KG (charge by actual weight/500)."
-  },
-  size:{
-    zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 易碎品包装要求必须打木架/木箱，并提供易碎保函。易碎物品运送时需加强包装，外箱应加注易碎品标志，如在运送途中有损坏我司不予理赔。",
-    en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm).\n3. Fragile items must be packed in wooden crate/rack with a fragile-goods guarantee letter; no compensation for transit damage."
-  },
-  customs:{
-    zh:"未特别列明，具体请咨询业务确认。",
-    en:"Not specifically listed; please confirm with our sales team."
-  },
-  prohibited:{
-    zh:"杜绝及禁止易燃易爆、毒品以及国家海关禁止类货物。",
-    en:"Strictly prohibited: flammable/explosive goods, drugs and goods banned by customs."
-  },
+  billing:{zh:"以CBM为单位进位，不足0.5CBM按0.5CBM计。超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。",en:"Billed per CBM, under 0.5 CBM rounds up to 0.5 CBM. Overweight 1 CBM = 500KG (charge by actual weight/500)."},
+  size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 易碎品包装要求必须打木架/木箱，并提供易碎保函。易碎物品运送时需加强包装，外箱应加注易碎品标志，如在运送途中有损坏我司不予理赔。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm).\n3. Fragile items must be packed in wooden crate/rack with a fragile-goods guarantee letter; no compensation for transit damage."},
+  customs:{zh:"未特别列明，具体请咨询业务确认。",en:"Not specifically listed; please confirm with our sales team."},
+  prohibited:{zh:"杜绝及禁止易燃易爆、毒品以及国家海关禁止类货物。",en:"Strictly prohibited: flammable/explosive goods, drugs and goods banned by customs."},
   compensation: COMP_STD
 };
 
 const LA_DETAIL = {
-  billing:{
-    zh:"以CBM为单位进位，不足0.5CBM按0.5CBM计。超重货1立方=350KG，如超出方数按 实际重量/350KG 计费。",
-    en:"Billed per CBM, under 0.5 CBM rounds up to 0.5 CBM. Overweight 1 CBM = 350KG (charge by actual weight/350)."
-  },
-  size:{
-    zh:"1. 单件重量超过200Kg或者单边超过200cm，需要加收RMB150/票附加费用。\n2. 塑料桶需打木架/木箱；木箱、木架包装的货物需要打卡脚（11-15CM之间）。\n3. 托运物品包装不符合行业和运输标准的货物和易碎品损坏，本公司不予赔偿。",
-    en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Plastic drums need wooden rack/crate; wooden crate/rack needs forklift feet (11-15cm).\n3. No compensation for damage caused by non-standard packing or fragile items."
-  },
-  customs:{
-    zh:"1. 单证报关退税 +800元/票，商检费 +1000元/票。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. Formal declaration with tax refund: +800 CNY/ticket; inspection fee: +1,000 CNY/ticket.\n2. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"1. 托运人不得托运违禁物品，否则后果自负。\n2. 拒收：仿牌、液体、粉末、鲜活、易燃易爆、腐蚀品、光碟、武器等禁限寄物品。",
-    en:"1. Shippers must not ship prohibited items; all consequences are their own.\n2. Rejected: replicas, liquids, powders, fresh goods, flammable/explosive/corrosive items, discs, weapons."
-  },
-  compensation:{
-    zh:"1. 物品遗失或者扣关按运费两倍且退回已支付运费或者申报货值，取低者规则理赔。如因客户的资料与实际货物不符或货物本身质量问题，以及涉及具体认证问题等均不受理赔偿；如遇战争，自然灾害等不可抗力因素导致货物破坏或丢失不受理赔偿；运输过程中如遇航班延误/清关延误等引起的总体时效延误均不受理赔偿；货物部分破损不赔偿，只对货件遗失进行赔偿。一旦交付货物即默认本条款规则。\n2. 如因发件人侵权问题，我司不承担任何责任并且保留追究发件人因此带来对我司的损失的赔偿。\n3. 如货物没有按照实际价值申报、侵犯知识产权、禁止进出口等原因而导致的海关扣货，此情况不在赔偿范围之内。\n4. 如因客户货物本身质量问题以及涉及具体认证问题等，均不受理赔偿。\n5. 易碎品自行包装，如遇损坏不受理赔偿。\n6. 在运输过程中如遇到不可抗力因素引起的总体时效延误，均不受理赔偿。",
-    en:"1. Loss or customs seizure: compensation = the lower of (2× freight + refund of paid freight) or declared value. No compensation for document mismatch, quality issues, certification issues, force majeure, or transit delays. Partial damage is not compensated. Handing over goods means acceptance of these terms.\n2. No liability for infringement by the shipper; we reserve the right to claim losses.\n3. No compensation if goods are seized due to under-declaration, IP infringement or export prohibition.\n4. No compensation for product quality or certification issues.\n5. Fragile items are packed by the shipper; no compensation for damage.\n6. No compensation for delays caused by force majeure."
-  }
+  billing:{zh:"以CBM为单位进位，不足0.5CBM按0.5CBM计。超重货1立方=350KG，如超出方数按 实际重量/350KG 计费。",en:"Billed per CBM, under 0.5 CBM rounds up to 0.5 CBM. Overweight 1 CBM = 350KG (charge by actual weight/350)."},
+  size:{zh:"1. 单件重量超过200Kg或者单边超过200cm，需要加收RMB150/票附加费用。\n2. 塑料桶需打木架/木箱；木箱、木架包装的货物需要打卡脚（11-15CM之间）。\n3. 托运物品包装不符合行业和运输标准的货物和易碎品损坏，本公司不予赔偿。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Plastic drums need wooden rack/crate; wooden crate/rack needs forklift feet (11-15cm).\n3. No compensation for damage caused by non-standard packing or fragile items."},
+  customs:{zh:"1. 单证报关退税 +800元/票，商检费 +1000元/票。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Formal declaration with tax refund: +800 CNY/ticket; inspection fee: +1,000 CNY/ticket.\n2. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"1. 托运人不得托运违禁物品，否则后果自负。\n2. 拒收：仿牌、液体、粉末、鲜活、易燃易爆、腐蚀品、光碟、武器等禁限寄物品。",en:"1. Shippers must not ship prohibited items; all consequences are their own.\n2. Rejected: replicas, liquids, powders, fresh goods, flammable/explosive/corrosive items, discs, weapons."},
+  compensation:{zh:"1. 物品遗失或者扣关按运费两倍且退回已支付运费或者申报货值，取低者规则理赔。如因客户的资料与实际货物不符或货物本身质量问题，以及涉及具体认证问题等均不受理赔偿；如遇战争，自然灾害等不可抗力因素导致货物破坏或丢失不受理赔偿；运输过程中如遇航班延误/清关延误等引起的总体时效延误均不受理赔偿；货物部分破损不赔偿，只对货件遗失进行赔偿。一旦交付货物即默认本条款规则。\n2. 如因发件人侵权问题，我司不承担任何责任并且保留追究发件人因此带来对我司的损失的赔偿。\n3. 如货物没有按照实际价值申报、侵犯知识产权、禁止进出口等原因而导致的海关扣货，此情况不在赔偿范围之内。\n4. 如因客户货物本身质量问题以及涉及具体认证问题等，均不受理赔偿。\n5. 易碎品自行包装，如遇损坏不受理赔偿。\n6. 在运输过程中如遇到不可抗力因素引起的总体时效延误，均不受理赔偿。",en:"1. Loss or customs seizure: compensation = the lower of (2× freight + refund of paid freight) or declared value. No compensation for document mismatch, quality issues, certification issues, force majeure, or transit delays. Partial damage is not compensated. Handing over goods means acceptance of these terms.\n2. No liability for infringement by the shipper; we reserve the right to claim losses.\n3. No compensation if goods are seized due to under-declaration, IP infringement or export prohibition.\n4. No compensation for product quality or certification issues.\n5. Fragile items are packed by the shipper; no compensation for damage.\n6. No compensation for delays caused by force majeure."}
 };
 
 const AE_DETAIL = {
-  billing:{
-    zh:"以Kg为单位进位；16Kg以下不足0.5Kg按0.5Kg收费，16Kg以上不足1Kg按1Kg计费。取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",
-    en:"Billed per KG; below 16KG rounds to 0.5KG, from 16KG rounds to 1KG. Chargeable = max(actual, L×W×H÷6000)."
-  },
-  size:{
-    zh:"1. 木架、木箱包装需要打活页。\n2. 内置电池不超100WH，只接受UN3481电池标，中性包装。\n3. 特货要求单个产品绝缘防震、防漏、防摔包装，隔层隔断，外包装牢固，单箱不超20Kg；纯液体单独确认，单个产品10Kg以上价格单询。",
-    en:"1. Wooden rack/crate needs hinges.\n2. Built-in battery under 100WH, UN3481 label only, neutral packaging.\n3. Special goods: individual insulation, shock-proof, leak-proof packing; single box under 20KG; pure liquids confirmed separately; single product over 10KG quoted separately."
-  },
-  customs:{
-    zh:"1. 一般贸易报关，报关费350RMB/票，续页50RMB/页（如报关资料跟货物不符、瞒报漏报虚报等，产生所有问题责任由客户自己承担）。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-    en:"1. Formal declaration: 350 CNY/ticket, +50 CNY/extra page (all liability for mismatched documents rests with the customer).\n2. All costs from incorrect declaration documents are borne by the customer."
-  },
-  prohibited:{
-    zh:"不接受产品：赌博游戏机、军火武器、易燃易爆品等。一经发现冲货行为，我司将追究相应责任！",
-    en:"Rejected: gambling machines, weapons, flammable/explosive goods, etc. False declaration will be pursued for liability."
-  },
+  billing:{zh:"以Kg为单位进位；16Kg以下不足0.5Kg按0.5Kg收费，16Kg以上不足1Kg按1Kg计费。取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",en:"Billed per KG; below 16KG rounds to 0.5KG, from 16KG rounds to 1KG. Chargeable = max(actual, L×W×H÷6000)."},
+  size:{zh:"1. 木架、木箱包装需要打活页。\n2. 内置电池不超100WH，只接受UN3481电池标，中性包装。\n3. 特货要求单个产品绝缘防震、防漏、防摔包装，隔层隔断，外包装牢固，单箱不超20Kg；纯液体单独确认，单个产品10Kg以上价格单询。",en:"1. Wooden rack/crate needs hinges.\n2. Built-in battery under 100WH, UN3481 label only, neutral packaging.\n3. Special goods: individual insulation, shock-proof, leak-proof packing; single box under 20KG; pure liquids confirmed separately; single product over 10KG quoted separately."},
+  customs:{zh:"1. 一般贸易报关，报关费350RMB/票，续页50RMB/页（如报关资料跟货物不符、瞒报漏报虚报等，产生所有问题责任由客户自己承担）。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Formal declaration: 350 CNY/ticket, +50 CNY/extra page (all liability for mismatched documents rests with the customer).\n2. All costs from incorrect declaration documents are borne by the customer."},
+  prohibited:{zh:"不接受产品：赌博游戏机、军火武器、易燃易爆品等。一经发现冲货行为，我司将追究相应责任！",en:"Rejected: gambling machines, weapons, flammable/explosive goods, etc. False declaration will be pursued for liability."},
   compensation: COMP_STD
 };
 
@@ -1232,32 +1177,14 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 义乌+1元/KG", en:"Foshan warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"除6000半泡（西马）/不分泡（东马）；不足1KG按1KG；计费重取实重与体积重大者", en:"÷6000 half-volumetric (West MY) / no-volumetric (East MY)."},
    detail:{
-     billing:{
-       zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值：\nA. 除6000不分泡（东马）：体积重 = 长(cm)×宽(cm)×高(cm) ÷ 6000\nB. 除6000半泡（西马）：体积重 = 【实重 + 长×宽×高÷6000】÷ 2",
-       en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, volumetric).\nA. No-foam (East MY): Vol = L×W×H ÷ 6000\nB. Half-foam (West MY): Vol = (Actual + L×W×H ÷ 6000) ÷ 2"
-     },
-     size:{
-       zh:"1. 单件重量超过68Kg，或尺寸超过150×80×80cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 托盘木箱叉车脚要求11-15cm之间；打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",
-       en:"1. Single piece >68KG or size >150×80×80cm: +150 CNY/ticket.\n2. Pallet/wooden crate forklift feet 11-15cm; general cargo in wooden crate/rack/pallet/air box must be strapped with cross iron bands."
-     },
-     customs:{
-       zh:"1. 普货单独报关：单票最低100公斤起，不分泡；报关费350RMB/票；在报价基础上加2RMB/Kg。\n2. 敏感单独报关：单票最低100公斤起，不分泡；报关费250RMB/票，中港费1RMB/Kg，香港操作费350RMB/票；最低消费850RMB/票。\n3. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-       en:"1. General formal declaration: min 100KG/ticket, no half-foam; 350 CNY/ticket + 2 CNY/kg.\n2. Sensitive formal declaration: min 100KG/ticket, no half-foam; 250 CNY/ticket + 1 CNY/kg (China-HK) + 350 CNY/ticket HK handling; min 850 CNY/ticket.\n3. All costs arising from incorrect declaration documents are borne by the customer."
-     },
-     prohibited:{
-       zh:"1. 危险品/敏感品/国家禁止出口、IATA限制的，以及化学、易腐、纸币、票据等物品。\n2. 东马拒收纯电池，以及纯液体、粉末等航空违禁品。\n3. 查获烟酒、银行卡四件套等违禁品，罚款RMB5000并报警处理。\n4. 冲货行为没收货物并罚款1000-10000RMB；敏感货冲普货，一经发现没收货物并罚款5000/票，海关查验产生的所有费用由发货方全部承担。",
-       en:"1. Dangerous / restricted / IATA-banned goods, chemicals, perishables, banknotes, bills.\n2. East MY rejects pure batteries, pure liquids and powders.\n3. Tobacco/alcohol or bank-card sets: 5,000 CNY fine + police report.\n4. False declaration: goods confiscated + 1,000-10,000 CNY fine; sensitive goods declared as general: confiscated + 5,000 CNY/ticket."
-     },
+     billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值：\nA. 除6000不分泡（东马）：体积重 = 长(cm)×宽(cm)×高(cm) ÷ 6000\nB. 除6000半泡（西马）：体积重 = 【实重 + 长×宽×高÷6000】÷ 2",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, volumetric).\nA. No-foam (East MY): Vol = L×W×H ÷ 6000\nB. Half-foam (West MY): Vol = (Actual + L×W×H ÷ 6000) ÷ 2"},
+     size:{zh:"1. 单件重量超过68Kg，或尺寸超过150×80×80cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 托盘木箱叉车脚要求11-15cm之间；打木箱、木架、托盘、航空箱的普货还需打井字铁绑带，否则无法出货，或改走香港敏感渠道。",en:"1. Single piece >68KG or size >150×80×80cm: +150 CNY/ticket.\n2. Pallet/wooden crate forklift feet 11-15cm; general cargo in wooden crate/rack/pallet/air box must be strapped with cross iron bands."},
+     customs:{zh:"1. 普货单独报关：单票最低100公斤起，不分泡；报关费350RMB/票；在报价基础上加2RMB/Kg。\n2. 敏感单独报关：单票最低100公斤起，不分泡；报关费250RMB/票，中港费1RMB/Kg，香港操作费350RMB/票；最低消费850RMB/票。\n3. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. General formal declaration: min 100KG/ticket, no half-foam; 350 CNY/ticket + 2 CNY/kg.\n2. Sensitive formal declaration: min 100KG/ticket, no half-foam; 250 CNY/ticket + 1 CNY/kg (China-HK) + 350 CNY/ticket HK handling; min 850 CNY/ticket.\n3. All costs arising from incorrect declaration documents are borne by the customer."},
+     prohibited:{zh:"1. 危险品/敏感品/国家禁止出口、IATA限制的，以及化学、易腐、纸币、票据等物品。\n2. 东马拒收纯电池，以及纯液体、粉末等航空违禁品。\n3. 查获烟酒、银行卡四件套等违禁品，罚款RMB5000并报警处理。\n4. 冲货行为没收货物并罚款1000-10000RMB；敏感货冲普货，一经发现没收货物并罚款5000/票，海关查验产生的所有费用由发货方全部承担。",en:"1. Dangerous / restricted / IATA-banned goods, chemicals, perishables, banknotes, bills.\n2. East MY rejects pure batteries, pure liquids and powders.\n3. Tobacco/alcohol or bank-card sets: 5,000 CNY fine + police report.\n4. False declaration: goods confiscated + 1,000-10,000 CNY fine; sensitive goods declared as general: confiscated + 5,000 CNY/ticket."},
      compensation: COMP_STD,
-     remarks:{
-       zh:"· 吉隆坡/雪兰莪 456 开头邮编由自营车队派送（JC-H 渠道不接受木箱、木架、托盘货物）。\n· 西马普货使用木箱、木架、托盘包装的，单价 +1/Kg。\n· 电子烟需资料齐全（烟草许可证、报关资料、航空运输鉴定报告、MSDS），一般贸易报关费 500RMB/票（GDEX-#D）或 800RMB/票（GDEX-#Q）。\n· 邮编 87*** 至 999** 属于东马，其他属于西马。",
-       en:"· KL / Selangor postcodes starting 456 use our own fleet (JC-H does not accept wooden crate/rack/pallet).\n· West MY general cargo in wooden crate/rack/pallet: +1 CNY/kg.\n· E-cigarettes need full documents; formal declaration 500 or 800 CNY/ticket.\n· Postcodes 87***–999** = East MY, others = West MY."
-     }
+     remarks:{zh:"· 吉隆坡/雪兰莪 456 开头邮编由自营车队派送（JC-H 渠道不接受木箱、木架、托盘货物）。\n· 西马普货使用木箱、木架、托盘包装的，单价 +1/Kg。\n· 电子烟需资料齐全（烟草许可证、报关资料、航空运输鉴定报告、MSDS），一般贸易报关费 500RMB/票（GDEX-#D）或 800RMB/票（GDEX-#Q）。\n· 邮编 87*** 至 999** 属于东马，其他属于西马。",en:"· KL / Selangor postcodes starting 456 use our own fleet (JC-H does not accept wooden crate/rack/pallet).\n· West MY general cargo in wooden crate/rack/pallet: +1 CNY/kg.\n· E-cigarettes need full documents; formal declaration 500 or 800 CNY/ticket.\n· Postcodes 87***–999** = East MY, others = West MY."}
    },
-   endService:{
-     zh:"1. lawas城市，邮编为98850、98857、98859，虽然是沙捞越邮编，但是由于这个地址在沙捞越和沙巴中间，靠近沙巴，故属于沙巴派送服务范围，所以分到沙巴BKI区域。\n2. 西马来西亚偏远地区：CAMERON HIGHLANDS（邮编：39000-39200）、GENTING HIGHLANDS（邮编：69000）、LANGKAWI（邮编：07000-07100），加收 RMB 3.5/Kg。\n3. 东马其他城市偏远费：纳闽岛 LABUAN（邮编：87000-87033）/ 林梦 LIMBANG / 老越 Lawas（邮编：98700-98859），加收派送费：首1Kg RMB20 / 续1Kg RMB15。\n4. 货物在未派送前更改地址 30RMB/票，在转运中心或派送中的话更改地址需要根据实际货量收取更改派送费，实报实销。\n5. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据！\n6. 以下地址派送不到：军营、机场内、保税区、医院、监狱、离岛（兰卡威、纳闽岛等）、果园深处（山里）等。\n7. 中转仓库免仓3天，超过按照 RMB30/天/CBM（大货）或 RMB5/件/天（小件）计算仓储费！",
-     en:"1. Lawas (98850/98857/98859) belongs to Sabah BKI delivery area.\n2. West MY remote: Cameron Highlands (39000-39200), Genting (69000), Langkawi (07000-07100), +3.5 CNY/kg.\n3. East MY remote: Labuan (87000-87033) / Limbang / Lawas (98700-98859), first 1kg 20 CNY, add 15 CNY.\n4. Address change before dispatch 30 CNY/ticket; during transit by actual cost.\n5. Bonded area: advance notice; local warehouse self-pickup only, no documents.\n6. Not deliverable: military, airport, bonded area, hospital, prison, islands, deep orchards.\n7. Free storage 3 days; beyond 30 CNY/CBM/day (bulk) or 5 CNY/piece/day (parcel)."
-   },
+   endService:{zh:"1. lawas城市，邮编为98850、98857、98859，虽然是沙捞越邮编，但是由于这个地址在沙捞越和沙巴中间，靠近沙巴，故属于沙巴派送服务范围，所以分到沙巴BKI区域。\n2. 西马来西亚偏远地区：CAMERON HIGHLANDS（邮编：39000-39200）、GENTING HIGHLANDS（邮编：69000）、LANGKAWI（邮编：07000-07100），加收 RMB 3.5/Kg。\n3. 东马其他城市偏远费：纳闽岛 LABUAN（邮编：87000-87033）/ 林梦 LIMBANG / 老越 Lawas（邮编：98700-98859），加收派送费：首1Kg RMB20 / 续1Kg RMB15。\n4. 货物在未派送前更改地址 30RMB/票，在转运中心或派送中的话更改地址需要根据实际货量收取更改派送费，实报实销。\n5. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据！\n6. 以下地址派送不到：军营、机场内、保税区、医院、监狱、离岛（兰卡威、纳闽岛等）、果园深处（山里）等。\n7. 中转仓库免仓3天，超过按照 RMB30/天/CBM（大货）或 RMB5/件/天（小件）计算仓储费！",en:"1. Lawas (98850/98857/98859) belongs to Sabah BKI delivery area.\n2. West MY remote: Cameron Highlands (39000-39200), Genting (69000), Langkawi (07000-07100), +3.5 CNY/kg.\n3. East MY remote: Labuan (87000-87033) / Limbang / Lawas (98700-98859), first 1kg 20 CNY, add 15 CNY.\n4. Address change before dispatch 30 CNY/ticket; during transit by actual cost.\n5. Bonded area: advance notice; local warehouse self-pickup only, no documents.\n6. Not deliverable: military, airport, bonded area, hospital, prison, islands, deep orchards.\n7. Free storage 3 days; beyond 30 CNY/CBM/day (bulk) or 5 CNY/piece/day (parcel)."},
    head:{zh:["货类","1-3KG","4-10KG","11KG+","21KG+","51KG+","101KG+","301KG+","501KG+"], en:["Category","1-3KG","4-10KG","11KG+","21KG+","51KG+","101KG+","301KG+","501KG+"]},
    rows:{
      zh:[["西马普货","31","25","18","18","17","17","16.5","15.5"],["西马敏感","35","30","26","26","26","25","25","25"],["西马特货","40","32","28","28","28","27","27","27"],["东马普货","50","50","50","50","45","43","42","41"],["东马敏感","58","55","55","55","55","51","50","49"]],
@@ -1269,32 +1196,14 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"双清包税到门；最低0.3方起收；不足0.1方按0.1方；超重1方=500KG；偏远地区派送费另加RMB2/KG，体积/6000，体积和实际重量两者对比取大计费。木箱木架托盘加50元/方。", en:"DDP door-to-door; min 0.3 CBM; remote +2 CNY/KG."},
    detail:{
-     billing:{
-       zh:"1. 以CBM为单位进位，不足0.1CBM的按0.1CBM计算。\n2. 超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。\n3. 最低0.3个方起收费。",
-       en:"1. Billed per CBM; under 0.1 CBM rounds up to 0.1 CBM.\n2. Overweight 1 CBM = 500KG (charge by actual weight/500).\n3. Minimum 0.3 CBM."
-     },
-     size:{
-       zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",
-       en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."
-     },
-     customs:{
-       zh:"1. 海运单独报关费用500元/票；报关件在报价基础上加100元/CBM，最低消费1个方（报关所需资料：装箱单、发票、合同、报关委托书、申报要素，需盖章）；10个方以上报关件可以单独咨询。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-       en:"1. Sea formal declaration 500 CNY/ticket; declared cargo +100 CNY/CBM, min 1 CBM (packing list, invoice, contract, declaration authorization, declaration elements — all stamped). Over 10 CBM: consult separately.\n2. All costs from incorrect declaration documents are borne by the customer."
-     },
-     prohibited:{
-       zh:"不接 纯电、无人机、玩具枪、烟酒等易燃易爆。",
-       en:"Rejected: pure batteries, drones, toy guns, tobacco/alcohol and other flammable or explosive goods."
-     },
+     billing:{zh:"1. 以CBM为单位进位，不足0.1CBM的按0.1CBM计算。\n2. 超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。\n3. 最低0.3个方起收费。",en:"1. Billed per CBM; under 0.1 CBM rounds up to 0.1 CBM.\n2. Overweight 1 CBM = 500KG (charge by actual weight/500).\n3. Minimum 0.3 CBM."},
+     size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
+     customs:{zh:"1. 海运单独报关费用500元/票；报关件在报价基础上加100元/CBM，最低消费1个方（报关所需资料：装箱单、发票、合同、报关委托书、申报要素，需盖章）；10个方以上报关件可以单独咨询。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Sea formal declaration 500 CNY/ticket; declared cargo +100 CNY/CBM, min 1 CBM (packing list, invoice, contract, declaration authorization, declaration elements — all stamped). Over 10 CBM: consult separately.\n2. All costs from incorrect declaration documents are borne by the customer."},
+     prohibited:{zh:"不接 纯电、无人机、玩具枪、烟酒等易燃易爆。",en:"Rejected: pure batteries, drones, toy guns, tobacco/alcohol and other flammable or explosive goods."},
      compensation: COMP_STD,
-     remarks:{
-       zh:"· 邮编 87*** 至 999** 属于东马，其他属于西马；西马中邮编 456 开头的属于坡内，其他属于坡外。\n· 木箱、木架、托盘在报价基础上加50元一个方。\n· 海运小包（普货/敏感同价）：首重15元/KG、续重7元/KG、50KG+ 7元/KG，体积÷6000。\n· 海运小包（电池）：需打木箱，最低消费50公斤起收，12元/KG，体积÷6000。",
-       en:"· Postcodes 87***–999** = East MY; 456-prefix = in-state, others = out-state.\n· Wooden crate/rack/pallet: +50 CNY/CBM.\n· Sea parcel (general/sensitive): first 15 CNY/kg, add 7 CNY/kg, 50KG+ 7 CNY/kg, ÷6000.\n· Sea parcel (battery): wooden crate required, min 50KG, 12 CNY/kg, ÷6000."
-     }
+     remarks:{zh:"· 邮编 87*** 至 999** 属于东马，其他属于西马；西马中邮编 456 开头的属于坡内，其他属于坡外。\n· 木箱、木架、托盘在报价基础上加50元一个方。\n· 海运小包（普货/敏感同价）：首重15元/KG、续重7元/KG、50KG+ 7元/KG，体积÷6000。\n· 海运小包（电池）：需打木箱，最低消费50公斤起收，12元/KG，体积÷6000。",en:"· Postcodes 87***–999** = East MY; 456-prefix = in-state, others = out-state.\n· Wooden crate/rack/pallet: +50 CNY/CBM.\n· Sea parcel (general/sensitive): first 15 CNY/kg, add 7 CNY/kg, 50KG+ 7 CNY/kg, ÷6000.\n· Sea parcel (battery): wooden crate required, min 50KG, 12 CNY/kg, ÷6000."}
    },
-   endService:{
-     zh:"1. 西马偏远区域/邮编，偏远派送费另加 RMB 2/KG，体积/6000，体积和实际重量两者对比取大计费。\n2. 木箱/木架/托盘货物加 50 元/方。\n3. 派送只到楼下，不上楼。\n4. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据。",
-     en:"1. West MY remote surcharge +2 CNY/KG.\n2. Wooden crate/pallet +50 CNY/CBM.\n3. Delivery to ground floor only.\n4. Bonded area: advance notice; local warehouse self-pickup only."
-   },
+   endService:{zh:"1. 西马偏远区域/邮编，偏远派送费另加 RMB 2/KG，体积/6000，体积和实际重量两者对比取大计费。\n2. 木箱/木架/托盘货物加 50 元/方。\n3. 派送只到楼下，不上楼。\n4. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据。",en:"1. West MY remote surcharge +2 CNY/KG.\n2. Wooden crate/pallet +50 CNY/CBM.\n3. Delivery to ground floor only.\n4. Bonded area: advance notice; local warehouse self-pickup only."},
    head:{zh:["类型","1-10方","10.1方+","20.1方+"], en:["Type","1-10 CBM","10.1+ CBM","20.1+ CBM"]},
    rows:{
      zh:[["坡内普货","580","580","550"],["坡外普货","600","600","580"],["坡内敏感","600","600","580"],["坡外敏感","630","630","610"],["仿牌","750","750","750"],["特敏","1300","1300","1300"]],
@@ -1306,32 +1215,14 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 最低0.5方 · 义乌+100元/方", en:"Foshan warehouse · min 0.5 CBM · Yiwu +100 CNY/CBM"},
    note:{zh:"砂拉越/沙巴分价；敏感货类+100元/CBM；超重1方=500KG；最低0.5方起收，不足0.1方按0.1方计。", en:"Sarawak / Sabah priced separately; sensitive +100 CNY/CBM."},
    detail:{
-     billing:{
-       zh:"1. 最低消费为0.5立方。\n2. 以CBM为单位进位，不足0.1CBM的按0.1CBM计算。\n3. 超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。\n4. 敏感货类加收RMB100/CBM，其中娃娃机加收100RM/台，大型机器需事先与我公司联系后再报价。",
-       en:"1. Minimum 0.5 CBM.\n2. Billed per CBM; under 0.1 CBM rounds up.\n3. Overweight 1 CBM = 500KG (charge by actual weight/500).\n4. Sensitive cargo +100 CNY/CBM; claw machines +100 RM/unit; large machines need prior quotation."
-     },
-     size:{
-       zh:"1. 单件重量超过100Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",
-       en:"1. Single piece >100KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."
-     },
-     customs:{
-       zh:"1. 海运单独报关费用1200元/票；报关件在报价基础上加100元/CBM，最低消费1个方（报关所需资料：装箱单、发票、合同、报关委托书、申报要素，需盖章）；10个方以上报关件可以单独咨询。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",
-       en:"1. Sea formal declaration 1,200 CNY/ticket; declared cargo +100 CNY/CBM, min 1 CBM. Over 10 CBM: consult separately.\n2. All costs from incorrect declaration documents are borne by the customer."
-     },
-     prohibited:{
-       zh:"1. 菸、酒、药品、光碟及手机类拒收。\n2. 本公司禁止酒类、香烟、轮胎货物、托运易燃、易爆、有毒、有腐蚀性、有放射性等危险物品及海关违禁品。所有责任以及由此产生的所有费用请顾客全权负责。",
-       en:"1. Rejected: tobacco, alcohol, medicines, discs and mobile phones.\n2. Prohibited: alcohol, cigarettes, tyres, flammable/explosive/toxic/corrosive/radioactive goods and customs-banned items. All liability and costs rest with the customer."
-     },
+     billing:{zh:"1. 最低消费为0.5立方。\n2. 以CBM为单位进位，不足0.1CBM的按0.1CBM计算。\n3. 超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。\n4. 敏感货类加收RMB100/CBM，其中娃娃机加收100RM/台，大型机器需事先与我公司联系后再报价。",en:"1. Minimum 0.5 CBM.\n2. Billed per CBM; under 0.1 CBM rounds up.\n3. Overweight 1 CBM = 500KG (charge by actual weight/500).\n4. Sensitive cargo +100 CNY/CBM; claw machines +100 RM/unit; large machines need prior quotation."},
+     size:{zh:"1. 单件重量超过100Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >100KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
+     customs:{zh:"1. 海运单独报关费用1200元/票；报关件在报价基础上加100元/CBM，最低消费1个方（报关所需资料：装箱单、发票、合同、报关委托书、申报要素，需盖章）；10个方以上报关件可以单独咨询。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Sea formal declaration 1,200 CNY/ticket; declared cargo +100 CNY/CBM, min 1 CBM. Over 10 CBM: consult separately.\n2. All costs from incorrect declaration documents are borne by the customer."},
+     prohibited:{zh:"1. 菸、酒、药品、光碟及手机类拒收。\n2. 本公司禁止酒类、香烟、轮胎货物、托运易燃、易爆、有毒、有腐蚀性、有放射性等危险物品及海关违禁品。所有责任以及由此产生的所有费用请顾客全权负责。",en:"1. Rejected: tobacco, alcohol, medicines, discs and mobile phones.\n2. Prohibited: alcohol, cigarettes, tyres, flammable/explosive/toxic/corrosive/radioactive goods and customs-banned items. All liability and costs rest with the customer."},
      compensation: COMP_STD,
-     remarks:{
-       zh:"· 东马海运入佛山仓库（最低消费0.5立方）；入义乌加100元一个方。\n· 敏感货类加收RMB100/CBM；娃娃机加收100RM/台；大型机器需事先联系报价。\n· 加帛KAPIT、荷万ROBAN、甲望KABONG、巴拉河KUALA BARAM、ROM RAMA 需自提或单独包车派送。",
-       en:"· East MY sea enters Foshan warehouse (min 0.5 CBM); Yiwu +100 CNY/CBM.\n· Sensitive +100 CNY/CBM; claw machines +100 RM/unit.\n· Kapit, Roban, Kabong, Kuala Baram, Rom Rama require self-pickup or dedicated truck delivery."
-     }
+     remarks:{zh:"· 东马海运入佛山仓库（最低消费0.5立方）；入义乌加100元一个方。\n· 敏感货类加收RMB100/CBM；娃娃机加收100RM/台；大型机器需事先联系报价。\n· 加帛KAPIT、荷万ROBAN、甲望KABONG、巴拉河KUALA BARAM、ROM RAMA 需自提或单独包车派送。",en:"· East MY sea enters Foshan warehouse (min 0.5 CBM); Yiwu +100 CNY/CBM.\n· Sensitive +100 CNY/CBM; claw machines +100 RM/unit.\n· Kapit, Roban, Kabong, Kuala Baram, Rom Rama require self-pickup or dedicated truck delivery."}
    },
-   endService:{
-     zh:"1. 加帛 KAPIT（码头自提）、荷万 ROBAN、甲望 KABONG（无物流线路，需自提或单独包车派送）、巴拉河 KUALA BARAM、ROM RAMA（必须到美里自提）——以上区域货物只到目的地码头/美里，需自提，不派送上门。\n2. 诗巫市区 JULAU 芦楼、OYA ROAD 乌也路 9 哩以上、DURIN 杜林、STABAU 石打保，均需在诗巫自提，不派送上门。\n3. 单边超过2米或者单件超过1.5吨，目的港派送费需另外确认！\n4. 仓库免仓7天，超过按照 RMB30/天/CBM（大货）。\n5. 派送只到楼下，不上楼。",
-     en:"1. Kapit, Roban, Kabong, Kuala Baram, Rom Rama — self-pickup required.\n2. Sibu city: Julau, Oya Road 9th mile+, Durin, Stabau — Sibu self-pickup only.\n3. Single side >2m or single piece >1.5t: destination delivery fee to be confirmed.\n4. Free storage 7 days; beyond 30 CNY/CBM/day.\n5. Delivery to ground floor only."
-   },
+   endService:{zh:"1. 加帛 KAPIT（码头自提）、荷万 ROBAN、甲望 KABONG（无物流线路，需自提或单独包车派送）、巴拉河 KUALA BARAM、ROM RAMA（必须到美里自提）——以上区域货物只到目的地码头/美里，需自提，不派送上门。\n2. 诗巫市区 JULAU 芦楼、OYA ROAD 乌也路 9 哩以上、DURIN 杜林、STABAU 石打保，均需在诗巫自提，不派送上门。\n3. 单边超过2米或者单件超过1.5吨，目的港派送费需另外确认！\n4. 仓库免仓7天，超过按照 RMB30/天/CBM（大货）。\n5. 派送只到楼下，不上楼。",en:"1. Kapit, Roban, Kabong, Kuala Baram, Rom Rama — self-pickup required.\n2. Sibu city: Julau, Oya Road 9th mile+, Durin, Stabau — Sibu self-pickup only.\n3. Single side >2m or single piece >1.5t: destination delivery fee to be confirmed.\n4. Free storage 7 days; beyond 30 CNY/CBM/day.\n5. Delivery to ground floor only."},
    head:{zh:["城市/区域","元/CBM"], en:["City/Area","CNY/CBM"]},
    rows:{
      zh:[["亚庇 KK(首府)","845"],["山打根/拿笃/斗湖","1030"],["古晋市区","1000"],["民都鲁市区","1000"],["美里市区","1030"],["诗巫市区","895"],["古晋乡区","1090"],["诗巫-古晋中间区","1090"],["加帛(码头自提)","1060"],["沐胶/达佬/达拉/马卢地","1030"],["尼亚石山","1060"],["仙本那/古纳(偏远)","1105"],["林梦(归亚庇)","1180"],["沙巴小镇(根地咬/纳闽等)","1030"]],
@@ -1343,15 +1234,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"到门不包税；除6000半泡；不足1KG按1KG；计费重取实重与体积重大者。", en:"Door delivery excl. tax; ÷6000 half-volumetric."},
    detail:Object.assign({}, SG_AIR_DETAIL, {
-     remarks:{
-       zh:"· 入深圳仓库；入义乌仓库加1元/Kg。\n· 木箱、木架、托盘包装的货物单价 +2/Kg。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用 SGD60/票。\n· 高货值产品需包税单独咨询。",
-       en:"· Enters Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack/pallet: +2 CNY/kg.\n· Singapore Amazon refers to the above rates; destination importer fee SGD 60/ticket.\n· High-value products need separate DDP quotation."
-     }
+     remarks:{zh:"· 入深圳仓库；入义乌仓库加1元/Kg。\n· 木箱、木架、托盘包装的货物单价 +2/Kg。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用 SGD60/票。\n· 高货值产品需包税单独咨询。",en:"· Enters Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack/pallet: +2 CNY/kg.\n· Singapore Amazon refers to the above rates; destination importer fee SGD 60/ticket.\n· High-value products need separate DDP quotation."}
    }),
-   endService:{
-     zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址（最终以实际报价为准）。\n2. 货物在未派送前更改地址 30RMB/票，在转运中心或派送中的话更改地址需要根据实际货量收取更改派送费，实报实销。\n3. 以下地址派送不到：Jurong Island、Jurong Port、军营、机场内、学生公寓、医院、监狱、Off-shore Islands、Tuas Link 等。\n4. 偏远地区派送费单询。以下属于偏远地区：\n   A、林厝港农场区（LIM CHU KANG / NEO TIEW）\n   B、圣淘沙外岛（SENTOSA ISLAND）\n   C、国际客运机场（CHANGI PASSENGER AIRPORT）81 开头和 49 开头\n   D、亚马逊集运仓（AMAZON FBA WAREHOUSE）\n   E、金沙赌场 / 云顶赌场（MBS / RWS）邮编 018955-018974\n   F、吉宝港口 邮编 099447-099453\n   G、裕廊港口 619346、619110\n5. 派送只到楼下，不上楼。",
-     en:"1. Special delivery +SGD 40/address.\n2. Address change 30 CNY/ticket before dispatch.\n3. Not deliverable: Jurong Island, Jurong Port, military, airport, student apartments, hospitals, prisons, off-shore islands, Tuas Link.\n4. Remote: Lim Chu Kang/Neo Tiew, Sentosa, Changi Airport (81/49), Amazon FBA, MBS/RWS (018955-018974), Keppel Port (099447-099453), Jurong Port (619346, 619110).\n5. Delivery to ground floor only."
-   },
+   endService:{zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址（最终以实际报价为准）。\n2. 货物在未派送前更改地址 30RMB/票，在转运中心或派送中的话更改地址需要根据实际货量收取更改派送费，实报实销。\n3. 以下地址派送不到：Jurong Island、Jurong Port、军营、机场内、学生公寓、医院、监狱、Off-shore Islands、Tuas Link 等。\n4. 偏远地区派送费单询。以下属于偏远地区：\n   A、林厝港农场区（LIM CHU KANG / NEO TIEW）\n   B、圣淘沙外岛（SENTOSA ISLAND）\n   C、国际客运机场（CHANGI PASSENGER AIRPORT）81 开头和 49 开头\n   D、亚马逊集运仓（AMAZON FBA WAREHOUSE）\n   E、金沙赌场 / 云顶赌场（MBS / RWS）邮编 018955-018974\n   F、吉宝港口 邮编 099447-099453\n   G、裕廊港口 619346、619110\n5. 派送只到楼下，不上楼。",en:"1. Special delivery +SGD 40/address.\n2. Address change 30 CNY/ticket before dispatch.\n3. Not deliverable: Jurong Island, Jurong Port, military, airport, student apartments, hospitals, prisons, off-shore islands, Tuas Link.\n4. Remote: Lim Chu Kang/Neo Tiew, Sentosa, Changi Airport (81/49), Amazon FBA, MBS/RWS (018955-018974), Keppel Port (099447-099453), Jurong Port (619346, 619110).\n5. Delivery to ground floor only."},
    head:{zh:["货类","首重","续重","11KG+","31+","51+","101+","201+","301+","500+"], en:["Category","First","Add","11KG+","31+","51+","101+","201+","301+","500+"]},
    rows:{
      zh:[["不包税·普货","38","20","20","20","20","18.5","17.5","16.5","16"],["不包税·内电/磁性","45","30","25","24.5","24","23","23","22.5","22.5"],["不包税·特货","55","35","28","27","27","26","26","25","25"]],
@@ -1363,15 +1248,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"双清包税；除6000半泡；不足1KG按1KG；药品/食品需单独咨询。", en:"DDP; ÷6000 half-volumetric."},
    detail:Object.assign({}, SG_AIR_DETAIL, {
-     remarks:{
-       zh:"· 入深圳仓库；入义乌仓库加1元/Kg。\n· 木箱、木架、托盘包装的货物单价 +2/Kg。\n· 高货值产品需包税单独咨询。\n· 药品：首重150元/Kg、续重45元/Kg，单票不能超过5Kg。\n· 食品不能含肉类、海鲜类成分；食品单票超过10公斤，会产生借证费60新币/票。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用SGD60/票。",
-       en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack/pallet: +2 CNY/kg.\n· High-value products need separate DDP quotation.\n· Medicine: first 150 CNY/kg, add 45 CNY/kg, max 5KG/ticket.\n· Food must not contain meat or seafood; over 10kg/ticket incurs SGD 60 certificate fee.\n· Singapore Amazon refers to the above; destination importer fee SGD 60/ticket."
-     }
+     remarks:{zh:"· 入深圳仓库；入义乌仓库加1元/Kg。\n· 木箱、木架、托盘包装的货物单价 +2/Kg。\n· 高货值产品需包税单独咨询。\n· 药品：首重150元/Kg、续重45元/Kg，单票不能超过5Kg。\n· 食品不能含肉类、海鲜类成分；食品单票超过10公斤，会产生借证费60新币/票。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用SGD60/票。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack/pallet: +2 CNY/kg.\n· High-value products need separate DDP quotation.\n· Medicine: first 150 CNY/kg, add 45 CNY/kg, max 5KG/ticket.\n· Food must not contain meat or seafood; over 10kg/ticket incurs SGD 60 certificate fee.\n· Singapore Amazon refers to the above; destination importer fee SGD 60/ticket."}
    }),
-   endService:{
-     zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址（最终以实际报价为准）。\n2. 货物在未派送前更改地址 30RMB/票。\n3. 以下地址派送不到：Jurong Island、Jurong Port、军营、机场内、学生公寓、医院、监狱、Off-shore Islands、Tuas Link 等。\n4. 偏远地区：林厝港农场区、圣淘沙外岛、国际客运机场（81/49 开头）、亚马逊集运仓、金沙/云顶赌场（邮编 018955-018974）、吉宝港口（099447-099453）、裕廊港口（619346、619110）。\n5. 派送只到楼下，不上楼。\n6. 高货值产品需包税单独咨询；药品首重 150 元/Kg、续重 45 元/Kg，单票不超过 5Kg；食品不能含肉类海鲜，单票超 10kg 产生借证费 60 新币/票。",
-     en:"1. Special delivery +SGD 40/address.\n2. Address change 30 CNY/ticket.\n3. Not deliverable: Jurong Island, Jurong Port, military, airport, student apartments, hospitals, prisons, off-shore islands, Tuas Link.\n4. Remote: Lim Chu Kang/Neo Tiew, Sentosa, Changi Airport (81/49), Amazon FBA, MBS/RWS (018955-018974), Keppel Port (099447-099453), Jurong Port (619346, 619110).\n5. Delivery to ground floor only.\n6. Medicine first 150 CNY/kg, add 45 CNY/kg, ≤5kg; food without meat/seafood, >10kg requires certificate fee SGD 60/ticket."
-   },
+   endService:{zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址（最终以实际报价为准）。\n2. 货物在未派送前更改地址 30RMB/票。\n3. 以下地址派送不到：Jurong Island、Jurong Port、军营、机场内、学生公寓、医院、监狱、Off-shore Islands、Tuas Link 等。\n4. 偏远地区：林厝港农场区、圣淘沙外岛、国际客运机场（81/49 开头）、亚马逊集运仓、金沙/云顶赌场（邮编 018955-018974）、吉宝港口（099447-099453）、裕廊港口（619346、619110）。\n5. 派送只到楼下，不上楼。\n6. 高货值产品需包税单独咨询；药品首重 150 元/Kg、续重 45 元/Kg，单票不超过 5Kg；食品不能含肉类海鲜，单票超 10kg 产生借证费 60 新币/票。",en:"1. Special delivery +SGD 40/address.\n2. Address change 30 CNY/ticket.\n3. Not deliverable: Jurong Island, Jurong Port, military, airport, student apartments, hospitals, prisons, off-shore islands, Tuas Link.\n4. Remote: Lim Chu Kang/Neo Tiew, Sentosa, Changi Airport (81/49), Amazon FBA, MBS/RWS (018955-018974), Keppel Port (099447-099453), Jurong Port (619346, 619110).\n5. Delivery to ground floor only.\n6. Medicine first 150 CNY/kg, add 45 CNY/kg, ≤5kg; food without meat/seafood, >10kg requires certificate fee SGD 60/ticket."},
    head:{zh:["货类","首重","续重","11KG+","31+","51+","101+","201+","301+","500+"], en:["Category","First","Add","11KG+","31+","51+","101+","201+","301+","500+"]},
    rows:{
      zh:[["包税·普货","48","23","23","23","23","23","23","23","23"],["包税·内电/磁性","70","35","30","30","30","30","30","30","29"],["包税·特货","85","38","32","32","32","32","32","31","30"]],
@@ -1383,15 +1262,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓 · 义乌+100元/方", en:"Shenzhen warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"大货双清不包税；小包包税到门；超重1方=500KG；0.4CBM以上按1CBM计。", en:"Bulk DDP excl. tax; parcel DDP door-to-door; overweight 1 CBM = 500KG."},
    detail:Object.assign({}, SG_SEA_DETAIL, {
-     remarks:{
-       zh:"· 入深圳仓库；入义乌仓 +100元/方。\n· 0.4个CBM以上，或者不足1CBM的部分按1CBM进行计算。\n· 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费，不足一周按一周，不足一方按一方）。\n· 单独清关费35新币/票；单独报关费用500元/票，最低消费1CBM。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用SGD60/票。",
-       en:"· Shenzhen warehouse; Yiwu +100 CNY/CBM.\n· Above 0.4 CBM, any part under 1 CBM rounds up to 1 CBM.\n· Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60, rounded up).\n· Independent clearance SGD 35/ticket; formal declaration 500 CNY/ticket, min 1 CBM.\n· Singapore Amazon refers to the above; destination importer fee SGD 60/ticket."
-     }
+     remarks:{zh:"· 入深圳仓库；入义乌仓 +100元/方。\n· 0.4个CBM以上，或者不足1CBM的部分按1CBM进行计算。\n· 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费，不足一周按一周，不足一方按一方）。\n· 单独清关费35新币/票；单独报关费用500元/票，最低消费1CBM。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用SGD60/票。",en:"· Shenzhen warehouse; Yiwu +100 CNY/CBM.\n· Above 0.4 CBM, any part under 1 CBM rounds up to 1 CBM.\n· Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60, rounded up).\n· Independent clearance SGD 35/ticket; formal declaration 500 CNY/ticket, min 1 CBM.\n· Singapore Amazon refers to the above; destination importer fee SGD 60/ticket."}
    }),
-   endService:{
-     zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址（最终以实际报价为准）。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n4. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据。\n5. 派送只到楼下，不上楼。\n6. 偏远地区：林厝港农场区、圣淘沙外岛、国际客运机场（81/49 开头）、亚马逊集运仓、金沙/云顶赌场（018955-018974）、吉宝港口（099447-099453）、裕廊港口（619346、619110）。",
-     en:"1. Special delivery +SGD 40/address.\n2. Single side >2m or single piece >1t: destination delivery fee to be confirmed.\n3. Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n4. Bonded area: advance notice; local warehouse self-pickup only.\n5. Delivery to ground floor only."
-   },
+   endService:{zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址（最终以实际报价为准）。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n4. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据。\n5. 派送只到楼下，不上楼。\n6. 偏远地区：林厝港农场区、圣淘沙外岛、国际客运机场（81/49 开头）、亚马逊集运仓、金沙/云顶赌场（018955-018974）、吉宝港口（099447-099453）、裕廊港口（619346、619110）。",en:"1. Special delivery +SGD 40/address.\n2. Single side >2m or single piece >1t: destination delivery fee to be confirmed.\n3. Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n4. Bonded area: advance notice; local warehouse self-pickup only.\n5. Delivery to ground floor only."},
    head:{zh:["类型","0.1方","续0.1方","1方"], en:["Type","0.1 CBM","Per 0.1 CBM","1 CBM"]},
    rows:{
      zh:[["普货/敏感","150","50","350"],["单独清关","400","400","400"],["单独报关","400","400","400"]],
@@ -1403,15 +1276,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"海运小包双清包税到门；除6000；电池/特敏最低消费50KG起收，电池需打木箱。", en:"Sea parcel DDP door-to-door; ÷6000; battery/special min 50KG."},
    detail:Object.assign({}, SG_SEA_DETAIL, {
-     remarks:{
-       zh:"· 入深圳仓库；入义乌仓库 +1元/Kg。\n· 电池渠道需要打木箱，最低消费50公斤起收，单件重量不能超过800公斤。\n· 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用SGD60/票。",
-       en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Battery channel requires wooden crate, min 50KG, single piece under 800KG.\n· Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n· Singapore Amazon refers to the above; destination importer fee SGD 60/ticket."
-     }
+     remarks:{zh:"· 入深圳仓库；入义乌仓库 +1元/Kg。\n· 电池渠道需要打木箱，最低消费50公斤起收，单件重量不能超过800公斤。\n· 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n· 新加坡亚马逊参照以上价格，目的地产生费用：进口商费用SGD60/票。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Battery channel requires wooden crate, min 50KG, single piece under 800KG.\n· Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n· Singapore Amazon refers to the above; destination importer fee SGD 60/ticket."}
    }),
-   endService:{
-     zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n4. 派送只到楼下，不上楼。\n5. 偏远地区：林厝港农场区、圣淘沙外岛、国际客运机场（81/49 开头）、亚马逊集运仓、金沙/云顶赌场（018955-018974）、吉宝港口（099447-099453）、裕廊港口（619346、619110）。",
-     en:"1. Special delivery +SGD 40/address.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n4. Delivery to ground floor only."
-   },
+   endService:{zh:"1. 派送金沙赌场/运动赌场/百货商场，或大车需要特殊安排才能进入的地址，都将加收偏远派送费 40 新币/地址。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n4. 派送只到楼下，不上楼。\n5. 偏远地区：林厝港农场区、圣淘沙外岛、国际客运机场（81/49 开头）、亚马逊集运仓、金沙/云顶赌场（018955-018974）、吉宝港口（099447-099453）、裕廊港口（619346、619110）。",en:"1. Special delivery +SGD 40/address.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n4. Delivery to ground floor only."},
    head:{zh:["货类","首/KG","续/KG","11KG+","50kg+"], en:["Category","First/KG","Add/KG","11KG+","50kg+"]},
    rows:{
      zh:[["普货/敏感","30","8","8","8"],["电池/特敏","—","—","—","15"]],
@@ -1423,15 +1290,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"双清包税，马尼拉为主；除6000；不足1KG按1KG；计费重取实重与体积重大者。", en:"DDP, Manila-focused; ÷6000."},
    detail:Object.assign({}, PH_AIR_DETAIL, {
-     remarks:{
-       zh:"· 入深圳仓；入义乌仓 +1元/Kg。\n· 木箱、木架包装的价格单询。\n· 以上时效不含收货当天、节假日及清关延误的时间；偏远地区，在正常时效上增加2-4个工作日。\n· 马尼拉邮编1000-1799包派。",
-       en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack packaging: quote on request.\n· Transit excludes pickup day, holidays and customs delays; remote areas +2-4 working days.\n· Manila postcodes 1000-1799 covered."
-     }
+     remarks:{zh:"· 入深圳仓；入义乌仓 +1元/Kg。\n· 木箱、木架包装的价格单询。\n· 以上时效不含收货当天、节假日及清关延误的时间；偏远地区，在正常时效上增加2-4个工作日。\n· 包派邮编：Metro Manila（1000-1812）、Laguna（4023-4027）、Bulacan（3005/3019/3020/3023）、Cavite（4100/4102/4103/4104/4107/4108/4109/4114/4118）。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack packaging: quote on request.\n· Transit excludes pickup day, holidays and customs delays; remote areas +2-4 working days.\n· Covered: Metro Manila (1000-1812), Laguna (4023-4027), Bulacan (3005/3019/3020/3023), Cavite (4100/4102/4103/4104/4107/4108/4109/4114/4118)."}
    }),
-   endService:{
-     zh:"1. 马尼拉邮编 1000-1799 包派；马尼拉市区以外的转运派送费用是：首重 35RMB/Kg，续重 15RMB/Kg，体积除以 3500。\n2. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据。\n3. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n4. 派送只到楼下，不上楼。\n5. 以上时效不含收货当天、节假日及清关延误的时间；偏远地区，在正常时效上增加 2-4 个工作日。",
-     en:"1. Manila 1000-1799 covered; outside Manila: first 35 CNY/kg, add 15 CNY/kg, volumetric ÷3500.\n2. Bonded area: advance notice; local warehouse self-pickup only.\n3. Single side >2m or single piece >1.5t: to be confirmed.\n4. Delivery to ground floor only.\n5. Transit excludes pickup day, holidays, customs delays; remote +2-4 working days."
-   },
+   endService:{zh:"1. 包派邮编 1000-1812、4023-4027、3005/3019/3020/3023、4100/4102/4103/4104/4107/4108/4109/4114/4118；马尼拉市区以外的转运派送费用是：首重 35RMB/Kg，续重 15RMB/Kg，体积除以 3500。\n2. 如遇保税区地址需要提前告知，且保税区地址只能当地仓库自提，不提供任何单据。\n3. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n4. 派送只到楼下，不上楼。\n5. 以上时效不含收货当天、节假日及清关延误的时间；偏远地区，在正常时效上增加 2-4 个工作日。",en:"1. Covered postcodes 1000-1812, 4023-4027, 3005/3019/3020/3023, 4100/4102/4103/4104/4107/4108/4109/4114/4118; outside Manila: first 35 CNY/kg, add 15 CNY/kg, volumetric ÷3500.\n2. Bonded area: advance notice; local warehouse self-pickup only.\n3. Single side >2m or single piece >1.5t: to be confirmed.\n4. Delivery to ground floor only.\n5. Transit excludes pickup day, holidays, customs delays; remote +2-4 working days."},
    head:{zh:["货类","首重","续重","11+","51+","101+","301+","501+","1001+"], en:["Category","First","Add","11+","51+","101+","301+","501+","1001+"]},
    rows:{
      zh:[["普货","35","30","26","26","25","24","23","23"],["带电/带磁","45","40","36","35","34","33","32","32"],["敏感(仿牌/食品/粉末等)","50","45","44","43","42","41","40","39"],["纯电池/充电宝/电脑/药品","77","62","60","59","58","57","55","55"]],
@@ -1441,17 +1302,11 @@ const PRICE_CHANNELS = [
    billing:{mode:'volume', minCbm:1, cbmRatio:0},
    name:{zh:"菲律宾海运包税专线", en:"Philippines Sea DDP Line"},
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
-   note:{zh:"双清包税；马尼拉最低500元、不足1方+100元；宿务/达沃/卡加延最低1方；木箱/木架/托盘普货+50RMB/CBM。", en:"DDP; Manila min 500 CNY, <1 CBM +100; Cebu/Davao/Cagayan min 1 CBM."},
+   note:{zh:"双清包税；马尼拉最低500元、不足1方+100元；宿务/达沃/卡加延最低1方；木箱/木架/托盘普货+50RMB/CBM。包派范围：Metro Manila（1000-1812）、Laguna（4023-4027）、Bulacan（3005/3019/3020/3023）、Cavite（4100/4102/4103/4104/4107/4108/4109/4114/4118）。", en:"DDP; Manila min 500 CNY, <1 CBM +100; Cebu/Davao/Cagayan min 1 CBM. Covered: Metro Manila (1000-1812), Laguna (4023-4027), Bulacan (3005/3019/3020/3023), Cavite (4100/4102/4103/4104/4107/4108/4109/4114/4118)."},
    detail:Object.assign({}, PH_SEA_DETAIL, {
-     remarks:{
-       zh:"· 入佛山仓库；义乌 +100元/方。\n· 普货：木箱、木架、托盘的普货货物单价 +50RMB/CBM。\n· 时效：马尼拉 15-20 工作日；达沃/宿务 20-30 工作日。\n· 特殊类货物仅马尼拉可运输，宿务、达沃需单独咨询核实才能出运。",
-       en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· General cargo in wooden crate/rack/pallet: +50 CNY/CBM.\n· Transit: Manila 15-20 working days; Davao/Cebu 20-30 working days.\n· Special goods only available to Manila; Cebu/Davao require separate confirmation."
-     }
+     remarks:{zh:"· 入佛山仓库；义乌 +100元/方。\n· 普货：木箱、木架、托盘的普货货物单价 +50RMB/CBM。\n· 时效：马尼拉 15-20 工作日；达沃/宿务 20-30 工作日。\n· 特殊类货物仅马尼拉可运输，宿务、达沃需单独咨询核实才能出运。\n· 【包派区域】Metro Manila（1000-1018 Manila / 1100-1128 Quezon City / 1200-1235 Makati / 1300-1309 Pasay / 1400-1428 Caloocan / 1409-1480 Malabon / 1409-1490 Navotas / 1440-1469 Valenzuela / 1500-1504 San Juan / 1550-1556 Mandaluyong / 1600-1612 Pasig / 1620-1621 Pateros / 1770-1799 Muntinlupa / 1800-1812 Marikina）、Laguna（4023 San Pedro / 4024 Binan / 4025 Cabuyao / 4026 Sta Rosa / 4027 Calamba）、Bulacan（3005 Pulilan / 3019 Marilao / 3020 Meycauayan / 3023 San Jose del Monte）、Cavite（4100 Cavite City / 4102 Bacoor / 4103 Imus / 4104 Kawit / 4107 Gen Tri / 4108 Tanza / 4109 Trece Martires / 4114 Dasmariñas / 4118 Silang），填写这些邮编时系统自动识别为包派，按马尼拉价格计费。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· General cargo in wooden crate/rack/pallet: +50 CNY/CBM.\n· Transit: Manila 15-20 working days; Davao/Cebu 20-30 working days.\n· Special goods only available to Manila; Cebu/Davao require separate confirmation.\n· 【Covered】Metro Manila (1000-1812), Laguna (4023-4027), Bulacan (3005/3019/3020/3023), Cavite (4100/4102/4103/4104/4107/4108/4109/4114/4118) — auto-detected, Manila rate applies."}
    }),
-   endService:{
-     zh:"1. 未含的城市请咨询派送费。\n2. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n3. 单件货物尺寸宽和高超过2米、长度超过5m为超大尺寸，请安排自提；如需派送需请大型车辆，费用实报实销。单件货物超过3000KGS产生大型叉车操作费单独确认。\n4. 目的地当地的派送服务仅派送至收件人地址楼下且不上楼，不提供装卸服务。大件货物派送必须由收货人准备叉车卸货工具，如因收货人或发货人原因导致货物无法送达，退回我司仓库，则需加收 RMB100/票的操作费；自提件5天免仓期。\n5. 免租期5天；寄仓6-10天 200p/CBM/天；11-15天 400p/CBM/天；16天以上 600p/CBM/天。\n6. 马尼拉最低消费500元，不足1个方要另外加收100元的费用；宿务/达沃/卡加延最低消费1个方。\n7. 木箱、木架、托盘的普货货物单价 +50RMB/CBM。",
-     en:"1. Cities not listed: consult delivery fee.\n2. Single side >2m or single piece >1.5t: to be confirmed.\n3. Width & height >2m, length >5m: oversize, self-pickup required.\n4. Delivery to ground floor only, no unloading.\n5. Free 5 days; 6-10 days 200p/CBM/day; 11-15 days 400p/CBM/day; 16+ days 600p/CBM/day.\n6. Manila min 500 CNY; <1 CBM +100 CNY.\n7. Wooden crate/pallet general cargo +50 CNY/CBM."
-   },
+   endService:{zh:"1. 未含的城市请咨询派送费。\n2. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n3. 单件货物尺寸宽和高超过2米、长度超过5m为超大尺寸，请安排自提；如需派送需请大型车辆，费用实报实销。单件货物超过3000KGS产生大型叉车操作费单独确认。\n4. 目的地当地的派送服务仅派送至收件人地址楼下且不上楼，不提供装卸服务。大件货物派送必须由收货人准备叉车卸货工具，如因收货人或发货人原因导致货物无法送达，退回我司仓库，则需加收 RMB100/票的操作费；自提件5天免仓期。\n5. 免租期5天；寄仓6-10天 200p/CBM/天；11-15天 400p/CBM/天；16天以上 600p/CBM/天。\n6. 马尼拉最低消费500元，不足1个方要另外加收100元的费用；宿务/达沃/卡加延最低消费1个方。\n7. 木箱、木架、托盘的普货货物单价 +50RMB/CBM。\n8. 【包派区域】以下邮编按马尼拉价格包派，填写后系统自动识别：\n   · Metro Manila：1000-1018 Manila、1100-1128 Quezon City、1200-1235 Makati、1300-1309 Pasay、1400-1428 Caloocan、1409-1480 Malabon、1409-1490 Navotas、1440-1469 Valenzuela、1500-1504 San Juan、1550-1556 Mandaluyong、1600-1612 Pasig、1620-1621 Pateros、1770-1799 Muntinlupa、1800-1812 Marikina\n   · Laguna：4023 San Pedro、4024 Binan、4025 Cabuyao、4026 Sta Rosa、4027 Calamba\n   · Bulacan：3005 Pulilan、3019 Marilao、3020 Meycauayan、3023 San Jose del Monte\n   · Cavite：4100 Cavite City、4102 Bacoor、4103 Imus、4104 Kawit、4107 Gen Tri、4108 Tanza、4109 Trece Martires、4114 Dasmariñas、4118 Silang",en:"1. Cities not listed: consult delivery fee.\n2. Single side >2m or single piece >1.5t: to be confirmed.\n3. Width & height >2m, length >5m: oversize, self-pickup required.\n4. Delivery to ground floor only, no unloading.\n5. Free 5 days; 6-10 days 200p/CBM/day; 11-15 days 400p/CBM/day; 16+ days 600p/CBM/day.\n6. Manila min 500 CNY; <1 CBM +100 CNY.\n7. Wooden crate/pallet general cargo +50 CNY/CBM.\n8. 【Covered】Auto-detected at Manila rate:\n   · Metro Manila: 1000-1018 Manila, 1100-1128 Quezon City, 1200-1235 Makati, 1300-1309 Pasay, 1400-1428 Caloocan, 1409-1480 Malabon, 1409-1490 Navotas, 1440-1469 Valenzuela, 1500-1504 San Juan, 1550-1556 Mandaluyong, 1600-1612 Pasig, 1620-1621 Pateros, 1770-1799 Muntinlupa, 1800-1812 Marikina\n   · Laguna: 4023 San Pedro, 4024 Binan, 4025 Cabuyao, 4026 Sta Rosa, 4027 Calamba\n   · Bulacan: 3005 Pulilan, 3019 Marilao, 3020 Meycauayan, 3023 San Jose del Monte\n   · Cavite: 4100 Cavite City, 4102 Bacoor, 4103 Imus, 4104 Kawit, 4107 Gen Tri, 4108 Tanza, 4109 Trece Martires, 4114 Dasmariñas, 4118 Silang"},
    head:{zh:["货类","马尼拉","达沃","宿务","卡加延"], en:["Category","Manila","Davao","Cebu","Cagayan"]},
    rows:{
      zh:[["普货","750","1100","1100","1100"],["A类(内电/小家电)","850","1150","1150","1150"],["B类(二手/食品/仿牌)","900","1250","1250","1250"],["特殊货(药品/化工/电池)","1800","单询","单询","单询"]],
@@ -1463,15 +1318,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓", en:"Foshan warehouse"},
    note:{zh:"/6000；曼谷市内/外分价；不足1KG按1KG；曼谷市区满1CBM免费派送、低于1CBM+100/票操作费；曼谷以外邮编84000+偏远加3元/kg。", en:"÷6000; Bangkok inner/outer priced separately; Bangkok free ≥1 CBM; outside Bangkok 84000+ remote +3 CNY/kg."},
    detail:Object.assign({}, TH_LAND_DETAIL, {
-     remarks:{
-       zh:"· 曼谷市内（TH1）与曼谷市外（TH2）分价，入佛山仓库。\n· 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n· 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独附加 3 元/Kg 派送费用。\n· 参考时效：曼谷市内 5-7 工作日；曼谷市外 7-10 工作日。",
-       en:"· Bangkok (TH1) vs outside Bangkok (TH2) priced separately; enters Foshan warehouse.\n· Bangkok delivery postcodes: 10900–10100.\n· Outside Bangkok (TH2) postcode 84000+: remote surcharge +3 CNY/kg.\n· Transit: Bangkok 5-7 working days; outside 7-10 working days."
-     }
+     remarks:{zh:"· 曼谷市内（TH1）与曼谷市外（TH2）分价，入佛山仓库。\n· 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n· 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独附加 3 元/Kg 派送费用。\n· 参考时效：曼谷市内 5-7 工作日；曼谷市外 7-10 工作日。",en:"· Bangkok (TH1) vs outside Bangkok (TH2) priced separately; enters Foshan warehouse.\n· Bangkok delivery postcodes: 10900–10100.\n· Outside Bangkok (TH2) postcode 84000+: remote surcharge +3 CNY/kg.\n· Transit: Bangkok 5-7 working days; outside 7-10 working days."}
    }),
-   endService:{
-     zh:"1. 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n2. 曼谷市区满 1CBM 免费派送，低于 1CBM +100/票操作费。\n3. 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独加 3 元/kg 派送费用。\n4. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n5. 此报价不包含目的地罚款、仓储及收件方引起的退件费、销毁费。\n6. 以下地址派送不到：军营、机场内、保税区、医院、监狱、离岛、果园深处（山里）等。\n7. 因收件人联系不上或地址错误导致退仓重寄，免仓期7天（超过按照 RMB1/Kg/天 收取仓储费，一个月无人处理的默认销毁）。\n8. 派送只到楼下，不上楼。",
-     en:"1. Bangkok downtown postcodes: 10900-10100.\n2. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket.\n3. Outside Bangkok (TH2) postcode 84000+ remote +3 CNY/kg.\n4. Single side >2m or single piece >1t: to be confirmed.\n5. Quote excludes destination fines, storage, return/destruction fees.\n6. Not deliverable: military, airport, bonded area, hospital, prison, islands, deep orchards.\n7. Free storage 7 days; beyond 1 CNY/kg/day; unclaimed after 1 month default destroyed.\n8. Delivery to ground floor only."
-   },
+   endService:{zh:"1. 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n2. 曼谷市区满 1CBM 免费派送，低于 1CBM +100/票操作费。\n3. 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独加 3 元/kg 派送费用。\n4. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n5. 此报价不包含目的地罚款、仓储及收件方引起的退件费、销毁费。\n6. 以下地址派送不到：军营、机场内、保税区、医院、监狱、离岛、果园深处（山里）等。\n7. 因收件人联系不上或地址错误导致退仓重寄，免仓期7天（超过按照 RMB1/Kg/天 收取仓储费，一个月无人处理的默认销毁）。\n8. 派送只到楼下，不上楼。",en:"1. Bangkok downtown postcodes: 10900-10100.\n2. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket.\n3. Outside Bangkok (TH2) postcode 84000+ remote +3 CNY/kg.\n4. Single side >2m or single piece >1t: to be confirmed.\n5. Quote excludes destination fines, storage, return/destruction fees.\n6. Not deliverable: military, airport, bonded area, hospital, prison, islands, deep orchards.\n7. Free storage 7 days; beyond 1 CNY/kg/day; unclaimed after 1 month default destroyed.\n8. Delivery to ground floor only."},
    head:{zh:["类型","首重","续重","25+","51+","71+","101+","201+","301+"], en:["Category","First","Add","25+","51+","71+","101+","201+","301+"]},
    rows:{
      zh:[["曼谷·普货/带电池","30","13","12","9","8.5","8","7.5","7.5"],["曼谷·化妆品/食品/液体/医疗器械","50","25","15","13","13","12","12","11"],["曼谷·化工/仿牌","55","25","23","21","20","18","18","16"],["曼谷·香水/药品/性用品","85","35","34","34","34","29","29","29"],["曼谷外·普货","35","14","13","11.5","11.5","11","10.5","10.5"],["曼谷外·化妆品/食品/液体","55","28","18","16","16","15","14","14"],["曼谷外·化工/仿牌","65","28","25","24","23","19","18","16"],["曼谷外·香水/药品/性用品","90","35","35","35","35","30","30","30"]],
@@ -1483,15 +1332,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"海运/陆运两档；曼谷满1方免费派送，低于1CBM+100/票操作费；超重1方=500KG。", en:"Sea / Land options; Bangkok free ≥1 CBM, <1 CBM +100/ticket; overweight 1 CBM = 500KG."},
    detail:Object.assign({}, TH_SEA_DETAIL, {
-     remarks:{
-       zh:"· 入佛山仓库；入义乌 +100元/方。\n· 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900–10100；曼谷以外派送费用单独咨询。\n· 海运时效 15-18 工作日；陆运时效 7-10 工作日。\n· 海运电池（1比300）最低1CBM。",
-       en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok postcodes 10900–10100; outside Bangkok delivery on request.\n· Sea transit 15-18 working days; land 7-10 working days.\n· Sea battery (1:300) min 1 CBM."
-     }
+     remarks:{zh:"· 入佛山仓库；入义乌 +100元/方。\n· 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900–10100；曼谷以外派送费用单独咨询。\n· 海运时效 15-18 工作日；陆运时效 7-10 工作日。\n· 海运电池（1比300）最低1CBM。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok postcodes 10900–10100; outside Bangkok delivery on request.\n· Sea transit 15-18 working days; land 7-10 working days.\n· Sea battery (1:300) min 1 CBM."}
    }),
-   endService:{
-     zh:"1. 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100；曼谷以外派送费用单独咨询。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算，不足1立方按照1立方计算。\n4. 派送包裹退回：退回后贵司要求重派按重派标准收费，一直未回复，我司末端将免费保存7天，到期销毁，运费正常收取。\n5. 重派标准：实报实销，重新派送前我司会协助确认。\n6. 派送只到楼下，不上楼。",
-     en:"1. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok downtown postcodes 10900-10100.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Thailand warehouse free storage 3 days; beyond 50 THB/CBM/day.\n4. Return: re-delivery charged at standard; JCYT free storage 7 days.\n5. Re-delivery: actual cost.\n6. Delivery to ground floor only."
-   },
+   endService:{zh:"1. 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100；曼谷以外派送费用单独咨询。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算，不足1立方按照1立方计算。\n4. 派送包裹退回：退回后贵司要求重派按重派标准收费，一直未回复，我司末端将免费保存7天，到期销毁，运费正常收取。\n5. 重派标准：实报实销，重新派送前我司会协助确认。\n6. 派送只到楼下，不上楼。",en:"1. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok downtown postcodes 10900-10100.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Thailand warehouse free storage 3 days; beyond 50 THB/CBM/day.\n4. Return: re-delivery charged at standard; JCYT free storage 7 days.\n5. Re-delivery: actual cost.\n6. Delivery to ground floor only."},
    head:{zh:["档位/货类","海运元/CBM","陆运元/CBM","海运时效"], en:["Tier/Category","Sea CNY/CBM","Land CNY/CBM","Sea transit"]},
    rows:{
      zh:[["普货","540","1100","15-18天"],["商检(带电/机器)","640","1300","15-18天"],["敏感(牌子/食品/化妆)","740","1400","15-18天"],["电池/化工(1:300)","1500","/","15-18天"]],
@@ -1503,15 +1346,8 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 最低1方 · 义乌+100元/方", en:"Foshan warehouse · min 1 CBM · Yiwu +100 CNY/CBM"},
    note:{zh:"1立方=230KG；北部/南部按区定价；不足1方按1方；河内免费派送，其他城市50元/方或0.3元/kg取大，最低200-300元。", en:"1 CBM = 230KG; North/South priced separately; Hanoi free."},
    detail:Object.assign({}, VN_BULK_DETAIL, {
-     remarks:{
-       zh:"· 越南陆运散货双清包税（1立方=230kg），入佛山仓（最低1立方金额计费）；入义乌仓+100元/方。\n· 参考时效：通关正常 3-5 个工作日到河内，7-9 工作日到胡志明。\n· 海阳、海防、平阳、隆安、同奈、北宁派送费 50元/立方 或 0.3元/kg 取大值，最低300元派送费。\n· 胡志明派送费 50元/立方 或 0.3元/kg 取大值，最低200元派送费，封顶1500元/票。\n· 河内免费派送；其他地区参考「散货未含派送费用城市」表格。",
-       en:"· Vietnam bulk land DDP (1 CBM = 230KG), enters Foshan warehouse (min billing 1 CBM); Yiwu +100 CNY/CBM.\n· Transit: 3-5 working days to Hanoi, 7-9 working days to HCMC.\n· Haiyang/Haiphong/Pingyang/Longan/Dongnai/Beining: 50 CNY/CBM or 0.3 CNY/kg (max), min 300 CNY.\n· HCMC: 50 CNY/CBM or 0.3 CNY/kg (max), min 200 CNY, cap 1,500 CNY/ticket.\n· Hanoi free; others consult the city table."
-     }
+     remarks:{zh:"· 越南陆运散货双清包税（1立方=230kg），入佛山仓（最低1立方金额计费）；入义乌仓+100元/方。\n· 参考时效：通关正常 3-5 个工作日到河内，7-9 工作日到胡志明。\n· 海阳、海防、平阳、隆安、同奈、北宁派送费 50元/立方 或 0.3元/kg 取大值，最低300元派送费。\n· 胡志明派送费 50元/立方 或 0.3元/kg 取大值，最低200元派送费，封顶1500元/票。\n· 河内免费派送；其他地区参考「散货未含派送费用城市」表格。",en:"· Vietnam bulk land DDP (1 CBM = 230KG), enters Foshan warehouse (min billing 1 CBM); Yiwu +100 CNY/CBM.\n· Transit: 3-5 working days to Hanoi, 7-9 working days to HCMC.\n· Haiyang/Haiphong/Pingyang/Longan/Dongnai/Beining: 50 CNY/CBM or 0.3 CNY/kg (max), min 300 CNY.\n· HCMC: 50 CNY/CBM or 0.3 CNY/kg (max), min 200 CNY, cap 1,500 CNY/ticket.\n· Hanoi free; others consult the city table."}
    }),
-   endService:{
-     zh:"1. 海阳、海防、平阳、隆安、同奈、北宁，派送费 50 元/立方 或 0.3 元/kg，取大值，最低 300 元派送费。\n2. 胡志明派送费 50 元/立方 或 0.3 元/kg，取大值，最低 200 元派送费，封顶 1500 元/票。\n3. 河内免费派送；其他地区参考散货未派送费用城市的表格。\n4. 未含的城市请咨询派送费，单件长度超 4 米或超 2 吨派送费用另计。\n5. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n6. 派送只到楼下，不上楼。",
-     en:"1. Haiyang/Haiphong/Pingyang/Longan/Dongnai/Beining: 50 CNY/CBM or 0.3 CNY/kg (max), min 300 CNY.\n2. HCMC: 50 CNY/CBM or 0.3 CNY/kg (max), min 200 CNY, cap 1,500 CNY/ticket.\n3. Hanoi free; others consult the city table.\n4. Cities not listed: consult; single piece length >4m or >2t: separate calculation.\n5. Single side >2m or single piece >1.5t: to be confirmed.\n6. Delivery to ground floor only."
-   },
    head:{zh:["货类","北部(河内等)","南部(胡志明等)"], en:["Category","North (Hanoi etc.)","South (HCMC etc.)"]},
    rows:{
      zh:[["A类(电商/五金/服装)","550","750"],["B类(5品名/内电/卡板)","750","880"],["C类(10方+大型/食品/带品牌)","1100","1300"],["D类(电池/化工/高价值)","2300","2760"]],
@@ -1523,15 +1359,8 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓", en:"Shenzhen warehouse"},
    note:{zh:"按省份分价；/5000；不足1KG按1KG；计费重取实重与体积重大者。", en:"Priced by province; ÷5000."},
    detail:Object.assign({}, VN_PARCEL_DETAIL, {
-     remarks:{
-       zh:"· 越南专线陆运到门（包税）报价，入深圳仓库。\n· 敏感货范围包含：常规液体、食品、化妆品、电子产品、机器，不包含仿牌。\n· 特殊物品/牌子货/单件超重/超大单独咨询。\n· 派送费参考「散货未含派送费用城市」表格：北部/中部/南部各省份按 KG 或 CBM 取大值计费。\n· 参考时效 7-10 工作日。",
-       en:"· Vietnam land door-to-door DDP, enters Shenzhen warehouse.\n· Sensitive scope: regular liquids, food, cosmetics, electronics, machinery — replicas excluded.\n· Special/branded/oversize/overweight items: consult separately.\n· Delivery fees refer to the city table: charged by max(KG, CBM).\n· Transit 7-10 working days."
-     }
+     remarks:{zh:"· 越南专线陆运到门（包税）报价，入深圳仓库。\n· 敏感货范围包含：常规液体、食品、化妆品、电子产品、机器，不包含仿牌。\n· 特殊物品/牌子货/单件超重/超大单独咨询。\n· 派送费参考「散货未含派送费用城市」表格：北部/中部/南部各省份按 KG 或 CBM 取大值计费。\n· 参考时效 7-10 工作日。",en:"· Vietnam land door-to-door DDP, enters Shenzhen warehouse.\n· Sensitive scope: regular liquids, food, cosmetics, electronics, machinery — replicas excluded.\n· Special/branded/oversize/overweight items: consult separately.\n· Delivery fees refer to the city table: charged by max(KG, CBM).\n· Transit 7-10 working days."}
    }),
-   endService:{
-     zh:"1. 派送费参考「散货未含派送费用城市」表格：北部/中部/南部各省份按 KG 或 CBM 取大值计费。\n2. 未含的城市请咨询派送费；单件长度超 4 米或超 2 吨派送费用另计。\n3. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n4. 派送只到楼下，不上楼。",
-     en:"1. Delivery fees refer to the city table: charged by max(KG, CBM).\n2. Cities not listed: consult.\n3. Single side >2m or single piece >1.5t: to be confirmed.\n4. Delivery to ground floor only."
-   },
    head:{zh:["目的地/货类","首重","续重","45+","75+","101+","301+","501+"], en:["Dest/Category","First","Add","45+","75+","101+","301+","501+"]},
    rows:{
      zh:[["河内·普货","45","15","11","11","8.5","6.5","5.5"],["河内·敏感","12","12","10.5","7.5","6.5","/","/"],["北部其它·普货","55","16","12","12","9.5","7.5","6.5"],["北部其它·敏感","13","13","11.5","8.5","7.5","/","/"],["胡志明·普货","45","15","13","13","9.5","8.5","7.5"],["胡志明·敏感","14","14","11.5","9.5","8.5","/","/"],["南部中部·普货","55","18","14","14","11","9.5","8.5"],["南部中部·敏感","15","15","13","11","10","/","/"],["全境·电池(大货单询)","85","30","25","25","23","22","20"]],
@@ -1543,15 +1372,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓", en:"Shenzhen warehouse"},
    note:{zh:"双清包税，雅加达为主；除6000；不足1KG按1KG；单票≥20kg免费派送，<20kg派送费50元/票。", en:"DDP, Jakarta-focused; ÷6000; ≥20kg free delivery, <20kg 50 CNY/ticket."},
    detail:Object.assign({}, ID_AIR_DETAIL, {
-     remarks:{
-       zh:"· 入深圳仓库。\n· 雅加达地区单票≥20kg免费派送；单票重量<20kg，派送费 RMB 50/票；其它地区派送费实报实销。\n· 普货渠道不接受木箱、木架货物；敏感1、敏感2可接受木箱、木架货物。\n· 参考时效：雅加达约 10-12 个工作日；其它地址+当地 J&T 或 JNE 快递转运时效。",
-       en:"· Shenzhen warehouse.\n· Jakarta: free delivery for tickets ≥20kg; <20kg 50 CNY/ticket; other areas charged at actual cost.\n· General channel does not accept wooden crates/racks; Sensitive 1 & 2 do.\n· Transit: Jakarta approx. 10-12 working days; other areas via local J&T / JNE."
-     }
+     remarks:{zh:"· 入深圳仓库。\n· 雅加达地区单票≥20kg免费派送；单票重量<20kg，派送费 RMB 50/票；其它地区派送费实报实销。\n· 普货渠道不接受木箱、木架货物；敏感1、敏感2可接受木箱、木架货物。\n· 参考时效：雅加达约 10-12 个工作日；其它地址+当地 J&T 或 JNE 快递转运时效。",en:"· Shenzhen warehouse.\n· Jakarta: free delivery for tickets ≥20kg; <20kg 50 CNY/ticket; other areas charged at actual cost.\n· General channel does not accept wooden crates/racks; Sensitive 1 & 2 do.\n· Transit: Jakarta approx. 10-12 working days; other areas via local J&T / JNE."}
    }),
-   endService:{
-     zh:"1. 收货人拒付相关费用则要发货人承担，否则扣货处理，15 天内不给出处理方案，我司自行处理该货物。\n2. 未派送前更改地址 80RMB/票，转运中心或派送中更改地址按实际货量收取。\n3. 到仓后派送中若产生二次派送，费用实报实销。\n4. 到雅加达后转第三方物流派送，损坏、丢失需向第三方索赔，我司协助但不负责赔偿。\n5. 货物被当地执法人员扣货、没收，我司不接受赔偿。\n6. 货到仓后第 5 天起收仓租，每公斤 0.5 元 RMB【单票最低 50 元】。\n7. 雅加达地区单票≥20kg免费派送，<20kg派送费 RMB 50/票；其它地区实报实销。",
-     en:"1. If receiver refuses charges, sender bears; after 15 days JCYT handles goods.\n2. Address change 80 CNY/ticket before dispatch.\n3. Second delivery attempt charged as actual cost.\n4. Third-party delivery: damage/loss claimed from third party.\n5. If goods confiscated, JCYT not liable.\n6. Warehouse rent from day 5, 0.5 CNY/kg/day (min 50 CNY/ticket).\n7. Jakarta: ≥20kg free; <20kg 50 CNY/ticket; other regions actual cost."
-   },
+   endService:{zh:"1. 收货人拒付相关费用则要发货人承担，否则扣货处理，15 天内不给出处理方案，我司自行处理该货物。\n2. 未派送前更改地址 80RMB/票，转运中心或派送中更改地址按实际货量收取。\n3. 到仓后派送中若产生二次派送，费用实报实销。\n4. 到雅加达后转第三方物流派送，损坏、丢失需向第三方索赔，我司协助但不负责赔偿。\n5. 货物被当地执法人员扣货、没收，我司不接受赔偿。\n6. 货到仓后第 5 天起收仓租，每公斤 0.5 元 RMB【单票最低 50 元】。\n7. 雅加达地区单票≥20kg免费派送，<20kg派送费 RMB 50/票；其它地区实报实销。",en:"1. If receiver refuses charges, sender bears; after 15 days JCYT handles goods.\n2. Address change 80 CNY/ticket before dispatch.\n3. Second delivery attempt charged as actual cost.\n4. Third-party delivery: damage/loss claimed from third party.\n5. If goods confiscated, JCYT not liable.\n6. Warehouse rent from day 5, 0.5 CNY/kg/day (min 50 CNY/ticket).\n7. Jakarta: ≥20kg free; <20kg 50 CNY/ticket; other regions actual cost."},
    head:{zh:["货类","首重","续重","21+","51+","101+","301+"], en:["Category","First","Add","21+","51+","101+","301+"]},
    rows:{
      zh:[["普货","83","77","77","77","77","76"],["敏感1(带电/木架/纺织品)","85","85","84","84","83","83"],["敏感2(化妆品/液粉/食品/品牌)","95","90","89","88","87","86"]],
@@ -1563,15 +1386,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"雅加达/巴淡分价；直航雅加达约1个月；不足0.5方按0.5方；满1方雅加达/唐格朗市区免费派送，不足1方+200元/次。", en:"Jakarta / Batam priced separately; ≥1 CBM Jakarta/Tangerang free, <1 CBM +200 CNY/trip."},
    detail:Object.assign({}, ID_SEA_DETAIL, {
-     remarks:{
-       zh:"· 入佛山仓库；义乌仓交货 +100/方；品牌 +200/方。\n· 直航雅加达，整体时效一个月左右。\n· 满 1 立方雅加达、唐格朗市区免费派送，不足 1 立方加收 200RMB 每次末端派送费；以外地区需另外加收偏远物流及快递费用。\n· 货物到印尼海外仓，最低 1CBM 起雅加达派送（不含某些特定片区）。",
-       en:"· Foshan warehouse; Yiwu +100 CNY/CBM; branded +200 CNY/CBM.\n· Direct sailing to Jakarta, overall transit about one month.\n· ≥1 CBM free delivery in Jakarta/Tangerang downtown; <1 CBM +200 CNY per trip; other areas incur extra remote logistics and courier fees.\n· From the Indonesia warehouse, minimum 1 CBM for Jakarta delivery."
-     }
+     remarks:{zh:"· 入佛山仓库；义乌仓交货 +100/方；品牌 +200/方。\n· 直航雅加达，整体时效一个月左右。\n· 满 1 立方雅加达、唐格朗市区免费派送，不足 1 立方加收 200RMB 每次末端派送费；以外地区需另外加收偏远物流及快递费用。\n· 货物到印尼海外仓，最低 1CBM 起雅加达派送（不含某些特定片区）。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM; branded +200 CNY/CBM.\n· Direct sailing to Jakarta, overall transit about one month.\n· ≥1 CBM free delivery in Jakarta/Tangerang downtown; <1 CBM +200 CNY per trip; other areas incur extra remote logistics and courier fees.\n· From the Indonesia warehouse, minimum 1 CBM for Jakarta delivery."}
    }),
-   endService:{
-     zh:"1. 派送范围：满 1 立方雅加达、唐格朗市区免费派送，不足 1 立方加收 200RMB 每次末端派送费。以外地区需另外加收偏远物流及快递费用。\n2. 派送费、超长超重货物需提前咨询。\n3. 派送只到楼下，不上楼。\n4. 派送请将货运信息与我司销售人员确认后方可派送。\n5. 货物到印尼海外仓，最低 1CBM 起雅加达派送（不含某些特定的片区）。\n6. 如要派送到爪哇全岛及外岛，请客户提前与印尼同事确认，且以实际的派送费用收取。\n7. 易碎品包装要求必须打木架/木箱，并提供易碎保函。",
-     en:"1. ≥1 CBM Jakarta/Tangerang downtown free; <1 CBM +200 CNY/trip.\n2. Oversize/overweight: consult first.\n3. Delivery to ground floor only.\n4. Please confirm delivery info with our sales.\n5. From Indonesia warehouse, min 1 CBM for Jakarta delivery.\n6. Java-wide and outer islands: confirm with Indonesia colleagues.\n7. Fragile items must be packed with wooden crate."
-   },
+   endService:{zh:"1. 派送范围：满 1 立方雅加达、唐格朗市区免费派送，不足 1 立方加收 200RMB 每次末端派送费。以外地区需另外加收偏远物流及快递费用。\n2. 派送费、超长超重货物需提前咨询。\n3. 派送只到楼下，不上楼。\n4. 派送请将货运信息与我司销售人员确认后方可派送。\n5. 货物到印尼海外仓，最低 1CBM 起雅加达派送（不含某些特定的片区）。\n6. 如要派送到爪哇全岛及外岛，请客户提前与印尼同事确认，且以实际的派送费用收取。\n7. 易碎品包装要求必须打木架/木箱，并提供易碎保函。",en:"1. ≥1 CBM Jakarta/Tangerang downtown free; <1 CBM +200 CNY/trip.\n2. Oversize/overweight: consult first.\n3. Delivery to ground floor only.\n4. Please confirm delivery info with our sales.\n5. From Indonesia warehouse, min 1 CBM for Jakarta delivery.\n6. Java-wide and outer islands: confirm with Indonesia colleagues.\n7. Fragile items must be packed with wooden crate."},
    head:{zh:["货类","雅加达","巴淡"], en:["Category","Jakarta","Batam"]},
    rows:{
      zh:[["普货","1950","1050"],["商检货(玩具/家电/五金)","2250","1150"],["食品","2650","1150"],["敏感1(对讲机/二手设备)","3250","1250"],["敏感2(药品/化工/香水)","3500","1250"],["日化类(化妆品/洗涤)","3800","1250"],["服装(仅全新)","5800","1500"]],
@@ -1583,14 +1400,8 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓", en:"Foshan warehouse"},
    note:{zh:"小包/5000；不足1KG按1KG；金边7-9工作日，其它城市8-11工作日。", en:"Parcel ÷5000; Phnom Penh 7-9 days, other cities 8-11 days."},
    detail:Object.assign({}, KH_COMMON, {
-     billing:{
-       zh:"柬埔寨专线（小包）：以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷5000。",
-       en:"Cambodia parcel: billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷5000)."
-     },
-     remarks:{
-       zh:"· 柬埔寨小包专线材积 ÷5000，入佛山仓库。\n· 敏感货含：品牌/高价值/食品/化妆品/保健品/药品/酒类（需打木架）/游戏机/发电机/普通化工品/香水/电动车/大件带电产品。\n· 参考时效：金边 7-9 工作日；其它城市 8-11 工作日。",
-       en:"· Cambodia parcel ÷5000, enters Foshan warehouse.\n· Sensitive: brand/high-value/food/cosmetics/health products/medicine/alcohol (wooden rack)/game consoles/generators/chemicals/perfume/e-vehicles/large battery items.\n· Transit: Phnom Penh 7-9 working days; other cities 8-11 working days."
-     }
+     billing:{zh:"柬埔寨专线（小包）：以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷5000。",en:"Cambodia parcel: billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷5000)."},
+     remarks:{zh:"· 柬埔寨小包专线材积 ÷5000，入佛山仓库。\n· 敏感货含：品牌/高价值/食品/化妆品/保健品/药品/酒类（需打木架）/游戏机/发电机/普通化工品/香水/电动车/大件带电产品。\n· 参考时效：金边 7-9 工作日；其它城市 8-11 工作日。",en:"· Cambodia parcel ÷5000, enters Foshan warehouse.\n· Sensitive: brand/high-value/food/cosmetics/health products/medicine/alcohol (wooden rack)/game consoles/generators/chemicals/perfume/e-vehicles/large battery items.\n· Transit: Phnom Penh 7-9 working days; other cities 8-11 working days."}
    }),
    head:{zh:["目的地/货类","首重","续重","11+","101+","501+"], en:["Dest/Category","First","Add","11+","101+","501+"]},
    rows:{
@@ -1603,14 +1414,8 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"大货按方；最低0.5方起，不足1方+100元；1方=500KG；超重按实际重量/500KG计费。", en:"Bulk per CBM; min 0.5 CBM, <1 CBM +100 CNY; 1 CBM = 500KG."},
    detail:Object.assign({}, KH_COMMON, {
-     billing:{
-       zh:"柬埔寨陆运大货：以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。最低收费0.5立方起，不足1个方另外加收100元的费用。",
-       en:"Cambodia bulk land: billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500). Minimum 0.5 CBM; under 1 CBM adds 100 CNY."
-     },
-     remarks:{
-       zh:"· 入佛山仓库；入义乌仓库 +100元/方。\n· 最低收费0.5立方起，不足1个方另外加收100元的费用。\n· 参考时效 8-10 工作日。",
-       en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Minimum 0.5 CBM; under 1 CBM adds 100 CNY.\n· Transit 8-10 working days."
-     }
+     billing:{zh:"柬埔寨陆运大货：以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。最低收费0.5立方起，不足1个方另外加收100元的费用。",en:"Cambodia bulk land: billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500). Minimum 0.5 CBM; under 1 CBM adds 100 CNY."},
+     remarks:{zh:"· 入佛山仓库；入义乌仓库 +100元/方。\n· 最低收费0.5立方起，不足1个方另外加收100元的费用。\n· 参考时效 8-10 工作日。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Minimum 0.5 CBM; under 1 CBM adds 100 CNY.\n· Transit 8-10 working days."}
    }),
    head:{zh:["货类","金边元/CBM"], en:["Category","Phnom Penh CNY/CBM"]},
    rows:{
@@ -1623,15 +1428,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"双清包税；万象可派送、其它城市自提；不足0.5方按0.5方；超重1方=350KG；万象市派送费普货200元/票，超大件400元/票。", en:"DDP; Vientiane delivery, other cities self-pickup; <0.5 CBM rounded up; overweight 1 CBM = 350KG."},
    detail:Object.assign({}, LA_DETAIL, {
-     remarks:{
-       zh:"· 老挝专线双清包税，入佛山仓库；入义乌仓库 +100元/方。\n· 万象市派送费：普货200元/票，超大件400元/票，超出单询。（其它万象以外地址需要到站点自提）\n· 参考时效 7-13 天（万象 7-10 天，孟赛等 10-13 天）。\n· 普货定义：单一品名、衣服、工厂制品/半成品、电器、玩具、百货、日用百杂、鞋服辅料、建材、非报关或商检货物；无仿牌、带电池、带磁、无液体、无粉末、无颗粒、无膏状。\n· 敏感货：食品、大型设备、手表、蓝牙耳机、化妆品、中草药、普化工、电动车、需报关或商检类货物、集运货。",
-       en:"· Laos DDP line, enters Foshan warehouse; Yiwu +100 CNY/CBM.\n· Vientiane delivery: general 200 CNY/ticket, oversize 400 CNY/ticket; beyond on request. (Other areas: self-pickup at station.)\n· Transit 7-13 days.\n· General: single SKU, apparel, factory products/semi-finished, appliances, toys, general merchandise, footwear accessories, building materials, non-declared goods; no replicas, batteries, magnets, liquids, powders, granules or pastes.\n· Sensitive: food, large equipment, watches, Bluetooth earphones, cosmetics, Chinese herbs, general chemicals, e-vehicles, goods requiring declaration or inspection, consolidation cargo."
-     }
+     remarks:{zh:"· 老挝专线双清包税，入佛山仓库；入义乌仓库 +100元/方。\n· 万象市派送费：普货200元/票，超大件400元/票，超出单询。（其它万象以外地址需要到站点自提）\n· 参考时效 7-13 天（万象 7-10 天，孟赛等 10-13 天）。\n· 普货定义：单一品名、衣服、工厂制品/半成品、电器、玩具、百货、日用百杂、鞋服辅料、建材、非报关或商检货物；无仿牌、带电池、带磁、无液体、无粉末、无颗粒、无膏状。\n· 敏感货：食品、大型设备、手表、蓝牙耳机、化妆品、中草药、普化工、电动车、需报关或商检类货物、集运货。",en:"· Laos DDP line, enters Foshan warehouse; Yiwu +100 CNY/CBM.\n· Vientiane delivery: general 200 CNY/ticket, oversize 400 CNY/ticket; beyond on request. (Other areas: self-pickup at station.)\n· Transit 7-13 days.\n· General: single SKU, apparel, factory products/semi-finished, appliances, toys, general merchandise, footwear accessories, building materials, non-declared goods; no replicas, batteries, magnets, liquids, powders, granules or pastes.\n· Sensitive: food, large equipment, watches, Bluetooth earphones, cosmetics, Chinese herbs, general chemicals, e-vehicles, goods requiring declaration or inspection, consolidation cargo."}
    }),
-   endService:{
-     zh:"1. 货物到达后，请在 3 天内提货，逾期每天按运费 5% 收取仓储费，30 天后本公司按无主货物自行处理。\n2. 如需派送，每票提供 1 次派送服务（限同一地址）；1 次派送不成功，货物将退回派送站点仓库等待新的指令。\n3. 超长超重货物目的地需自行卸货。\n4. 万象市派送费：普货 200 元/票，超大件 400/票，超出单询。（其它万象以外地址需要到站点自提）\n5. 派送只到楼下，不上楼。\n6. 单证报关退税 +800/票，商检费 +1000/票。",
-     en:"1. Pickup within 3 days; late storage fee 5% of freight/day; after 30 days treated as unclaimed.\n2. One delivery per ticket (same address); failed delivery returns to station.\n3. Oversize/overweight: destination unloading by receiver.\n4. Vientiane delivery: general 200 CNY/ticket, oversize 400 CNY/ticket; beyond on request.\n5. Delivery to ground floor only.\n6. Formal declaration with tax refund +800/ticket; inspection +1,000/ticket."
-   },
+   endService:{zh:"1. 货物到达后，请在 3 天内提货，逾期每天按运费 5% 收取仓储费，30 天后本公司按无主货物自行处理。\n2. 如需派送，每票提供 1 次派送服务（限同一地址）；1 次派送不成功，货物将退回派送站点仓库等待新的指令。\n3. 超长超重货物目的地需自行卸货。\n4. 万象市派送费：普货 200 元/票，超大件 400/票，超出单询。（其它万象以外地址需要到站点自提）\n5. 派送只到楼下，不上楼。\n6. 单证报关退税 +800/票，商检费 +1000/票。",en:"1. Pickup within 3 days; late storage fee 5% of freight/day; after 30 days treated as unclaimed.\n2. One delivery per ticket (same address); failed delivery returns to station.\n3. Oversize/overweight: destination unloading by receiver.\n4. Vientiane delivery: general 200 CNY/ticket, oversize 400 CNY/ticket; beyond on request.\n5. Delivery to ground floor only.\n6. Formal declaration with tax refund +800/ticket; inspection +1,000/ticket."},
    head:{zh:["目的地","普货","敏感货"], en:["Destination","General","Sensitive"]},
    rows:{
      zh:[["万象","900","1200"],["孟赛","1200","/"],["琅勃拉邦","1200","/"],["沙湾拿吉","1200","1500"],["塔克","1200","1500"],["巴色","1300","1600"]],
@@ -1643,15 +1442,9 @@ const PRICE_CHANNELS = [
    wh:{zh:"入深圳仓", en:"Shenzhen warehouse"},
    note:{zh:"双清包税到门，迪拜/其它城市分价；16KG以下不足0.5按0.5、16KG以上按1KG；除6000；迪拜8天，其他城市10-12天。", en:"DDP door-to-door, Dubai / other cities priced separately; <16KG rounds to 0.5, ≥16KG rounds to 1; ÷6000."},
    detail:Object.assign({}, AE_DETAIL, {
-     remarks:{
-       zh:"· 报价包含阿联酋关税和VAT，但不提供关税单及增值税发票。\n· 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马/哈伊马角）/ Umm Alquain（乌姆盖万）。\n· 迪拜 8 个工作日，其他城市 10-12 个工作日。\n· Fujairah 全区无派送服务。\n· 木架、木箱包装需要打活页；内置电池不超100WH，只接受UN3481电池标，中性包装。",
-       en:"· Quote includes UAE customs duty and VAT, but no duty/VAT invoice is provided.\n· Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n· Dubai 8 working days; other cities 10-12 working days.\n· Fujairah: no delivery service at all.\n· Wooden rack/crate needs hinges; built-in battery under 100WH, UN3481 label only, neutral packaging."
-     }
+     remarks:{zh:"· 报价包含阿联酋关税和VAT，但不提供关税单及增值税发票。\n· 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马/哈伊马角）/ Umm Alquain（乌姆盖万）。\n· 迪拜 8 个工作日，其他城市 10-12 个工作日。\n· Fujairah 全区无派送服务。\n· 木架、木箱包装需要打活页；内置电池不超100WH，只接受UN3481电池标，中性包装。",en:"· Quote includes UAE customs duty and VAT, but no duty/VAT invoice is provided.\n· Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n· Dubai 8 working days; other cities 10-12 working days.\n· Fujairah: no delivery service at all.\n· Wooden rack/crate needs hinges; built-in battery under 100WH, UN3481 label only, neutral packaging."}
    }),
-   endService:{
-     zh:"1. 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马/哈伊马角）/ Umm Alquain（乌姆盖万）。\n2. 其他偏远地区派送需单独询，具体请参考下列地址：\n   · Dubai（偏远地址）：Dxb Pearl Jumeirah Nikki beach area / Silicon Oasis Phase 2 / Al Ain Rd aft Academic city / FREE ZONE\n   · Abu Dhabi（偏远地址）：TAWEELA / SADIYATH ISLAND / AL RAHBAH / SHAHAMA / BANIYAS / MIRFA / SILA / AUH UNIVERSITY / Al Falah / SHAMKA / MOHD BIN ZYD CITY / LIWA / WESTERN REAGON / KHALIFA CITY B / BEDA ZAYED / GANTHOOTH / RUWAIS / FREE ZONE\n   · Sharjah（偏远地址）：SHJ indl 18 / American university area / Shj shooting club / Madam / RAK nr Oman border / Rak Al jeer area / RAK maritime City / FREE ZONE / UMQ aft dreamland park / Hatta / RAK port area\n   · Jebel Ali（偏远地址）：Truck Road / Jande nul Dredging / FREE ZONE\n   · Fujairah：全区无派送服务。\n3. 派送只到楼下，不上楼。\n4. 16KG以下不足0.5按0.5、16KG以上按1KG计费；除6000。",
-     en:"1. Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n2. Remote areas consult separately.\n3. Delivery to ground floor only.\n4. <16KG rounds to 0.5; ≥16KG rounds to 1; ÷6000."
-   },
+   endService:{zh:"1. 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马/哈伊马角）/ Umm Alquain（乌姆盖万）。\n2. 其他偏远地区派送需单独询，具体请参考下列地址：\n   · Dubai（偏远地址）：Dxb Pearl Jumeirah Nikki beach area / Silicon Oasis Phase 2 / Al Ain Rd aft Academic city / FREE ZONE\n   · Abu Dhabi（偏远地址）：TAWEELA / SADIYATH ISLAND / AL RAHBAH / SHAHAMA / BANIYAS / MIRFA / SILA / AUH UNIVERSITY / Al Falah / SHAMKA / MOHD BIN ZYD CITY / LIWA / WESTERN REAGON / KHALIFA CITY B / BEDA ZAYED / GANTHOOTH / RUWAIS / FREE ZONE\n   · Sharjah（偏远地址）：SHJ indl 18 / American university area / Shj shooting club / Madam / RAK nr Oman border / Rak Al jeer area / RAK maritime City / FREE ZONE / UMQ aft dreamland park / Hatta / RAK port area\n   · Jebel Ali（偏远地址）：Truck Road / Jande nul Dredging / FREE ZONE\n   · Fujairah：全区无派送服务。\n3. 派送只到楼下，不上楼。\n4. 16KG以下不足0.5按0.5、16KG以上按1KG计费；除6000。",en:"1. Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n2. Remote areas consult separately.\n3. Delivery to ground floor only.\n4. <16KG rounds to 0.5; ≥16KG rounds to 1; ÷6000."},
    head:{zh:["货类","迪拜·首0.5","迪拜·续0.5","16-49","50-99","100-299","300-499","500+"], en:["Category","Dubai First 0.5","Dubai Add 0.5","16-49","50-99","100-299","300-499","500+"]},
    rows:{
      zh:[["普货(含电/配套电池)","90","34","48","48","45","45","43"],["敏感(A类/CCTV/医疗)","95","38","51","51","49","49","46"],["特货(纯电池/部分食品液体)","125","48","56","56","54","54","51"]],
@@ -1665,7 +1458,6 @@ const COUNTRY_ZH = {my:"马来西亚",sg:"新加坡",th:"泰国",vn:"越南",ph:
 const COUNTRY_EN = {my:"Malaysia",sg:"Singapore",th:"Thailand",vn:"Vietnam",ph:"Philippines",id:"Indonesia",kh:"Cambodia",la:"Laos",ae:"UAE"};
 const COUNTRY_ORDER = ["my","sg","th","vn","ph","id","kh","la","ae"];
 
-/* ==================== 渠道细则渲染 ==================== */
 const DETAIL_LABELS = {
   billing:{zh:'📐 计费方式',en:'📐 Billing'},
   size:{zh:'📦 包装尺寸限制',en:'📦 Size & Packing'},
@@ -1702,7 +1494,6 @@ function channelDetailObj(c){
   if(c.endService) d.endService = c.endService;
   return d;
 }
-
 function renderPrice(filter){
   const list = PRICE_CHANNELS.filter(c=>filter==='all'||c.type===filter);
   document.getElementById('priceList').innerHTML = list.map((c,i)=>{
@@ -1712,7 +1503,7 @@ function renderPrice(filter){
       rows.map(r=>'<tr><td class="key">'+r[0]+'</td>'+r.slice(1).map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+
       '</tbody></table>';
     const noteText = tObj(c.note);
-    const detailHTML = buildDetailHTML(channelDetailObj(c), priceUnlocked);
+    const detailHTML = buildDetailHTML(channelDetailObj(c), true);
     const tailNote = t("⚠️ 仅参考，最终运费以仓库实测、Emily确认为准", "⚠️ Reference only. Final freight subject to warehouse measurement and Emily's confirmation.");
     return '<div class="price-card" id="pc-'+i+'">'+
       '<div class="price-head">'+
@@ -1738,7 +1529,6 @@ document.querySelectorAll('.pbtn').forEach(b=>{
     renderPrice(b.dataset.pf);
   };
 });
-/* 价格表点击：卡片折叠 + 渠道细则折叠（价格表本身已解锁，直接 toggle） */
 document.getElementById('priceList').addEventListener('click', function(e){
   const dtHead = e.target.closest('.dt-head');
   if(dtHead){ dtHead.parentElement.classList.toggle('open'); return; }
@@ -1770,7 +1560,6 @@ function parseChannelVal(val){
     categoryCount: zhRows.length
   };
 }
-
 function channelDisplayName(info){
   const base = tObj(info.channel.name);
   if(info.categoryCount > 1){
@@ -1778,14 +1567,12 @@ function channelDisplayName(info){
   }
   return base;
 }
-
 function buildCountryOptions(){
   const cur = countrySelect.value;
   countrySelect.innerHTML = '<option value="">'+t("请选择国家","Select country")+'</option>' +
     COUNTRY_ORDER.map(c=>'<option value="'+c+'">'+countryName(c)+'</option>').join('');
   if(cur) countrySelect.value = cur;
 }
-
 function fillChannelOptions(countryCode){
   const cur = channelSelect.value;
   let html = '<option value="">'+t("请选择渠道","Select channel")+'</option>';
@@ -1810,7 +1597,6 @@ function fillChannelOptions(countryCode){
     channelSelect.value = '';
   }
 }
-
 function autoSelectFirstChannel(countryCode){
   fillChannelOptions(countryCode);
   if(!countryCode){
@@ -1829,7 +1615,6 @@ function autoSelectFirstChannel(countryCode){
   updateZipUI(getCurrentChannel());
   updateDimSummary();
 }
-
 function billingDesc(c){
   const b = c.billing;
   if(!b) return '';
@@ -1847,7 +1632,6 @@ function billingDesc(c){
     return s;
   }
 }
-
 function buildCalcFormula(channel){
   if(!channel || !channel.billing) return '';
   const b = channel.billing;
@@ -1881,7 +1665,6 @@ function buildCalcFormula(channel){
     }
   }
 }
-
 function updateChannelUI(){
   const info = parseChannelVal(channelSelect.value);
   const tip = document.getElementById('channelBrief');
@@ -1893,6 +1676,9 @@ function updateChannelUI(){
     updateBillingUI(null);
     updateZipUI(null);
     updateChannelDetails(null);
+    updateQuoteOpt();
+    updateVnProvince();
+    renderLclQuote();
     return;
   }
 
@@ -1912,9 +1698,11 @@ function updateChannelUI(){
   updateBillingUI(c);
   updateZipUI(c);
   updateChannelDetails(c);
+  updateQuoteOpt();
+  autoSelectPriceTypeByZip(c, (zipEl.value||'').trim());
+  updateVnProvince();
+  renderLclQuote();
 }
-
-/* 散货询价中的「渠道细则」：未解锁时点击标题会触发密码弹窗 */
 function updateChannelDetails(channel){
   if(!channel){
     endServiceEl.classList.remove('show');
@@ -1922,31 +1710,23 @@ function updateChannelDetails(channel){
     return;
   }
   const d = channelDetailObj(channel);
-  const html = buildDetailHTML(d, priceUnlocked);
+  const html = buildDetailHTML(d, true);
   if(!html){
     endServiceEl.classList.remove('show');
     endServiceEl.innerHTML = '';
     return;
   }
-  const lockHint = priceUnlocked ? '' : '<span class="lock-hint">🔒 '+t('点击需密码','Password required')+'</span>';
-  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span>'+lockHint+'</div>' + html;
+  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span></div>' + html;
   endServiceEl.classList.add('show');
 }
 endServiceEl.addEventListener('click', function(e){
   const h = e.target.closest('.dt-head');
   if(!h) return;
-  /* 未解锁：弹出密码框，记录目标细则标题，验证成功后自动展开 */
-  if(!priceUnlocked){
-    openPwdModal('detail', h);
-    return;
-  }
   h.parentElement.classList.toggle('open');
 });
-
 function updateBillingUI(channel){
   const dimLabel = document.getElementById('dimLabel');
   const weightLabel = document.getElementById('weightLabel');
-
   if(!channel || !channel.billing){
     dimLabel.textContent = t("包装后单件尺寸（长 × 宽 × 高 cm）","Packed Unit Size (L × W × H cm)");
     weightLabel.innerHTML = t("包装后单件重量 KG","Packed Unit Weight (KG)");
@@ -1969,7 +1749,6 @@ function updateBillingUI(channel){
     weightLabel.innerHTML = t("包装后单件重量 KG", "Packed Unit Weight (KG)") +
       '<span class="opt">'+t('（选填，用于判断超重）', ' (optional, for overweight check)')+extra+'</span>';
   }
-
   const formula = buildCalcFormula(channel);
   if(formula){
     calcFormulaEl.innerHTML = formula;
@@ -1979,12 +1758,10 @@ function updateBillingUI(channel){
     calcFormulaEl.innerHTML = '';
   }
 }
-
 function updateZipUI(channel){
   const code = channel ? channel.country : (countrySelect.value || '');
   const meta = POSTAL_META[code];
   const zone = zoneOf(channel);
-
   if(meta && meta.len > 0){
     zipEl.maxLength = meta.len;
     zipEl.setAttribute('placeholder', t(meta.ph.zh, meta.ph.en));
@@ -1995,37 +1772,37 @@ function updateZipUI(channel){
     zipEl.removeAttribute('maxlength');
     zipEl.setAttribute('placeholder', t('邮编 / 城市','Postcode / City'));
   }
-
+  if(code === 'vn'){
+    zipEl.removeAttribute('maxlength');
+    zipEl.setAttribute('placeholder', t('5位或6位邮编，如 10000 / 100000','5 or 6-digit postcode, e.g. 10000 / 100000'));
+  }
   zipEl.classList.remove('remote','ok');
   remoteNoteEl.className = 'remote-note';
   remoteNoteEl.innerHTML = '';
-
   if(!zone){
     zipStatusEl.className = 'zip-status';
     zipStatusEl.innerHTML = '';
     return;
   }
-
   const raw = (zipEl.value || '').trim();
-
   if(!raw){
     zipStatusEl.className = 'zip-status unknown';
-    const tipText = (meta && meta.len)
-      ? t('💡 填入 '+meta.len+' 位邮编，自动判断派送区域与附加费',
-          '💡 Enter '+meta.len+'-digit postcode to auto-check delivery zone & surcharge')
-      : t('💡 填入邮编，自动判断派送区域与附加费',
-          '💡 Enter postcode to auto-check delivery zone & surcharge');
+    let tipText;
+    if(zone === 'vn'){
+      tipText = t('💡 填入 5 位或 6 位邮编，自动判断派送区域与附加费','💡 Enter 5 or 6-digit postcode to auto-check delivery zone');
+    } else if(meta && meta.len){
+      tipText = t('💡 填入 '+meta.len+' 位邮编，自动判断派送区域与附加费','💡 Enter '+meta.len+'-digit postcode to auto-check delivery zone & surcharge');
+    } else {
+      tipText = t('💡 填入邮编，自动判断派送区域与附加费','💡 Enter postcode to auto-check delivery zone & surcharge');
+    }
     zipStatusEl.innerHTML = tipText;
     return;
   }
-
   const r = evaluateZip(zone, raw);
   if(!r) return;
-
   const tag = tObj(r.tag);
   const title = tObj(r.title);
   const desc = tObj(r.desc);
-
   const isGood = (r.level === 'ok' || r.level === 'info');
   if(isGood){
     zipEl.classList.add('ok');
@@ -2036,9 +1813,7 @@ function updateZipUI(channel){
     zipStatusEl.className = 'zip-status remote';
     remoteNoteEl.className = 'remote-note show hit';
   }
-
   zipStatusEl.innerHTML = '<span class="tag">'+tag+'</span> '+title;
-
   let html = '<div>'+(isGood ? '✅ ' : '📍 ')+'<strong>'+tag+'</strong>：'+title+'</div>';
   if(desc) html += '<div class="sub">'+desc+'</div>';
   if(r.fee) html += '<div class="sub">💰 '+t('附加费','Surcharge')+'：<strong>'+tObj(r.fee)+'</strong></div>';
@@ -2056,7 +1831,6 @@ function getCurrentChannel(){
   const info = parseChannelVal(channelSelect.value);
   return info ? info.channel : null;
 }
-
 function isRemoteNow(channel){
   if(!channel || !channel.billing || !channel.billing.remoteSurcharge) return false;
   const zone = zoneOf(channel);
@@ -2070,7 +1844,6 @@ function isRemoteNow(channel){
   }
   return false;
 }
-
 function updateDimSummary(){
   const L = parseFloat(dimLEl.value) || 0;
   const W = parseFloat(dimWEl.value) || 0;
@@ -2079,18 +1852,15 @@ function updateDimSummary(){
   const unitWeight = parseFloat(weightEl.value) || 0;
   const channel = getCurrentChannel();
   const b = channel ? channel.billing : null;
-
   if(!b || !(L>0 && W>0 && H>0)){
     dimSummaryEl.classList.remove('show');
     dimSummaryEl.innerHTML = '';
     return;
   }
-
   const unitVol = L*W*H/1000000;
   const totalVol = unitVol*Q;
   const totalActual = unitWeight*Q;
   let html = '';
-
   if(b.mode === 'weight'){
     const divisor = b.divisor || 6000;
     const volWeight = (L*W*H/divisor)*Q;
@@ -2147,7 +1917,6 @@ function updateDimSummary(){
     if(b.remoteSurcharge) hint += '；' + t('偏远派送费另加'+b.remoteSurcharge+'元/KG（填邮编自动判断）', ' remote +'+b.remoteSurcharge+' CNY/KG (auto by postcode)');
     html += '<div class="hint">💡 '+hint+'</div>';
   }
-
   dimSummaryEl.innerHTML = html;
   dimSummaryEl.classList.add('show');
 }
@@ -2156,47 +1925,404 @@ function updateDimSummary(){
   el.addEventListener('change', updateDimSummary);
 });
 
+let userOverridePriceType = false;
+
+function autoSelectPriceTypeByZip(channel, zip){
+  if(userOverridePriceType) return false;
+  if(!channel || !zip) return false;
+  if(!/^\d+$/.test(zip)) return false;
+
+  const optSel = document.getElementById('quoteOpt');
+  if(!optSel) return false;
+  const opts = Array.from(optSel.options);
+  if(opts.length <= 1) return false;
+
+  const n = parseInt(zip, 10);
+  const nameZh = channel.name.zh || '';
+  let target = null;
+
+  if(nameZh.indexOf('马来西亚空运') === 0){
+    const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
+    const prefix = isEast ? '东马' : '西马';
+    target = opts.find(o => o.text.indexOf(prefix) === 0);
+  }
+  else if(nameZh.indexOf('马来西亚西马海运') === 0){
+    const isInState = zip.startsWith('456');
+    const kw = isInState ? '坡内' : '坡外';
+    target = opts.find(o => o.text.indexOf(kw) >= 0);
+  }
+  else if(nameZh.indexOf('泰国') === 0){
+    const isBkk = zip.startsWith('10');
+    if(isBkk){
+      target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') < 0);
+    } else {
+      target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') >= 0);
+    }
+  }
+  else if(nameZh.indexOf('菲律宾海运') === 0 || nameZh.indexOf('菲律宾空运') === 0){
+    const covered = (n >= 1000 && n <= 1812) ||
+                    (n >= 4023 && n <= 4027) ||
+                    [3005,3019,3020,3023].includes(n) ||
+                    [4100,4102,4103,4104,4107,4108,4109,4114,4118].includes(n);
+    if(covered){
+      target = opts.find(o => o.text.indexOf('马尼拉') >= 0);
+    }
+  }
+  else if(nameZh.indexOf('印度尼西亚海运') === 0){
+    if(n >= 10000 && n <= 15999){
+      target = opts.find(o => o.text.indexOf('雅加达') >= 0);
+    }
+  }
+
+  if(target && optSel.value !== target.value){
+    optSel.value = target.value;
+    return true;
+  }
+  return false;
+}
+
 zipEl.addEventListener('input', ()=>{
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  autoSelectPriceTypeByZip(getCurrentChannel(), (zipEl.value||'').trim());
+  renderLclQuote();
 });
 zipEl.addEventListener('blur', ()=>{
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  autoSelectPriceTypeByZip(getCurrentChannel(), (zipEl.value||'').trim());
+  renderLclQuote();
 });
-
 channelSelect.addEventListener('change', ()=>{
+  userOverridePriceType = false;
   const info = parseChannelVal(channelSelect.value);
   if(info) countrySelect.value = info.channel.country;
   updateChannelUI();
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  autoSelectPriceTypeByZip(getCurrentChannel(), (zipEl.value||'').trim());
+  renderLclQuote();
 });
-
 countrySelect.addEventListener('change', ()=>{
   autoSelectFirstChannel(countrySelect.value);
 });
 
+const QUOTE_RULES = {
+  "马来西亚空运包税专线":     { basis:'weight', divisor:6000, foam:'auto', roundUnit:1 },
+  "马来西亚西马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.3, overweightRatio:500, remoteSurcharge:2, remoteDivisor:6000 },
+  "马来西亚东马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "新加坡空运专线（不包税）": { basis:'weight', divisor:6000, foam:'half', roundUnit:1 },
+  "新加坡空运专线（包税）":   { basis:'weight', divisor:6000, foam:'half', roundUnit:1 },
+  "新加坡海运专线":           { basis:'volume', roundUnit:0.1, minCbm:0.1, minCharge:150, fixedCol:'1方' },
+  "新加坡海运小包（包税到门）": { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "菲律宾空运包税专线":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "菲律宾海运包税专线":       { basis:'volume', roundUnit:0.1, minCbm:1 },
+  "泰国陆运双清包税":         { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "泰国海运双清包税 (DDP)":   { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "越南陆运大货双清包税":     { basis:'volume', roundUnit:0.1, minCbm:1, overweightRatio:230 },
+  "越南陆运小货双清包税":     { basis:'weight', divisor:5000, foam:'none', roundUnit:1 },
+  "印度尼西亚空运包税":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
+  "印度尼西亚海运包税":       { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "柬埔寨陆运小包专线":       { basis:'weight', divisor:5000, foam:'none', roundUnit:1 },
+  "柬埔寨陆运大货包税":       { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "老挝陆运包税":             { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:350 },
+  "阿联酋空运包税":           { basis:'weight', divisor:6000, foam:'none', roundUnit:0.5, bigFrom:16, bigUnit:1, firstUnit:0.5 }
+};
+function getQuoteRule(c){ return c ? (QUOTE_RULES[c.name.zh] || null) : null; }
+function parsePriceCols(headZh, headEn){
+  const cols = [];
+  for(let i=1;i<headZh.length;i++){
+    const h = String(headZh[i]||'').trim();
+    const e = String((headEn && headEn[i]) || '').trim();
+    const txt = h + '|' + e;
+    let type = 'named', start = null;
+    if(/首|first/i.test(txt)){ type = 'first'; }
+    else if(/续|additional|^add/i.test(txt)){ type = 'add'; }
+    else {
+      let m = h.match(/^(\d+(?:\.\d+)?)\s*(?:KG|kg|方|CBM|cbm)?\s*\+/);
+      if(m){ type='tier'; start = parseFloat(m[1]); }
+      else {
+        m = h.match(/^(\d+(?:\.\d+)?)\s*[-~～]\s*(\d+(?:\.\d+)?)/);
+        if(m){ type='tier'; start = parseFloat(m[1]); }
+        else {
+          m = h.match(/^(\d+(?:\.\d+)?)\s*(?:KG|kg|方|CBM|cbm)?$/);
+          if(m){ type='tier'; start = parseFloat(m[1]); }
+        }
+      }
+    }
+    cols.push({idx:i, header:h, headerEn:e, type, start});
+  }
+  return cols;
+}
+function pickRate(cols, row, qty, rule, optIdx){
+  if(rule && rule.fixedCol){
+    const col = cols.find(cc => cc.header === rule.fixedCol || cc.headerEn === rule.fixedCol);
+    if(col){
+      const r = parseFloat(row[col.idx]);
+      if(!isNaN(r)) return {rate:r, total:r*qty, label: col.header, mode:'tier'};
+    }
+  }
+  const named = cols.filter(cc => cc.type==='named' && !isNaN(parseFloat(row[cc.idx])));
+  if(named.length){
+    let col = named[0];
+    if(optIdx != null){
+      const f = named.find(cc => String(cc.idx) === String(optIdx));
+      if(f) col = f;
+    }
+    const r = parseFloat(row[col.idx]);
+    return {rate:r, total:r*qty, label: (LANG==='zh' ? col.header : (col.headerEn||col.header)), mode:'tier'};
+  }
+  const firstCol = cols.find(cc=>cc.type==='first');
+  const addCol = cols.find(cc=>cc.type==='add');
+  const tierCols = cols.filter(cc=>cc.type==='tier' && !isNaN(parseFloat(row[cc.idx]))).sort((a,b)=>a.start-b.start);
+  const minStart = tierCols.length ? tierCols[0].start : Infinity;
+  if(firstCol && addCol && qty < minStart){
+    const first = parseFloat(row[firstCol.idx]);
+    const add = parseFloat(row[addCol.idx]);
+    const fu = (rule && rule.firstUnit) || 1;
+    const steps = Math.max(0, qty/fu - 1);
+    const total = first + add * steps;
+    return {rate:first, total, label:t('首重','First'), mode:'firstAdd', first, add, fu, steps};
+  }
+  if(tierCols.length){
+    let chosen = tierCols[0];
+    tierCols.forEach(cc=>{ if(qty >= cc.start) chosen = cc; });
+    const r = parseFloat(row[chosen.idx]);
+    return {rate:r, total:r*qty, label:(LANG==='zh'?chosen.header:(chosen.headerEn||chosen.header)), mode:'tier'};
+  }
+  return null;
+}
+function computeLclQuote(){
+  const info = parseChannelVal(channelSelect.value);
+  if(!info) return {err:'nochannel'};
+  const c = info.channel;
+  const rule = getQuoteRule(c);
+  if(!rule) return {err:'norule'};
+  const L = parseFloat(dimLEl.value)||0;
+  const W = parseFloat(dimWEl.value)||0;
+  const H = parseFloat(dimHEl.value)||0;
+  const Q = Math.max(1, parseInt(pkgCountEl.value)||1);
+  const unitWeight = parseFloat(weightEl.value)||0;
+  if(!(L>0 && W>0 && H>0)) return {err:'nodim'};
+  const rowZh = c.rows.zh[info.rowIdx];
+  const rowEn = c.rows.en[info.rowIdx];
+  const cols = parsePriceCols(c.head.zh, c.head.en);
+  const optEl = document.getElementById('quoteOpt');
+  const optIdx = (optEl && optEl.value) ? optEl.value : null;
+  const unitVol = L*W*H/1000000;
+  const totalVol = unitVol*Q;
+  const totalWeight = unitWeight*Q;
+  let chargeQty = 0, qtyUnit = '', qtyLines = [], chargeLabel = '';
+  if(rule.basis === 'weight'){
+    if(unitWeight <= 0) return {err:'noweight'};
+    const divisor = rule.divisor || 6000;
+    const volW = (L*W*H/divisor)*Q;
+    let foam = rule.foam;
+    if(foam === 'auto') foam = (rowZh[0].indexOf('东马') >= 0) ? 'none' : 'half';
+    let charge = Math.max(volW, totalWeight);
+    let halfVal = null;
+    if(foam === 'half'){
+      halfVal = (volW + totalWeight)/2;
+      charge = Math.max(totalWeight, halfVal);
+    }
+    let rUnit = rule.roundUnit || 1;
+    if(rule.bigUnit && charge >= (rule.bigFrom||16)) rUnit = rule.bigUnit;
+    chargeQty = Math.ceil(charge/rUnit)*rUnit;
+    qtyUnit = 'KG';
+    chargeLabel = t('计费重','Chargeable weight');
+    qtyLines.push({label: t('体积重（÷'+divisor+'）','Volumetric (÷'+divisor+')'), value: volW.toFixed(2)+' KG'});
+    qtyLines.push({label: t('实重（'+Q+'件）','Actual ('+Q+' pcs)'), value: totalWeight.toFixed(2)+' KG'});
+    if(halfVal !== null) qtyLines.push({label: t('半泡','Half-volumetric'), value: halfVal.toFixed(2)+' KG'});
+    qtyLines.push({label: chargeLabel+'（取大）', value: chargeQty.toFixed(2)+' KG', strong:true});
+  } else {
+    let billed = totalVol;
+    if(rule.overweightRatio && totalWeight > 0){
+      const wVol = totalWeight/rule.overweightRatio;
+      if(wVol > billed) billed = wVol;
+    }
+    const minCbm = rule.minCbm || 0;
+    const rawBilled = billed;
+    if(minCbm && billed < minCbm) billed = minCbm;
+    const rUnit = rule.roundUnit || 0.1;
+    billed = Math.ceil(billed/rUnit)*rUnit;
+    chargeQty = billed;
+    qtyUnit = 'CBM';
+    chargeLabel = t('计费体积','Chargeable volume');
+    qtyLines.push({label: t('单件体积','Unit volume'), value: unitVol.toFixed(4)+' CBM'});
+    qtyLines.push({label: t('总体积（'+Q+'件）','Total ('+Q+' pcs)'), value: totalVol.toFixed(4)+' CBM'});
+    if(totalWeight > 0) qtyLines.push({label: t('总实重','Total actual'), value: totalWeight.toFixed(2)+' KG'});
+    if(minCbm && rawBilled < minCbm){
+      qtyLines.push({label: t('最低起收','Minimum'), value: minCbm+' CBM'});
+    }
+    qtyLines.push({label: chargeLabel, value: chargeQty.toFixed(3)+' CBM', strong:true});
+  }
+  const rateInfo = pickRate(cols, rowZh, chargeQty, rule, optIdx);
+  if(!rateInfo) return {err:'norate'};
+  let amount = rateInfo.total;
+  let minApplied = false;
+  if(rule.minCharge && amount < rule.minCharge){
+    amount = rule.minCharge;
+    minApplied = true;
+  }
+  const extras = [];
+  if(rule.remoteSurcharge && isRemoteNow(c) && totalWeight > 0){
+    const div = rule.remoteDivisor || 6000;
+    const volW = (L*W*H/div)*Q;
+    const cw = Math.max(volW, totalWeight);
+    const sur = cw * rule.remoteSurcharge;
+    extras.push({
+      label: t('偏远派送费（'+rule.remoteSurcharge+'元/KG × '+cw.toFixed(2)+'KG）','Remote surcharge ('+rule.remoteSurcharge+' CNY/KG × '+cw.toFixed(2)+'KG)'),
+      value: sur
+    });
+  }
+  if(c.country === 'vn'){
+    const vnSel = document.getElementById('vnProvinceSelect');
+    if(vnSel && vnSel.value){
+      const prov = VN_DELIVERY_PROVINCES.find(p=>p.zh===vnSel.value);
+      if(prov && totalWeight > 0){
+        const weightFee = totalWeight * prov.kg;
+        const cbmForFee = Math.max(totalVol, 1);
+        const cbmFee = cbmForFee * prov.cbm;
+        const deliveryFee = Math.max(weightFee, cbmFee);
+        extras.push({
+          label: t('派送费（'+prov.zh+'：毛重'+totalWeight.toFixed(2)+'KG×'+prov.kg+' 与 '+cbmForFee.toFixed(3)+'CBM×'+prov.cbm+' 取大）','Delivery ('+prov.zh+': max('+totalWeight.toFixed(2)+'KG×'+prov.kg+', '+cbmForFee.toFixed(3)+'CBM×'+prov.cbm+'))'),
+          value: deliveryFee,
+          isDelivery: true
+        });
+      }
+    }
+  }
+  const total = amount + extras.reduce((s,e)=>s+e.value,0);
+  return {
+    ok:true, channel:c,
+    rowName: LANG==='zh' ? rowZh[0] : rowEn[0],
+    qtyLines, chargeQty, qtyUnit,
+    rateInfo, amount, minApplied, extras, total
+  };
+}
+function renderLclQuote(){
+  const panel = document.getElementById('lclQuotePanel');
+  if(!panel) return;
+  const r = computeLclQuote();
+  if(!r || r.err){
+    panel.classList.remove('show');
+    panel.innerHTML = '';
+    return;
+  }
+  let html = '<h3>📊 '+t('预估运费','Estimated Freight')+'</h3>';
+  html += '<div class="quote-line"><span>'+t('渠道 / 货类','Channel / Category')+'</span><b>'+tObj(r.channel.name)+(LANG==='zh' ? ' · '+r.rowName : ' · '+r.rowName)+'</b></div>';
+  r.qtyLines.forEach(l=>{
+    html += '<div class="quote-line"><span>'+l.label+'</span><b>'+l.value+'</b></div>';
+  });
+  const rl = r.rateInfo;
+  if(rl.mode === 'firstAdd'){
+    html += '<div class="quote-line"><span>'+t('计费方式','Billing')+'</span><b>'+t('首重 '+rl.first+' 元 + 续重 '+rl.add+' 元 × '+rl.steps.toFixed(1),'First '+rl.first+' + Add '+rl.add+' × '+rl.steps.toFixed(1))+'</b></div>';
+  } else {
+    html += '<div class="quote-line"><span>'+t('适用单价','Unit price')+'</span><b>'+rl.rate+' 元/'+r.qtyUnit+'（'+rl.label+'）</b></div>';
+  }
+  html += '<div class="quote-line"><span>'+t('基础运费','Base freight')+'</span><b>'+r.amount.toFixed(2)+' 元</b></div>';
+  if(r.minApplied){
+    html += '<div class="quote-line"><span>'+t('最低消费已生效','Minimum charge applied')+'</span><b>—</b></div>';
+  }
+  r.extras.forEach(e=>{
+    html += '<div class="quote-line accent"><span>'+e.label+'</span><b>+'+e.value.toFixed(2)+' 元</b></div>';
+  });
+  html += '<div class="quote-total"><span>'+t('预估合计','Estimated Total')+'</span><b>'+r.total.toFixed(2)+'<small> 元</small></b></div>';
+  html += '<div class="quote-note">'+t('⚠️ 以上为系统自动估算，仅供参考。最终运费以仓库实测、附加费以 Emily 确认为准。','⚠️ Auto-estimated for reference only. Final freight subject to warehouse measurement and Emily\'s confirmation.')+'</div>';
+  panel.innerHTML = html;
+  panel.classList.add('show');
+  updateVnProvinceTip();
+}
+function updateQuoteOpt(){
+  const row = document.getElementById('quoteOptRow');
+  const sel = document.getElementById('quoteOpt');
+  const label = document.getElementById('quoteOptLabel');
+  const info = parseChannelVal(channelSelect.value);
+  if(!info){ row.style.display='none'; sel.innerHTML=''; return; }
+  const c = info.channel;
+  const rowData = c.rows.zh[info.rowIdx];
+  const cols = parsePriceCols(c.head.zh, c.head.en);
+  const named = cols.filter(col => col.type==='named' && !isNaN(parseFloat(rowData[col.idx])));
+  if(named.length <= 1){ row.style.display='none'; sel.innerHTML=''; return; }
+  const prev = sel.value;
+  sel.innerHTML = named.map(col=>{
+    const h = LANG==='zh' ? col.header : (col.headerEn || col.header);
+    return '<option value="'+col.idx+'">'+h+'</option>';
+  }).join('');
+  if(named.some(col=>String(col.idx)===prev)) sel.value = prev;
+  row.style.display = '';
+  label.textContent = t('请选择价格类型 / 目的地','Select price type / destination');
+}
+document.getElementById('quoteOpt').addEventListener('change', function(){
+  userOverridePriceType = true;
+  renderLclQuote();
+});
+[dimLEl, dimWEl, dimHEl, weightEl, pkgCountEl].forEach(el=>{
+  el.addEventListener('input', renderLclQuote);
+  el.addEventListener('change', renderLclQuote);
+});
+
+function buildVnProvinceOptions(){
+  const regions = ["north","central","south"];
+  let html = '<option value="">'+t("请选择省份","Select province")+'</option>';
+  regions.forEach(region=>{
+    const list = VN_DELIVERY_PROVINCES.filter(p=>p.region===region);
+    const label = LANG === 'zh' ? VN_REGION_ZH[region] : VN_REGION_EN[region];
+    html += '<optgroup label="'+label+'">';
+    list.forEach(p=>{
+      const note = p.note ? ' ⚠️'+p.note : '';
+      html += '<option value="'+p.zh+'">'+p.zh+'（'+p.vi+'） KG:'+p.kg+' / CBM:'+p.cbm+note+'</option>';
+    });
+    html += '</optgroup>';
+  });
+  return html;
+}
+function updateVnProvince(){
+  const row = document.getElementById('vnProvinceRow');
+  const sel = document.getElementById('vnProvinceSelect');
+  if(!row || !sel) return;
+  const info = parseChannelVal(channelSelect.value);
+  if(!info || info.channel.country !== 'vn'){
+    row.style.display = 'none';
+    return;
+  }
+  const prev = sel.value;
+  sel.innerHTML = buildVnProvinceOptions();
+  if(prev) sel.value = prev;
+  row.style.display = '';
+  sel.onchange = ()=>{ updateVnProvinceTip(); renderLclQuote(); };
+  updateVnProvinceTip();
+}
+function updateVnProvinceTip(){
+  const tip = document.getElementById('vnProvinceTip');
+  const sel = document.getElementById('vnProvinceSelect');
+  const info = parseChannelVal(channelSelect.value);
+  if(!tip || !sel) return;
+  if(!info || info.channel.country !== 'vn' || !sel.value){
+    tip.textContent = t('请选择省份，系统将自动计算派送费','Select province to auto-calculate delivery fee');
+    return;
+  }
+  const prov = VN_DELIVERY_PROVINCES.find(p=>p.zh===sel.value);
+  if(prov){
+    tip.innerHTML = '💰 ' + t('派送费：','Delivery fee: ') +
+      'max( ' + t('毛重','weight') + ' × ' + prov.kg + ' ' + t('元/KG','CNY/KG') + ', ' +
+      t('立方','CBM') + ' × ' + prov.cbm + ' ' + t('元/CBM','CNY/CBM') + ' ) ' +
+      t('取大值，最低1方起收','max, minimum 1 CBM') + (prov.note ? '；⚠️ ' + prov.note : '');
+  }
+}
+
 function showPageRaw(id){
   ['home','price','lcl','fcl','calc'].forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
+  if(id === 'lcl') renderLclQuote();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showPage(id){
-  if(id === 'price' && !priceUnlocked){
-    openPwdModal('price');
-    return;
-  }
   showPageRaw(id);
 }
-
 document.querySelectorAll('.tab-item').forEach(tab=>{
   tab.onclick=function(){
     const target = this.getAttribute('data-target');
-    if(target === 'price' && !priceUnlocked){
-      openPwdModal('price');
-      return;
-    }
     document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
     this.classList.add('active');
     showPageRaw(target);
@@ -2205,10 +2331,6 @@ document.querySelectorAll('.tab-item').forEach(tab=>{
 document.querySelectorAll('.home-item[data-goto]').forEach(item=>{
   item.onclick=()=>{
     const tgt=item.dataset.goto;
-    if(tgt === 'price' && !priceUnlocked){
-      openPwdModal('price');
-      return;
-    }
     document.querySelectorAll('.tab-item').forEach(x=>x.classList.remove('active'));
     document.querySelector('.tab-item[data-target="'+(tgt==='price'?'home':tgt)+'"]').classList.add('active');
     showPageRaw(tgt);
@@ -2224,7 +2346,6 @@ document.querySelectorAll('.country-item[data-country]').forEach(item=>{
     showPageRaw('lcl');
   };
 });
-
 document.querySelectorAll('.calc-tab').forEach(tb=>{
   tb.onclick=()=>{
     document.querySelectorAll('.calc-tab').forEach(x=>x.classList.remove('active'));
@@ -2233,7 +2354,6 @@ document.querySelectorAll('.calc-tab').forEach(tb=>{
     document.getElementById(tb.dataset.tab).classList.add('show');
   };
 });
-
 function applyLang(lang){
   LANG = lang;
   document.querySelectorAll('[data-zh]').forEach(el=>{
@@ -2245,7 +2365,6 @@ function applyLang(lang){
   document.querySelectorAll('[data-ph-zh]').forEach(el=>{
     el.setAttribute('placeholder', lang==='zh' ? el.dataset.phZh : el.dataset.phEn);
   });
-
   renderPrice(document.querySelector('.pbtn.active')?.dataset.pf || 'all');
   buildCountryOptions();
   const curChannel = channelSelect.value;
@@ -2256,6 +2375,9 @@ function applyLang(lang){
   updateChannelUI();
   updateZipUI(getCurrentChannel());
   updateDimSummary();
+  updateQuoteOpt();
+  updateVnProvince();
+  renderLclQuote();
 }
 document.querySelectorAll('.lang-btn').forEach(btn=>{
   btn.onclick=()=>{
@@ -2264,11 +2386,9 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
     applyLang(btn.dataset.lang);
   };
 });
-
 document.querySelectorAll('.fold-head').forEach(head=>{
   head.onclick=()=>head.parentElement.classList.toggle('open');
 });
-
 function refreshLclBadge(){
   const b=document.getElementById('lclFeeBadge');
   if(!b) return;
@@ -2306,51 +2426,44 @@ const lclRmkEl=document.getElementById('lclRemark');
 if(lclRmkEl) lclRmkEl.addEventListener('input', refreshLclBadge);
 const fclRmkEl=document.getElementById('fclRemark');
 if(fclRmkEl) fclRmkEl.addEventListener('input', refreshFclBadge);
-
 const needReport = ["电池","充电宝","移动电源","化妆品","护肤品","医疗器械","药品","带电","磁","食品","液体","粉末"];
 document.getElementById('productName').oninput=function(){
   const v=this.value.toLowerCase();
   const tip=document.getElementById('reportTip');
   const hit = needReport.some(w=>v.includes(w));
   if(hit){
-    tip.textContent = t(
-      "⚠️该品类大概率需要资质/运输鉴定报告（如 MSDS / UN38.3 / 商检），请备好报告",
-      "⚠️ This category likely requires MSDS / UN38.3 / inspection report. Please prepare documents."
-    );
+    tip.textContent = t("⚠️该品类大概率需要资质/运输鉴定报告（如 MSDS / UN38.3 / 商检），请备好报告","⚠️ This category likely requires MSDS / UN38.3 / inspection report. Please prepare documents.");
   } else {
     tip.textContent = "";
   }
 };
-
 document.getElementById('genLcl').onclick=function(){
   const g=id=>document.getElementById(id).value;
   const zipVal = (g('zipCode')||'').trim();
   const addrVal = (g('address')||'').trim();
   const fullAddrZip = [zipVal, addrVal].filter(Boolean).join(' ');
   const dimL = g('dimL').trim(), dimW = g('dimW').trim(), dimH = g('dimH').trim();
-  const dimStr = (dimL || dimW || dimH)
-    ? (dimL || '—') + ' × ' + (dimW || '—') + ' × ' + (dimH || '—') + ' cm'
-    : '';
-
+  const dimStr = (dimL || dimW || dimH) ? (dimL || '—') + ' × ' + (dimW || '—') + ' × ' + (dimH || '—') + ' cm' : '';
+  const q = computeLclQuote();
+  let quoteTxtZh = '', quoteTxtEn = '';
+  if(q && q.ok){
+    quoteTxtZh = '\n—— 系统预估 ——\n' + '计费' + (q.qtyUnit === 'KG' ? '重量' : '体积') + '：' + (q.qtyUnit === 'KG' ? q.chargeQty.toFixed(2)+' KG' : q.chargeQty.toFixed(3)+' CBM') + '\n' + '预估运费：' + q.total.toFixed(2) + ' 元（仅供参考）';
+    quoteTxtEn = '\n—— Auto Estimate ——\n' + 'Chargeable: ' + (q.qtyUnit === 'KG' ? q.chargeQty.toFixed(2)+' KG' : q.chargeQty.toFixed(3)+' CBM') + '\n' + 'Estimated freight: ' + q.total.toFixed(2) + ' CNY (reference only)';
+  }
+  let vnProvTxtZh = '', vnProvTxtEn = '';
+  const info = parseChannelVal(channelSelect.value);
+  if(info && info.channel.country === 'vn'){
+    const vnSel = document.getElementById('vnProvinceSelect');
+    if(vnSel && vnSel.value){
+      vnProvTxtZh = '\n越南目的地省份：'+vnSel.value;
+      vnProvTxtEn = '\nVietnam Province: '+vnSel.value;
+    }
+  }
   if (LANG === 'zh') {
-    const txt =
-'品名：'+g('productName')+'\n'+
-'收件人完整地址邮编：'+fullAddrZip+'\n'+
-'包装后单件尺寸：'+dimStr+'\n'+
-'包装后单件重量：'+g('weight')+' KG\n'+
-'图片：'+g('imgUrl')+'\n'+
-'hs：'+g('hsCode')+'\n'+
-'是否带电池/磁/品牌/有报告直接提供报告出来：'+(g('otherInfo')||'未填写');
+    const txt = '品名：'+g('productName')+'\n'+'收件人完整地址邮编：'+fullAddrZip+'\n'+'包装后单件尺寸：'+dimStr+'\n'+'包装后单件重量：'+g('weight')+' KG\n'+'图片：'+g('imgUrl')+'\n'+'hs：'+g('hsCode')+'\n'+'是否带电池/磁/品牌/有报告直接提供报告出来：'+(g('otherInfo')||'未填写')+vnProvTxtZh+quoteTxtZh;
     document.getElementById('lclResult').value=txt;
   } else {
-    const txt =
-'Product: '+g('productName')+'\n'+
-'Full Address + Postcode: '+fullAddrZip+'\n'+
-'Packed Unit Size: '+dimStr+'\n'+
-'Packed Unit Weight: '+g('weight')+' KG\n'+
-'Image: '+g('imgUrl')+'\n'+
-'HS: '+g('hsCode')+'\n'+
-'Battery/Magnetic/Branded/Report if any: '+(g('otherInfo')||'Not filled');
+    const txt = 'Product: '+g('productName')+'\n'+'Full Address + Postcode: '+fullAddrZip+'\n'+'Packed Unit Size: '+dimStr+'\n'+'Packed Unit Weight: '+g('weight')+' KG\n'+'Image: '+g('imgUrl')+'\n'+'HS: '+g('hsCode')+'\n'+'Battery/Magnetic/Branded/Report if any: '+(g('otherInfo')||'Not filled')+vnProvTxtEn+quoteTxtEn;
     document.getElementById('lclResult').value=txt;
   }
 };
@@ -2360,45 +2473,17 @@ document.getElementById('copyLcl').onclick=async()=>{
 };
 document.getElementById('copyWx').onclick=async()=>{
   await navigator.clipboard.writeText(WX_ACCOUNT);
-  document.getElementById('wxTip').textContent = t(
-    "✅ Emily微信已复制："+WX_ACCOUNT+"，请到微信搜索添加",
-    "✅ Emily's WeChat copied: "+WX_ACCOUNT+", please add on WeChat"
-  );
+  document.getElementById('wxTip').textContent = t("✅ Emily微信已复制："+WX_ACCOUNT+"，请到微信搜索添加","✅ Emily's WeChat copied: "+WX_ACCOUNT+", please add on WeChat");
 };
-
 document.getElementById('genFcl').onclick=function(){
   const g=id=>document.getElementById(id).value;
   if (LANG === 'zh') {
-    const txt =
-'产品图片：'+g('fclImg')+'\n'+
-'箱单或产品单一可以直接提供品名：'+g('fclName')+'\n'+
-'用途：'+g('usage')+'\n'+
-'海关编码：'+g('fclHs')+'\n'+
-'中国装柜地址：'+g('loadAddr')+'\n'+
-'国外卸柜地址：'+g('unloadAddr')+'\n'+
-'货值：'+g('value')+'\n'+
-'柜型：'+g('containerType')+'\n'+
-'货重：'+g('fclWeight')+'\n'+
-'方数：'+g('cbm')+'\n'+
-'需要单证出还是买单出：'+g('docType')+'\n'+
-'需要全程还是只需要末端清提派：'+g('service');
+    const txt = '产品图片：'+g('fclImg')+'\n'+'箱单或产品单一可以直接提供品名：'+g('fclName')+'\n'+'用途：'+g('usage')+'\n'+'海关编码：'+g('fclHs')+'\n'+'中国装柜地址：'+g('loadAddr')+'\n'+'国外卸柜地址：'+g('unloadAddr')+'\n'+'货值：'+g('value')+'\n'+'柜型：'+g('containerType')+'\n'+'货重：'+g('fclWeight')+'\n'+'方数：'+g('cbm')+'\n'+'需要单证出还是买单出：'+g('docType')+'\n'+'需要全程还是只需要末端清提派：'+g('service');
     document.getElementById('fclResult').value=txt;
   } else {
     const docEn = g('docType')==='单证报关（正报）' ? 'Formal declaration' : 'Buyout declaration';
     const svcEn = g('service')==='全程' ? 'Full service' : 'Last-mile only';
-    const txt =
-'Product Image: '+g('fclImg')+'\n'+
-'Product Name (packing list accepted): '+g('fclName')+'\n'+
-'Usage: '+g('usage')+'\n'+
-'HS Code: '+g('fclHs')+'\n'+
-'Loading Address (China): '+g('loadAddr')+'\n'+
-'Discharge Address (Overseas): '+g('unloadAddr')+'\n'+
-'Goods Value: '+g('value')+'\n'+
-'Container Type: '+g('containerType')+'\n'+
-'Weight: '+g('fclWeight')+'\n'+
-'Volume: '+g('cbm')+'\n'+
-'Declaration: '+docEn+'\n'+
-'Service: '+svcEn;
+    const txt = 'Product Image: '+g('fclImg')+'\n'+'Product Name (packing list accepted): '+g('fclName')+'\n'+'Usage: '+g('usage')+'\n'+'HS Code: '+g('fclHs')+'\n'+'Loading Address (China): '+g('loadAddr')+'\n'+'Discharge Address (Overseas): '+g('unloadAddr')+'\n'+'Goods Value: '+g('value')+'\n'+'Container Type: '+g('containerType')+'\n'+'Weight: '+g('fclWeight')+'\n'+'Volume: '+g('cbm')+'\n'+'Declaration: '+docEn+'\n'+'Service: '+svcEn;
     document.getElementById('fclResult').value=txt;
   }
 };
@@ -2408,17 +2493,11 @@ document.getElementById('copyFcl').onclick=async()=>{
 };
 document.getElementById('copyWxFcl').onclick=async()=>{
   await navigator.clipboard.writeText(WX_ACCOUNT);
-  document.getElementById('wxTipFcl').textContent = t(
-    "✅ Emily微信已复制："+WX_ACCOUNT+"，请到微信搜索添加",
-    "✅ Emily's WeChat copied: "+WX_ACCOUNT+", please add on WeChat"
-  );
+  document.getElementById('wxTipFcl').textContent = t("✅ Emily微信已复制："+WX_ACCOUNT+"，请到微信搜索添加","✅ Emily's WeChat copied: "+WX_ACCOUNT+", please add on WeChat");
 };
-
 const num=v=>{const n=parseFloat(v);return isNaN(n)?0:n;};
-
 document.getElementById('calcCbmBtn').onclick=()=>{
-  const L=num(document.getElementById('cLen').value),W=num(document.getElementById('cWid').value),
-        H=num(document.getElementById('cHei').value),Q=num(document.getElementById('cPkg').value)||1;
+  const L=num(document.getElementById('cLen').value),W=num(document.getElementById('cWid').value),H=num(document.getElementById('cHei').value),Q=num(document.getElementById('cPkg').value)||1;
   const res=document.getElementById('cbmResult');
   if(!L||!W||!H){res.innerHTML="<span class='tip-red'>"+t("请输入长宽高","Enter length, width and height")+"</span>";return;}
   const single=L*W*H/1000000, total=single*Q;
@@ -2428,12 +2507,9 @@ document.getElementById('calcCbmBtn').onclick=()=>{
     res.innerHTML='<p>Unit CBM: '+single.toFixed(6)+'</p><p>Total CBM: <b>'+total.toFixed(4)+'</b></p><p>Formula: Unit = L×W×H ÷ 1,000,000; Total = Unit × Packages</p>';
   }
 };
-
 function bubbleCalc(div,resId){
   const p=id=>num(document.getElementById(id).value);
-  const L=p(resId==='v6Result'?'v6Len':'v5Len'),W=p(resId==='v6Result'?'v6Wid':'v5Wid'),
-        H=p(resId==='v6Result'?'v6Hei':'v5Hei'),Q=p(resId==='v6Result'?'v6Pkg':'v5Pkg')||1,
-        act=p(resId==='v6Result'?'v6Act':'v5Act');
+  const L=p(resId==='v6Result'?'v6Len':'v5Len'),W=p(resId==='v6Result'?'v6Wid':'v5Wid'),H=p(resId==='v6Result'?'v6Hei':'v5Hei'),Q=p(resId==='v6Result'?'v6Pkg':'v5Pkg')||1,act=p(resId==='v6Result'?'v6Act':'v5Act');
   const res=document.getElementById(resId);
   if(!L||!W||!H){res.innerHTML="<span class='tip-red'>"+t("请输入长宽高","Enter length, width and height")+"</span>";return;}
   const vol=L*W*H/div*Q, half=(vol+act)/2, charge=Math.max(vol,act);
@@ -2445,13 +2521,8 @@ function bubbleCalc(div,resId){
 }
 document.getElementById('calc6Btn').onclick=()=>bubbleCalc(6000,'v6Result');
 document.getElementById('calc5Btn').onclick=()=>bubbleCalc(5000,'v5Result');
-
 document.getElementById('calcFsBtn').onclick=()=>{
-  const L=num(document.getElementById('fsLen').value),W=num(document.getElementById('fsWid').value),
-        H=num(document.getElementById('fsHei').value),Q=num(document.getElementById('fsPkg').value)||1,
-        act=num(document.getElementById('fsAct').value),div=num(document.getElementById('fsDiv').value)||6000,
-        first=num(document.getElementById('fsFirstPrice').value),cont=num(document.getElementById('fsAddPrice').value),
-        mode=document.getElementById('fsMode').value;
+  const L=num(document.getElementById('fsLen').value),W=num(document.getElementById('fsWid').value),H=num(document.getElementById('fsHei').value),Q=num(document.getElementById('fsPkg').value)||1,act=num(document.getElementById('fsAct').value),div=num(document.getElementById('fsDiv').value)||6000,first=num(document.getElementById('fsFirstPrice').value),cont=num(document.getElementById('fsAddPrice').value),mode=document.getElementById('fsMode').value;
   const res=document.getElementById('fsResult');
   if(!L||!W||!H||!act){res.innerHTML="<span class='tip-red'>"+t("请完整填写长宽高、实重、抛比系数","Please fill in L/W/H, actual weight and divisor")+"</span>";return;}
   const vol=L*W*H/div*Q, charge=Math.max(vol,act);
@@ -2475,6 +2546,17 @@ document.getElementById('calcFsBtn').onclick=()=>{
 applyLang('zh');
 refreshLclBadge();
 refreshFclBadge();
+renderPrice('all');
 </script>
 </body>
 </html>
+
+
+<!--禁止右键-->
+<script>
+document.oncontextmenu = function(){return false;}
+document.onselectstart = function(){return false;}
+</script>
+
+
+    
