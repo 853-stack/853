@@ -255,7 +255,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
       <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="填写即自动报价" data-en="Instant auto-quote">填写即自动报价</div></div></div>
       <div class="home-item" data-goto="fcl"><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div><div class="icon green">🚢</div></div>
       <div class="home-item" data-goto="calc"><div class="icon orange">🧮</div><div><div class="name" data-zh="计算器" data-en="Calculator">计算器</div><div class="desc" data-zh="渠道计费 / CBM" data-en="Billing / CBM">渠道计费 / CBM</div></div></div>
-      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表" data-en="Freight Rates">运费价格表</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
+      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表 🔒" data-en="Freight Rates 🔒">运费价格表 🔒</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
     </div>
   </div>
 
@@ -294,7 +294,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   </div>
 </div>
 
-<!-- 运费价格表 -->
+<!-- 运费价格表（密码保护） -->
 <div id="price" class="card hidden">
   <h2 data-zh="运费价格表（9.18执行）" data-en="Freight Rate Table (Effective 9.18)">运费价格表（9.18执行）</h2>
   <div class="tip-orange" style="margin-bottom:14px;"
@@ -593,8 +593,9 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <span data-zh="所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认" data-en="All prices refer to the current channel table. Final freight subject to warehouse measurement; surcharges confirmed by Emily.">所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认</span>
 </div>
 
-<!-- 查询货物轨迹链接已隐藏 -->
-<footer style="display:none;"></footer>
+<footer>
+  <a class="footer-link" href="https://hgzx.kingtrans.cn/WebTrack?action=list" target="_blank" rel="noopener" data-zh="📦 查询货物轨迹" data-en="📦 Track Shipment">📦 查询货物轨迹</a>
+</footer>
 
 </div>
 
@@ -606,8 +607,8 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
-<!-- 密码弹窗（已隐藏，保留结构但永不显示） -->
-<div class="pwd-modal hidden" id="pwdModal" style="display:none!important;">
+<!-- 密码弹窗 -->
+<div class="pwd-modal hidden" id="pwdModal">
   <div class="pwd-box">
     <h3>🔒 访问受限</h3>
     <p id="pwdDesc" data-zh="请输入密码查看运费价格表" data-en="Enter password to view freight rates">请输入密码查看运费价格表</p>
@@ -618,24 +619,78 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
       <button class="btn btn-primary" id="pwdConfirm" data-zh="确认" data-en="Confirm">确认</button>
     </div>
   </div>
-</div>
-
-<script>
+</div><script>
 const WX_ACCOUNT = "GZjcyt006";
 let LANG = "zh";
 
-/* ============ 密码保护已彻底解除 ============ */
-let priceUnlocked = true;
+/* ============ 密码保护（价格表 + 渠道细则统一锁） ============ */
+const PRICE_PASSWORD = "Emily Wu";
+let priceUnlocked = false;
 
 const pwdModal = document.getElementById('pwdModal');
-if (pwdModal) {
-  pwdModal.classList.add('hidden');
-  pwdModal.style.display = 'none';
-  pwdModal.remove();
+const pwdInput = document.getElementById('pwdInput');
+const pwdTip = document.getElementById('pwdTip');
+const pwdDesc = document.getElementById('pwdDesc');
+
+let pwdContext = 'price';
+let pendingDetailTarget = null;
+
+function openPwdModal(context, target){
+  pwdContext = context || 'price';
+  pendingDetailTarget = target || null;
+  if(pwdDesc){
+    if(pwdContext === 'detail'){
+      pwdDesc.textContent = t('请输入密码解锁渠道细则','Enter password to unlock channel details');
+    } else {
+      pwdDesc.textContent = t('请输入密码查看运费价格表','Enter password to view freight rates');
+    }
+  }
+  pwdModal.classList.remove('hidden');
+  pwdInput.value = '';
+  pwdTip.textContent = '';
+  pwdTip.className = 'pwd-tip';
+  setTimeout(()=>pwdInput.focus(), 120);
 }
-function openPwdModal(){}
-function closePwdModal(){}
-function tryUnlockPrice(){}
+function closePwdModal(){
+  pwdModal.classList.add('hidden');
+  pwdTip.textContent = '';
+  pwdTip.className = 'pwd-tip';
+}
+function tryUnlockPrice(){
+  const v = pwdInput.value.trim();
+  if(v === PRICE_PASSWORD){
+    priceUnlocked = true;
+    pwdTip.textContent = '✅ 验证成功';
+    pwdTip.className = 'pwd-tip ok';
+    setTimeout(()=>{
+      closePwdModal();
+      if(pwdContext === 'price'){
+        document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
+        document.querySelector('.tab-item[data-target="home"]').classList.add('active');
+        showPageRaw('price');
+      } else if(pwdContext === 'detail' && pendingDetailTarget){
+        pendingDetailTarget.parentElement.classList.add('open');
+      }
+      pendingDetailTarget = null;
+      if(typeof updateChannelDetails === 'function'){
+        updateChannelDetails(getCurrentChannel());
+      }
+    }, 260);
+  } else {
+    pwdTip.textContent = '❌ 密码错误，请重试';
+    pwdTip.className = 'pwd-tip error';
+    pwdInput.select();
+  }
+}
+document.getElementById('pwdConfirm').onclick = tryUnlockPrice;
+document.getElementById('pwdCancel').onclick = ()=>{ pendingDetailTarget = null; closePwdModal(); };
+pwdInput.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') tryUnlockPrice();
+  if(e.key === 'Escape'){ pendingDetailTarget = null; closePwdModal(); }
+});
+pwdModal.addEventListener('click', (e)=>{
+  if(e.target === pwdModal){ pendingDetailTarget = null; closePwdModal(); }
+});
 
 const t = (zh, en) => (LANG === "zh" ? zh : en);
 const tObj = (o) => (o ? (LANG === "zh" ? o.zh : o.en) : '');
@@ -757,6 +812,7 @@ function zoneOf(channel){
   if(n.indexOf('新加坡海运小包') === 0) return 'sg';
   if(n.indexOf('菲律宾空运') === 0) return 'ph_air';
   if(n.indexOf('菲律宾海运') === 0) return 'ph_sea';
+  if(n.indexOf('泰国陆运大货') === 0) return 'th_land_bulk';
   if(n.indexOf('泰国陆运') === 0) return 'th_land';
   if(n.indexOf('泰国海运') === 0) return 'th_sea';
   if(n.indexOf('越南陆运大货') === 0) return 'vn';
@@ -989,6 +1045,23 @@ function evaluateZip(zone, raw){
       }
       return { level:'info', tag:{zh:'曼谷以外',en:'Outside Bangkok'}, title:{zh:'曼谷以外区域（TH2 价格）',en:'Outside Bangkok (TH2 rate)'}, desc:{zh:'按曼谷市外价格计费；派送费需单独咨询。',en:'Charged at TH2 rate; delivery on request.'} };
     }
+    case 'th_land_bulk': {
+      if(L !== 5) return needLen(5);
+      if(raw.indexOf('10') === 0){
+        return {
+          level:'ok',
+          tag:{zh:'曼谷市区',en:'Bangkok'},
+          title:{zh:'曼谷市区（邮编 10xxx）',en:'Bangkok downtown'},
+          desc:{zh:'曼谷市区满 1CBM 免费派送，低于 1CBM 加收 100 元/票操作费。',en:'Bangkok: free ≥1 CBM; <1 CBM +100 CNY/ticket.'}
+        };
+      }
+      return {
+        level:'info',
+        tag:{zh:'曼谷以外',en:'Outside Bangkok'},
+        title:{zh:'曼谷以外区域',en:'Outside Bangkok'},
+        desc:{zh:'曼谷以外派送费用需单独咨询。超重货 1 立方 = 500KG。',en:'Delivery on request. Overweight 1 CBM = 500KG.'}
+      };
+    }
     case 'th_sea': {
       if(L !== 5) return needLen(5);
       if(raw.indexOf('10') === 0){
@@ -1088,17 +1161,19 @@ const KH_COMMON = {
 };
 
 const TH_LAND_DETAIL = {
-  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值，体积重=长(cm)×宽(cm)×高(cm)÷6000。",en:"Billed per KG, rounded up to 1KG. Chargeable = max(actual, L×W×H÷6000)."},
+  billing:{zh:"1. 以CBM为单位进位，超重货1立方=500KG，如超出方数按实际重量/500KG计费。",en:"1. Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500)."},
   size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
   customs:{zh:"泰国陆运不接收报关件。因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"Thailand land line does not accept formal declaration. All costs from incorrect declaration documents are borne by the customer."},
+  endService:{zh:"1. 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100；曼谷以外派送费用单独咨询。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算，不足1立方按照1立方计算。\n4. 退回重派：由于地址错误或收件人拒收或其他原因，导致未能正常派送成功，退回后贵司要求重派，按重派标准收费，一直未回复，我司末端将免费保存7天，到期销毁，运费正常收取。\n5. 重派标准：实报实销，重新派送前我司会协助确认。\n6. 派送只到楼下，不上楼。",en:"1. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok downtown postcodes 10900-10100.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Thailand warehouse free storage 3 days; beyond 50 THB/CBM/day.\n4. Return: re-delivery charged at standard; JCYT free storage 7 days.\n5. Re-delivery: actual cost.\n6. Delivery to ground floor only."},
   prohibited:{zh:"我司拒绝接收的物品为：玩具枪（枪模型类）、香烟、毒品、鲜活动植物、药品、易燃易爆、腐蚀品、光碟、军火武器等国际航空运输协会(IATA)限制的物品。",en:"Rejected: toy guns (gun models), cigarettes, drugs, live plants/animals, medicines, flammable/explosive/corrosive goods, discs, weapons and other IATA-restricted items."},
   compensation: COMP_STD
 };
 
 const TH_SEA_DETAIL = {
-  billing:{zh:"以CBM为单位进位，超重货1立方=500KG，如超出方数按 实际重量/500KG 计费。",en:"Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500)."},
+  billing:{zh:"1. 以CBM为单位进位，超重货1立方=500KG，如超出方数按实际重量/500KG计费。",en:"1. Billed per CBM; overweight 1 CBM = 500KG (charge by actual weight/500)."},
   size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票（发货前务必与收货人确认是否可以卸货超尺寸件）。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or single side >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet (11-15cm)."},
   customs:{zh:"1. 单独报关件：陆运不接收报关件，海运可以报关；报关费+500元/票，续页费50元/页，最低消费1CBM起；单价要在报价基础上加100元/CBM。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"1. Formal declaration: only sea line. +500 CNY/ticket, +50 CNY/extra page, min 1 CBM; unit price +100 CNY/CBM.\n2. All costs from incorrect declaration documents are borne by the customer."},
+  endService:{zh:"1. 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100；曼谷以外派送费用单独咨询。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算，不足1立方按照1立方计算。\n4. 退回重派：由于地址错误或收件人拒收或其他原因，导致未能正常派送成功，退回后贵司要求重派，按重派标准收费，一直未回复，我司末端将免费保存7天，到期销毁，运费正常收取。\n5. 重派标准：实报实销，重新派送前我司会协助确认。\n6. 派送只到楼下，不上楼。",en:"1. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok downtown postcodes 10900-10100.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Thailand warehouse free storage 3 days; beyond 50 THB/CBM/day.\n4. Return: re-delivery charged at standard; JCYT free storage 7 days.\n5. Re-delivery: actual cost.\n6. Delivery to ground floor only."},
   prohibited:{zh:"可接受货物类型：\n· 普货渠道：服装、拉杆箱、拖鞋、布匹、雨伞、帽子、塑料模特、布鞋、塑料餐具、塑料管、文具、普通木门、普通家具、五金配件、普通建材、手机壳、玻璃（需打木架、需自提）、手机外置配件、假睫毛、薄膜包装袋、普通工艺品（不含电、磁、仿牌、液体等敏感品）。\n· 商检渠道：带电类、蓝牙类、插电类、机器类。\n· 敏感渠道：食品、化妆品、品牌商品（电子烟、充电宝、移动电源等出货前请单独确认）。\n拒收：酒、烟草(电子烟)、鲜活食品、易燃易爆危险品、任何气体类、动植物标本、杀虫剂、除草剂、管制刀具、弓弩、纯电池如充电宝、不明液体粉末等国家禁止货物。",en:"Accepted: General — apparel, luggage, fabric, hardware, ordinary furniture, phone cases, etc. (no battery/magnet/brand/liquid). Inspection — battery/Bluetooth/plug-in/machines. Sensitive — food, cosmetics, branded goods.\nRejected: alcohol, tobacco/e-cigarettes, fresh food, flammable/explosive, gases, specimens, pesticides, controlled knives, crossbows, pure batteries, unknown liquids/powders."},
   compensation: COMP_STD
 };
@@ -1320,25 +1395,75 @@ const PRICE_CHANNELS = [
    detail:Object.assign({}, TH_LAND_DETAIL, {
      remarks:{zh:"· 曼谷市内（TH1）与曼谷市外（TH2）分价，入佛山仓库。\n· 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n· 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独附加 3 元/Kg 派送费用。\n· 参考时效：曼谷市内 5-7 工作日；曼谷市外 7-10 工作日。",en:"· Bangkok (TH1) vs outside Bangkok (TH2) priced separately; enters Foshan warehouse.\n· Bangkok delivery postcodes: 10900–10100.\n· Outside Bangkok (TH2) postcode 84000+: remote surcharge +3 CNY/kg.\n· Transit: Bangkok 5-7 working days; outside 7-10 working days."}
    }),
-   endService:{zh:"1. 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n2. 曼谷市区满 1CBM 免费派送，低于 1CBM +100/票操作费。\n3. 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独加 3 元/kg 派送费用。\n4. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n5. 此报价不包含目的地罚款、仓储及收件方引起的退件费、销毁费。\n6. 以下地址派送不到：军营、机场内、保税区、医院、监狱、离岛、果园深处（山里）等。\n7. 因收件人联系不上或地址错误导致退仓重寄，免仓期7天（超过按照 RMB1/Kg/天 收取仓储费，一个月无人处理的默认销毁）。\n8. 派送只到楼下，不上楼。",en:"1. Bangkok downtown postcodes: 10900-10100.\n2. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket.\n3. Outside Bangkok (TH2) postcode 84000+ remote +3 CNY/kg.\n4. Single side >2m or single piece >1t: to be confirmed.\n5. Quote excludes destination fines, storage, return/destruction fees.\n6. Not deliverable: military, airport, bonded area, hospital, prison, islands, deep orchards.\n7. Free storage 7 days; beyond 1 CNY/kg/day; unclaimed after 1 month default destroyed.\n8. Delivery to ground floor only."},
-   head:{zh:["类型","首重","续重","25+","51+","71+","101+","201+","301+"], en:["Category","First","Add","25+","51+","71+","101+","201+","301+"]},
+   endService:TH_LAND_DETAIL.endService,
+   head:{zh:["类型","首重","续重","25+","51+","71+","101+","201+","301+","501+"], en:["Category","First","Add","25+","51+","71+","101+","201+","301+","501+"]},
    rows:{
-     zh:[["曼谷·普货/带电池","30","13","12","9","8.5","8","7.5","7.5"],["曼谷·化妆品/食品/液体/医疗器械","50","25","15","13","13","12","12","11"],["曼谷·化工/仿牌","55","25","23","21","20","18","18","16"],["曼谷·香水/药品/性用品","85","35","34","34","34","29","29","29"],["曼谷外·普货","35","14","13","11.5","11.5","11","10.5","10.5"],["曼谷外·化妆品/食品/液体","55","28","18","16","16","15","14","14"],["曼谷外·化工/仿牌","65","28","25","24","23","19","18","16"],["曼谷外·香水/药品/性用品","90","35","35","35","35","30","30","30"]],
-     en:[["Bangkok · General/Battery","30","13","12","9","8.5","8","7.5","7.5"],["Bangkok · Cosmetics/Food/Liquid/Medical","50","25","15","13","13","12","12","11"],["Bangkok · Chemical/Replica","55","25","23","21","20","18","18","16"],["Bangkok · Perfume/Medicine/Adult","85","35","34","34","34","29","29","29"],["Outside Bangkok · General","35","14","13","11.5","11.5","11","10.5","10.5"],["Outside Bangkok · Cosmetics/Food/Liquid","55","28","18","16","16","15","14","14"],["Outside Bangkok · Chemical/Replica","65","28","25","24","23","19","18","16"],["Outside Bangkok · Perfume/Medicine/Adult","90","35","35","35","35","30","30","30"]]}},
+     zh:[
+       ["曼谷·普货/带电池","30","13","12","9","8.5","8","7.5","7.5","7.5"],
+       ["曼谷·化妆品/食品/液体/医疗器械","50","25","15","13","13","12","12","11","11"],
+       ["曼谷·化工/仿牌","55","25","23","21","20","18","18","16","15"],
+       ["曼谷·香水/药品/性用品","85","35","34","34","34","29","29","29","27"],
+       ["曼谷外·普货","35","14","13","11.5","11.5","11","10.5","10.5","10.5"],
+       ["曼谷外·化妆品/食品/液体","55","28","18","16","16","15","14","14","13"],
+       ["曼谷外·化工/仿牌","65","28","25","24","23","19","18","16","15"],
+       ["曼谷外·香水/药品/性用品","90","35","35","35","35","30","30","30","30"]
+     ],
+     en:[
+       ["Bangkok · General/Battery","30","13","12","9","8.5","8","7.5","7.5","7.5"],
+       ["Bangkok · Cosmetics/Food/Liquid/Medical","50","25","15","13","13","12","12","11","11"],
+       ["Bangkok · Chemical/Replica","55","25","23","21","20","18","18","16","15"],
+       ["Bangkok · Perfume/Medicine/Adult","85","35","34","34","34","29","29","29","27"],
+       ["Outside Bangkok · General","35","14","13","11.5","11.5","11","10.5","10.5","10.5"],
+       ["Outside Bangkok · Cosmetics/Food/Liquid","55","28","18","16","16","15","14","14","13"],
+       ["Outside Bangkok · Chemical/Replica","65","28","25","24","23","19","18","16","15"],
+       ["Outside Bangkok · Perfume/Medicine/Adult","90","35","35","35","35","30","30","30","30"]
+     ]}},
 
   {type:"sea", country:"th",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
-   name:{zh:"泰国海运双清包税 (DDP)", en:"Thailand Sea DDP"},
+   name:{zh:"泰国海运大货专线 DDP", en:"Thailand Sea Bulk DDP"},
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
-   note:{zh:"海运/陆运两档；曼谷满1方免费派送，低于1CBM+100/票操作费；超重1方=500KG。", en:"Sea / Land options; Bangkok free ≥1 CBM, <1 CBM +100/ticket; overweight 1 CBM = 500KG."},
+   note:{zh:"海运大货；曼谷市区满1CBM免费派送，低于1CBM+100/票操作费；超重1方=500KG。", en:"Sea bulk; Bangkok free ≥1 CBM, <1 CBM +100/ticket; 1 CBM = 500KG."},
    detail:Object.assign({}, TH_SEA_DETAIL, {
-     remarks:{zh:"· 入佛山仓库；入义乌 +100元/方。\n· 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900–10100；曼谷以外派送费用单独咨询。\n· 海运时效 15-18 工作日；陆运时效 7-10 工作日。\n· 海运电池（1比300）最低1CBM。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok postcodes 10900–10100; outside Bangkok delivery on request.\n· Sea transit 15-18 working days; land 7-10 working days.\n· Sea battery (1:300) min 1 CBM."}
+     remarks:{zh:"· 入佛山仓库；入义乌 +100元/方。\n· 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费。\n· 海运时效 15-18 工作日。\n· 海运电池（1比300）最低1CBM。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket.\n· Sea transit 15-18 working days.\n· Sea battery (1:300) min 1 CBM."}
    }),
-   endService:{zh:"1. 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区满一方包派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100；曼谷以外派送费用单独咨询。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算，不足1立方按照1立方计算。\n4. 派送包裹退回：退回后贵司要求重派按重派标准收费，一直未回复，我司末端将免费保存7天，到期销毁，运费正常收取。\n5. 重派标准：实报实销，重新派送前我司会协助确认。\n6. 派送只到楼下，不上楼。",en:"1. Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket; Bangkok downtown postcodes 10900-10100.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Thailand warehouse free storage 3 days; beyond 50 THB/CBM/day.\n4. Return: re-delivery charged at standard; JCYT free storage 7 days.\n5. Re-delivery: actual cost.\n6. Delivery to ground floor only."},
-   head:{zh:["档位/货类","海运元/CBM","陆运元/CBM","海运时效"], en:["Tier/Category","Sea CNY/CBM","Land CNY/CBM","Sea transit"]},
+   endService:TH_SEA_DETAIL.endService,
+   head:{zh:["货类","单价(元/CBM)","最低消费","时效"], en:["Category","Rate (CNY/CBM)","Min Charge","Transit"]},
    rows:{
-     zh:[["普货","540","1100","15-18天"],["商检(带电/机器)","640","1300","15-18天"],["敏感(牌子/食品/化妆)","740","1400","15-18天"],["电池/化工(1:300)","1500","/","15-18天"]],
-     en:[["General","540","1100","15-18 days"],["Inspection (battery/machine)","640","1300","15-18 days"],["Sensitive (brand/food/cosmetics)","740","1400","15-18 days"],["Battery/Chemical (1:300)","1500","/","15-18 days"]]}},
+     zh:[
+       ["普货","540","0.5CBM","15-18天"],
+       ["商检(带电/机器)","640","0.5CBM","15-18天"],
+       ["敏感(牌子/食品/化妆)","740","0.5CBM","15-18天"],
+       ["电池/化工(1:300)","1500","1CBM","15-18天"]
+     ],
+     en:[
+       ["General","540","0.5CBM","15-18 days"],
+       ["Inspection (battery/machine)","640","0.5CBM","15-18 days"],
+       ["Sensitive (brand/food/cosmetics)","740","0.5CBM","15-18 days"],
+       ["Battery/Chemical (1:300)","1500","1CBM","15-18 days"]
+     ]}},
+
+  {type:"land", country:"th",
+   billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
+   name:{zh:"泰国陆运大货专线 DDP", en:"Thailand Land Bulk DDP"},
+   wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
+   note:{zh:"陆运大货；曼谷市区满1CBM免费派送，低于1CBM+100/票操作费；超重1方=500KG。", en:"Land bulk; Bangkok free ≥1 CBM, <1 CBM +100/ticket; 1 CBM = 500KG."},
+   detail:Object.assign({}, TH_LAND_DETAIL, {
+     remarks:{zh:"· 入佛山仓库；入义乌 +100元/方。\n· 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费。\n· 陆运时效 7-10 工作日。",en:"· Foshan warehouse; Yiwu +100 CNY/CBM.\n· Bangkok free ≥1 CBM; <1 CBM +100 CNY/ticket.\n· Land transit 7-10 working days."}
+   }),
+   endService:TH_LAND_DETAIL.endService,
+   head:{zh:["货类","单价(元/CBM)","最低消费","时效"], en:["Category","Rate (CNY/CBM)","Min Charge","Transit"]},
+   rows:{
+     zh:[
+       ["普货","1100","0.5CBM","7-10天"],
+       ["商检(带电/机器)","1300","0.5CBM","7-10天"],
+       ["敏感(食品/化妆品)","1400","0.5CBM","7-10天"]
+     ],
+     en:[
+       ["General","1100","0.5CBM","7-10 days"],
+       ["Inspection (battery/machine)","1300","0.5CBM","7-10 days"],
+       ["Sensitive (food/cosmetics)","1400","0.5CBM","7-10 days"]
+     ]}},
 
   {type:"land", country:"vn",
    billing:{mode:'volume', cbmRatio:230, minCbm:1},
@@ -1503,7 +1628,7 @@ function renderPrice(filter){
       rows.map(r=>'<tr><td class="key">'+r[0]+'</td>'+r.slice(1).map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+
       '</tbody></table>';
     const noteText = tObj(c.note);
-    const detailHTML = buildDetailHTML(channelDetailObj(c), true);
+    const detailHTML = buildDetailHTML(channelDetailObj(c), priceUnlocked);
     const tailNote = t("⚠️ 仅参考，最终运费以仓库实测、Emily确认为准", "⚠️ Reference only. Final freight subject to warehouse measurement and Emily's confirmation.");
     return '<div class="price-card" id="pc-'+i+'">'+
       '<div class="price-head">'+
@@ -1710,18 +1835,23 @@ function updateChannelDetails(channel){
     return;
   }
   const d = channelDetailObj(channel);
-  const html = buildDetailHTML(d, true);
+  const html = buildDetailHTML(d, priceUnlocked);
   if(!html){
     endServiceEl.classList.remove('show');
     endServiceEl.innerHTML = '';
     return;
   }
-  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span></div>' + html;
+  const lockHint = priceUnlocked ? '' : '<span class="lock-hint">🔒 '+t('点击需密码','Password required')+'</span>';
+  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span>'+lockHint+'</div>' + html;
   endServiceEl.classList.add('show');
 }
 endServiceEl.addEventListener('click', function(e){
   const h = e.target.closest('.dt-head');
   if(!h) return;
+  if(!priceUnlocked){
+    openPwdModal('detail', h);
+    return;
+  }
   h.parentElement.classList.toggle('open');
 });
 function updateBillingUI(channel){
@@ -1951,7 +2081,7 @@ function autoSelectPriceTypeByZip(channel, zip){
     const kw = isInState ? '坡内' : '坡外';
     target = opts.find(o => o.text.indexOf(kw) >= 0);
   }
-  else if(nameZh.indexOf('泰国') === 0){
+  else if(nameZh.indexOf('泰国陆运双清包税') === 0){
     const isBkk = zip.startsWith('10');
     if(isBkk){
       target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') < 0);
@@ -2018,7 +2148,8 @@ const QUOTE_RULES = {
   "菲律宾空运包税专线":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
   "菲律宾海运包税专线":       { basis:'volume', roundUnit:0.1, minCbm:1 },
   "泰国陆运双清包税":         { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
-  "泰国海运双清包税 (DDP)":   { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "泰国海运大货专线 DDP":     { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
+  "泰国陆运大货专线 DDP":     { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
   "越南陆运大货双清包税":     { basis:'volume', roundUnit:0.1, minCbm:1, overweightRatio:230 },
   "越南陆运小货双清包税":     { basis:'weight', divisor:5000, foam:'none', roundUnit:1 },
   "印度尼西亚空运包税":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
@@ -2318,11 +2449,19 @@ function showPageRaw(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showPage(id){
+  if(id === 'price' && !priceUnlocked){
+    openPwdModal('price');
+    return;
+  }
   showPageRaw(id);
 }
 document.querySelectorAll('.tab-item').forEach(tab=>{
   tab.onclick=function(){
     const target = this.getAttribute('data-target');
+    if(target === 'price' && !priceUnlocked){
+      openPwdModal('price');
+      return;
+    }
     document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
     this.classList.add('active');
     showPageRaw(target);
@@ -2331,6 +2470,10 @@ document.querySelectorAll('.tab-item').forEach(tab=>{
 document.querySelectorAll('.home-item[data-goto]').forEach(item=>{
   item.onclick=()=>{
     const tgt=item.dataset.goto;
+    if(tgt === 'price' && !priceUnlocked){
+      openPwdModal('price');
+      return;
+    }
     document.querySelectorAll('.tab-item').forEach(x=>x.classList.remove('active'));
     document.querySelector('.tab-item[data-target="'+(tgt==='price'?'home':tgt)+'"]').classList.add('active');
     showPageRaw(tgt);
@@ -2546,7 +2689,6 @@ document.getElementById('calcFsBtn').onclick=()=>{
 applyLang('zh');
 refreshLclBadge();
 refreshFclBadge();
-renderPrice('all');
 </script>
 </body>
 </html>
@@ -2556,6 +2698,8 @@ renderPrice('all');
 document.oncontextmenu = function(){return false;}
 document.onselectstart = function(){return false;}
 </script>
+
+
 
 
 
