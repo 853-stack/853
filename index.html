@@ -203,13 +203,13 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .pwd-tip.ok{color:#8A5A5A;}
 .pwd-actions{display:flex;gap:10px;justify-content:center;}
 .pwd-actions .btn{flex:1;margin:0;}
-.quote-panel{display:none;margin-top:6px;margin-bottom:16px;border-radius:16px;border:1px solid #F5D8D8;background:linear-gradient(135deg,#FFF8F8 0%,#FDF0F0 100%);padding:16px 16px 14px;box-shadow:0 4px 16px rgba(245,168,166,.14);}
+.quote-panel{display:none;margin-top:6px;margin-bottom:16px;border-radius:16px;border:1px solid #F5D8D8;background:linear-gradient(135deg,#FFF8F8 0%,#FDF0F0 100%);padding:16px 14px 14px;box-shadow:0 4px 16px rgba(245,168,166,.14);}
 .quote-panel.show{display:block;animation:foldIn .28s ease;}
 .quote-panel h3{font-size:13.5px;color:#2A2930;margin-bottom:10px;font-weight:800;display:flex;align-items:center;gap:6px;letter-spacing:.3px;}
-.quote-line{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:6px 0;border-bottom:1px dashed #F2E0E0;line-height:1.6;}
+.quote-line{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px;font-size:12.5px;padding:6px 0;border-bottom:1px dashed #F2E0E0;line-height:1.6;}
 .quote-line:last-of-type{border-bottom:none;}
-.quote-line span:first-child{color:#8A8590;flex-shrink:0;}
-.quote-line b{color:#2A2930;font-feature-settings:"tnum";text-align:right;word-break:break-all;}
+.quote-line span:first-child{color:#8A8590;flex:1 1 auto;min-width:0;word-break:break-word;overflow-wrap:anywhere;}
+.quote-line b{color:#2A2930;font-feature-settings:"tnum";text-align:right;word-break:break-all;flex:0 1 auto;}
 .quote-line.accent b{color:#C0392B;}
 .quote-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:12px;border-top:2px solid #F0DEDE;}
 .quote-total span{font-size:13px;font-weight:800;color:#403F44;}
@@ -3436,11 +3436,6 @@ document.oncontextmenu = function(){return false;}
 document.onselectstart = function(){return false;}
 </script>
 
-<!--禁止右键-->
-<script>
-document.oncontextmenu = function(){return false;}
-document.onselectstart = function(){return false;}
-</script>
 
 
 
