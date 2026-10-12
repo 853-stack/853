@@ -103,9 +103,7 @@ select{cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#B5
 .result-box b{color:#2A2930;}
 .info-tip{border-radius:var(--radius);padding:16px 18px;margin:14px;color:#6B6570;line-height:1.85;font-size:12.5px;background:linear-gradient(135deg,#FFFDF5 0%,#FCF8DF 100%);border:1px solid #EDE5B8;border-left:3px solid #F5A8A6;box-shadow:var(--shadow-xs);}
 .info-tip strong{color:#403F44;font-weight:700;}
-footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12px;}
-.footer-link{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:999px;background:#fff;border:1px solid var(--border);color:#403F44;text-decoration:none;font-weight:600;font-size:12.5px;box-shadow:var(--shadow-sm);transition:.22s;cursor:pointer;}
-.footer-link:hover{border-color:#F5A8A6;box-shadow:var(--shadow-md);transform:translateY(-1px);}
+footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12px;letter-spacing:.3px;}
 .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
 .home-item{background:#fff;border-radius:var(--radius);padding:15px 14px;border:1px solid var(--border);box-shadow:var(--shadow-xs);display:flex;align-items:center;gap:12px;cursor:pointer;transition:.22s;position:relative;overflow:hidden;}
 .home-item:hover{border-color:#F5D0D0;box-shadow:var(--shadow-md);transform:translateY(-2px);}
@@ -230,6 +228,73 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 .surcharge-item .sc-value{color:#C0392B;font-weight:700;font-size:12.5px;float:right;margin-left:6px;}
 .surcharge-item .sc-tag{display:inline-block;padding:1px 6px;border-radius:5px;font-size:10px;background:#F5A8A6;color:#fff;margin-left:4px;font-weight:600;}
 .surcharge-item .sc-desc{font-size:10.5px;color:#8A8590;display:block;margin-top:2px;}
+/* ★ 悬浮客服按钮 */
+.fab-btn{
+  position:fixed;right:18px;bottom:88px;z-index:40;
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,#22C26A,#07A94F);
+  color:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;line-height:1;
+  box-shadow:0 8px 24px rgba(7,169,79,.42),0 2px 6px rgba(0,0,0,.12);
+  transition:.25s;animation:fabPulse 2.4s ease-in-out infinite;
+}
+.fab-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 30px rgba(7,169,79,.55);}
+.fab-btn:active{transform:scale(.96);}
+.fab-btn .fab-tip{
+  position:absolute;right:64px;top:50%;transform:translateY(-50%);
+  background:#2A2930;color:#fff;font-size:11.5px;font-weight:600;
+  padding:6px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;
+  box-shadow:0 4px 14px rgba(42,41,48,.28);
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.fab-btn .fab-tip::after{
+  content:"";position:absolute;right:-5px;top:50%;transform:translateY(-50%);
+  border:5px solid transparent;border-left-color:#2A2930;
+}
+@media (hover:hover){.fab-btn:hover .fab-tip{opacity:1;}}
+@keyframes fabPulse{
+  0%,100%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 0 rgba(34,194,106,.45);}
+  50%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 12px rgba(34,194,106,0);}
+}
+/* ★ 联系弹窗 */
+.contact-modal{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(42,41,48,.55);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  animation:fadeIn .22s ease;
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+}
+.contact-modal.hidden{display:none !important;}
+.contact-modal .contact-card{
+  width:100%;max-width:400px;margin:0;
+  background:#fff;border-radius:20px;padding:24px 22px 18px;
+  box-shadow:0 24px 60px rgba(42,41,48,.35);
+  animation:popIn .28s cubic-bezier(.2,.9,.3,1.3);
+  position:relative;
+}
+.contact-modal .contact-close{
+  position:absolute;top:12px;right:14px;
+  width:30px;height:30px;border-radius:50%;
+  border:none;background:#F5EDED;color:#8A8590;
+  font-size:15px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:.2s;
+}
+.contact-modal .contact-close:hover{background:#FECBCA;color:#2A2930;}
+.contact-head{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:12px;text-align:center;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.contact-head::before{content:"◆";color:#F5A8A6;font-size:9px;}
+.contact-line{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13px;}
+.contact-line:last-child{border-bottom:none;}
+.contact-line .c-icon{font-size:15px;flex-shrink:0;}
+.contact-line .c-label{color:#8A8590;font-size:12px;min-width:62px;flex-shrink:0;font-weight:600;}
+.contact-line .c-value{flex:1;color:#2A2930;font-weight:700;font-feature-settings:"tnum";letter-spacing:.3px;word-break:break-all;}
+.contact-line a.c-value{color:#07A94F;text-decoration:none;transition:.2s;}
+.contact-line a.c-value:hover{text-decoration:underline;color:#058a40;}
+.c-copy{padding:5px 12px;border-radius:8px;border:1px solid #F5D0D0;background:#FFF8F8;color:#403F44;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;flex-shrink:0;letter-spacing:.3px;}
+.c-copy:hover{border-color:#F5A8A6;background:#FFF0F0;}
+.c-copy:active{transform:scale(.96);}
+.c-copy.done{background:#E8F7EE;border-color:#22C26A;color:#07A94F;}
 @media (max-width:380px){
   .home-grid{grid-template-columns:1fr;}
   .card{padding:16px;margin:12px;}
@@ -239,6 +304,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   .zip-row{flex-direction:column;}
   .zip-row .zip-input{flex:1;}
   .quote-total b{font-size:20px;}
+  .fab-btn{right:14px;bottom:84px;width:50px;height:50px;font-size:22px;}
 }
 </style>
 </head><body>
@@ -615,7 +681,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 </div>
 
 <footer>
-  <a class="footer-link" id="trackLink" href="javascript:void(0)" rel="noopener" data-zh="📦 查询货物轨迹" data-en="📦 Track Shipment">📦 查询货物轨迹</a>
+  <span data-zh="© 君驰运通 · 东南亚专线" data-en="© JCYT · SE Asia Line">© 君驰运通 · 东南亚专线</span>
 </footer>
 
 </div>
@@ -626,6 +692,32 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
   <div class="tab-item" data-target="lcl"><div class="icon">📦</div><span data-zh="散货询价" data-en="LCL">散货询价</span></div>
   <div class="tab-item" data-target="fcl"><div class="icon">🚢</div><span data-zh="整柜询价" data-en="FCL">整柜询价</span></div>
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
+</div>
+
+<!-- ★ 悬浮客服按钮 -->
+<button class="fab-btn" id="fabContact" aria-label="联系客服">
+  💬
+  <span class="fab-tip" data-zh="联系客服" data-en="Contact us">联系客服</span>
+</button>
+
+<!-- ★ 联系弹窗 -->
+<div class="contact-modal hidden" id="contactModal">
+  <div class="contact-card">
+    <button class="contact-close" id="contactClose" aria-label="关闭">✕</button>
+    <div class="contact-head" data-zh="咨询 & 下单请联系" data-en="Contact for Inquiry & Order">咨询 & 下单请联系</div>
+    <div class="contact-line">
+      <span class="c-icon">💬</span>
+      <span class="c-label" data-zh="微信" data-en="WeChat">微信</span>
+      <b class="c-value">GZjcyt006</b>
+      <button class="c-copy" id="copyWxFooter" data-zh="复制" data-en="Copy">复制</button>
+    </div>
+    <div class="contact-line">
+      <span class="c-icon">📱</span>
+      <span class="c-label">WhatsApp</span>
+      <a class="c-value" href="https://wa.me/8613149933368" target="_blank" rel="noopener">+86 13149933368</a>
+      <button class="c-copy" id="copyWaFooter" data-zh="复制" data-en="Copy">复制</button>
+    </div>
+  </div>
 </div>
 
 <!-- 密码弹窗（保留但已解锁） -->
@@ -644,17 +736,37 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 
 <script>
 const WX_ACCOUNT = "GZjcyt006";
+const WA_ACCOUNT = "+86 13149933368";
 let LANG = "zh";
 
-/* ============ 货物轨迹查询（隐藏真实地址） ============ */
-const TRACK_URL = ['https://hgzx', '.kingtrans', '.cn', '/WebTrack', '?action=list'].join('');
+/* ============ 悬浮客服按钮 + 联系弹窗 ============ */
 (function(){
-  const el = document.getElementById('trackLink');
-  if(!el) return;
-  el.addEventListener('click', function(e){
-    e.preventDefault();
-    window.open(TRACK_URL, '_blank', 'noopener,noreferrer');
-  });
+  const fab = document.getElementById('fabContact');
+  const modal = document.getElementById('contactModal');
+  const closeBtn = document.getElementById('contactClose');
+  const wxBtn = document.getElementById('copyWxFooter');
+  const waBtn = document.getElementById('copyWaFooter');
+  if(!fab || !modal) return;
+
+  function openModal(){ modal.classList.remove('hidden'); }
+  function closeModal(){ modal.classList.add('hidden'); }
+
+  fab.addEventListener('click', openModal);
+  if(closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
+
+  const doCopy = async (btn, text)=>{
+    const orig = btn.textContent;
+    try{
+      await navigator.clipboard.writeText(text);
+      btn.textContent = (typeof t === 'function') ? t('已复制','Copied') : '已复制';
+      btn.classList.add('done');
+      setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('done'); }, 1300);
+    }catch(e){}
+  };
+  if(wxBtn) wxBtn.addEventListener('click', ()=> doCopy(wxBtn, WX_ACCOUNT));
+  if(waBtn) waBtn.addEventListener('click', ()=> doCopy(waBtn, WA_ACCOUNT));
 })();
 
 /* ============ 密码保护（已解锁） ============ */
@@ -3317,6 +3429,12 @@ refreshFclBadge();
 </script>
 </body>
 </html>
+
+<!--禁止右键-->
+<script>
+document.oncontextmenu = function(){return false;}
+document.onselectstart = function(){return false;}
+</script>
 
 <!--禁止右键-->
 <script>
