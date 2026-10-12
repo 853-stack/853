@@ -86,12 +86,6 @@ select{cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#B5
 .remote-note.safe{background:linear-gradient(135deg,#FFF8F8,#FDECEC);border:1px solid #F5D0D0;color:#403F44;}
 .remote-note strong{font-weight:700;}
 .remote-note .sub{margin-top:4px;font-size:11px;opacity:.85;line-height:1.6;}
-.end-service{display:none;margin-top:12px;border-radius:12px;background:#FFFDFB;border:1px solid #F3E7E7;padding:2px 14px 6px;}
-.end-service.show{display:block;animation:foldIn .25s ease;}
-.end-service .dt-title-bar{font-size:12.5px;font-weight:700;color:#8A5A5A;letter-spacing:.2px;padding:12px 0 4px;display:flex;align-items:center;justify-content:space-between;}
-.end-service .dt-title-bar .lock-hint{font-size:10.5px;color:#C97B7B;font-weight:600;letter-spacing:.2px;}
-.end-service .dt-accordion{margin-top:0;border-top:none;padding-top:0;}
-.end-service .dt-item:last-child{border-bottom:none;}
 .btn{padding:12px 18px;border-radius:12px;border:none;font-size:13.5px;cursor:pointer;margin-right:10px;margin-bottom:10px;transition:.22s;letter-spacing:.4px;font-weight:500;}
 .btn:active{transform:translateY(1px) scale(.99);}
 .btn-primary{background:linear-gradient(135deg,#FECBCA 0%,#F5A8A6 100%);color:#2A2930;font-weight:700;box-shadow:0 4px 14px rgba(245,168,166,.40);}
@@ -110,7 +104,7 @@ select{cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#B5
 .info-tip{border-radius:var(--radius);padding:16px 18px;margin:14px;color:#6B6570;line-height:1.85;font-size:12.5px;background:linear-gradient(135deg,#FFFDF5 0%,#FCF8DF 100%);border:1px solid #EDE5B8;border-left:3px solid #F5A8A6;box-shadow:var(--shadow-xs);}
 .info-tip strong{color:#403F44;font-weight:700;}
 footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12px;}
-.footer-link{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:999px;background:#fff;border:1px solid var(--border);color:#403F44;text-decoration:none;font-weight:600;font-size:12.5px;box-shadow:var(--shadow-sm);transition:.22s;}
+.footer-link{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:999px;background:#fff;border:1px solid var(--border);color:#403F44;text-decoration:none;font-weight:600;font-size:12.5px;box-shadow:var(--shadow-sm);transition:.22s;cursor:pointer;}
 .footer-link:hover{border-color:#F5A8A6;box-shadow:var(--shadow-md);transform:translateY(-1px);}
 .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
 .home-item{background:#fff;border-radius:var(--radius);padding:15px 14px;border:1px solid var(--border);box-shadow:var(--shadow-xs);display:flex;align-items:center;gap:12px;cursor:pointer;transition:.22s;position:relative;overflow:hidden;}
@@ -185,7 +179,10 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 .price-note{font-size:11px;color:#A39AA5;margin-top:8px;line-height:1.75;}
 .pbtn.active{background:linear-gradient(135deg,#FECBCA,#F5A8A6);color:#2A2930;border-color:transparent;box-shadow:0 4px 12px rgba(245,168,166,.35);font-weight:700;}
 #channelSelect optgroup{font-weight:700;color:#403F44;font-size:12.5px;padding:6px 0;}
-.dt-accordion{margin-top:14px;border-top:1px dashed var(--border);padding-top:4px;}
+/* ★ 渠道细则（统一放在运费价格表内） */
+.detail-section-title{font-size:12.5px;font-weight:700;color:#8A5A5A;letter-spacing:.2px;padding:12px 0 6px;margin-top:14px;border-top:1px dashed var(--border);display:flex;align-items:center;justify-content:space-between;}
+.detail-section-title .lock-hint{font-size:10.5px;color:#C97B7B;font-weight:600;letter-spacing:.2px;}
+.dt-accordion{margin-top:4px;padding-top:0;}
 .dt-item{border-bottom:1px solid #F7EFEF;}
 .dt-item:last-child{border-bottom:none;}
 .dt-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 4px;cursor:pointer;font-size:12.5px;font-weight:700;color:#403F44;user-select:none;-webkit-tap-highlight-color:transparent;transition:.2s;}
@@ -310,8 +307,8 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 <div id="price" class="card hidden">
   <h2 data-zh="运费价格表（9.18执行）" data-en="Freight Rate Table (Effective 9.18)">运费价格表（9.18执行）</h2>
   <div class="tip-orange" style="margin-bottom:14px;"
-       data-zh="💡 以下价格取自君驰运通 9.18 报价表，点击渠道卡片展开查看明细，再点开「渠道细则」查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。"
-       data-en="💡 Rates are from JCYT 9.18 price sheet. Tap a channel card to expand, then open 'Channel Details' for billing / packing limits / customs / end service / prohibited / compensation. Final freight subject to warehouse measurement and Emily's confirmation.">💡 以下价格取自君驰运通 9.18 报价表，点击渠道卡片展开查看明细，再点开「渠道细则」查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。</div>
+       data-zh="💡 以下价格取自君驰运通 9.18 报价表。点击渠道卡片展开查看价格明细，卡片内「📋 渠道细则」可查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。"
+       data-en="💡 Rates are from JCYT 9.18 price sheet. Tap a channel card to expand, then open 'Channel Details' inside the card for billing / packing limits / customs / end service / prohibited / compensation. Final freight subject to warehouse measurement and Emily's confirmation.">💡 以下价格取自君驰运通 9.18 报价表。点击渠道卡片展开查看价格明细，卡片内「📋 渠道细则」可查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。</div>
   <div class="price-filter" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
     <button class="btn btn-outline pbtn active" data-pf="all" data-zh="全部" data-en="All">全部</button>
     <button class="btn btn-outline pbtn" data-pf="air" data-zh="空运" data-en="Air">空运</button>
@@ -334,7 +331,6 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
     <div class="fold-body" style="padding-bottom:12px;">
       <select id="channelSelect"></select>
       <div class="tip-orange" id="channelBrief"></div>
-      <div class="end-service" id="endService"></div>
     </div>
   </div>
 
@@ -619,7 +615,7 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 </div>
 
 <footer>
-  <a class="footer-link" href="https://hgzx.kingtrans.cn/WebTrack?action=list" target="_blank" rel="noopener" data-zh="📦 查询货物轨迹" data-en="📦 Track Shipment">📦 查询货物轨迹</a>
+  <a class="footer-link" id="trackLink" href="javascript:void(0)" rel="noopener" data-zh="📦 查询货物轨迹" data-en="📦 Track Shipment">📦 查询货物轨迹</a>
 </footer>
 
 </div>
@@ -649,6 +645,17 @@ footer{text-align:center;padding:8px 8px 12px;color:var(--muted-2);font-size:12p
 <script>
 const WX_ACCOUNT = "GZjcyt006";
 let LANG = "zh";
+
+/* ============ 货物轨迹查询（隐藏真实地址） ============ */
+const TRACK_URL = ['https://hgzx', '.kingtrans', '.cn', '/WebTrack', '?action=list'].join('');
+(function(){
+  const el = document.getElementById('trackLink');
+  if(!el) return;
+  el.addEventListener('click', function(e){
+    e.preventDefault();
+    window.open(TRACK_URL, '_blank', 'noopener,noreferrer');
+  });
+})();
 
 /* ============ 密码保护（已解锁） ============ */
 const PRICE_PASSWORD = "Emily Wu";
@@ -701,9 +708,7 @@ function tryUnlockPrice(){
         pendingDetailTarget.parentElement.classList.add('open');
       }
       pendingDetailTarget = null;
-      if(typeof updateChannelDetails === 'function'){
-        updateChannelDetails(getCurrentChannel());
-      }
+      renderPrice(document.querySelector('.pbtn.active')?.dataset.pf || 'all');
     }, 260);
   } else {
     pwdTip.textContent = '❌ 密码错误，请重试';
@@ -1036,7 +1041,7 @@ const SURCHARGE_CONFIG = {
   },
   "泰国海运大货专线 DDP": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}
     ],
     manual: [
@@ -1046,7 +1051,7 @@ const SURCHARGE_CONFIG = {
   },
   "泰国陆运大货专线 DDP": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}
     ],
     manual: [
@@ -1063,14 +1068,14 @@ const SURCHARGE_CONFIG = {
   },
   "越南陆运小货双清包税": {
     auto: [
-      {id:'forklift', label:{zh:'叉车费（单件>150cm或>100KG）+150元/票', en:'Forklift (>150cm or >100KG) +150/ticket'},
+      {id:'forklift', label:{zh:'叉车费（单件>150cm或>100KG）+150元/票', en:'Forklift (>150cm or >100KG) +150/ticket'}, 
        check:v=>v.unitWeight>100||v.L>150||v.W>150||v.H>150, fee:{type:'fixed', value:150}}
     ],
     manual: []
   },
   "印度尼西亚空运包税": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>68||v.L>150||v.W>80||v.H>80, fee:{type:'fixed', value:150}}
     ],
     manual: [
@@ -1080,32 +1085,32 @@ const SURCHARGE_CONFIG = {
   },
   "印度尼西亚海运包税": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}},
-      {id:'lowcbm', label:{zh:'不足1方末端派送费（+200元/次）', en:'<1 CBM (+200/trip)'},
+      {id:'lowcbm', label:{zh:'不足1方末端派送费（+200元/次）', en:'<1 CBM (+200/trip)'}, 
        check:v=>v.totalVol>0 && v.totalVol<1, fee:{type:'fixed', value:200}}
     ],
     manual: []
   },
   "柬埔寨陆运小包专线": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}
     ],
     manual: []
   },
   "柬埔寨陆运大货包税": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}},
-      {id:'lowcbm', label:{zh:'不足1方操作费（+100元）', en:'<1 CBM (+100)'},
+      {id:'lowcbm', label:{zh:'不足1方操作费（+100元）', en:'<1 CBM (+100)'}, 
        check:v=>v.totalVol>0 && v.totalVol<1, fee:{type:'fixed', value:100}}
     ],
     manual: []
   },
   "老挝陆运包税": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, 
        check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}
     ],
     manual: [
@@ -1115,7 +1120,7 @@ const SURCHARGE_CONFIG = {
   },
   "阿联酋空运包税": {
     auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单边>120cm或单件>40KG）', en:'Oversize'},
+      {id:'oversize', label:{zh:'超尺寸附加费（单边>120cm或单件>40KG）', en:'Oversize'}, 
        check:v=>v.unitWeight>40||v.L>120||v.W>120||v.H>120, fee:{type:'fixed', value:150}}
     ],
     manual: [
@@ -1963,6 +1968,11 @@ function renderPrice(filter){
       '</tbody></table>';
     const noteText = tObj(c.note);
     const detailHTML = buildDetailHTML(channelDetailObj(c), false);
+    const detailBlock = detailHTML
+      ? '<div class="detail-section-title"><span>📋 '+t('渠道细则','Channel Details')+'</span>'+
+        (priceUnlocked ? '' : '<span class="lock-hint">🔒 '+t('点击需密码','Password required')+'</span>')+
+        '</div>'+detailHTML
+      : '';
     const tailNote = t("⚠️ 仅参考，最终运费以仓库实测、Emily确认为准", "⚠️ Reference only. Final freight subject to warehouse measurement and Emily's confirmation.");
     return '<div class="price-card" id="pc-'+i+'">'+
       '<div class="price-head">'+
@@ -1975,7 +1985,7 @@ function renderPrice(filter){
       '<div class="price-body">'+
         table+
         '<div class="price-note">'+noteText+'</div>'+
-        detailHTML+
+        detailBlock+
         '<div class="price-note">'+tailNote+'</div>'+
       '</div>'+
     '</div>';
@@ -1990,7 +2000,11 @@ document.querySelectorAll('.pbtn').forEach(b=>{
 });
 document.getElementById('priceList').addEventListener('click', function(e){
   const dtHead = e.target.closest('.dt-head');
-  if(dtHead){ dtHead.parentElement.classList.toggle('open'); return; }
+  if(dtHead){
+    if(!priceUnlocked){ openPwdModal('detail', dtHead); return; }
+    dtHead.parentElement.classList.toggle('open');
+    return;
+  }
   const head = e.target.closest('.price-head');
   if(head){ head.parentElement.classList.toggle('open'); }
 });
@@ -2001,7 +2015,6 @@ const zipEl = document.getElementById('zipCode');
 const zipStatusEl = document.getElementById('zipStatus');
 const remoteNoteEl = document.getElementById('remoteNote');
 const calcFormulaEl = document.getElementById('calcFormula');
-const endServiceEl = document.getElementById('endService');
 
 function parseChannelVal(val){
   if(!val) return null;
@@ -2134,7 +2147,6 @@ function updateChannelUI(){
     badge.textContent = t("点击选择渠道","Tap to select");
     updateBillingUI(null);
     updateZipUI(null);
-    updateChannelDetails(null);
     updateQuoteOpt();
     updateVnProvince();
     updateDeliveryFee();
@@ -2158,7 +2170,6 @@ function updateChannelUI(){
 
   updateBillingUI(c);
   updateZipUI(c);
-  updateChannelDetails(c);
   updateQuoteOpt();
   autoSelectPriceTypeByZip(c, (zipEl.value||'').trim());
   updateVnProvince();
@@ -2166,32 +2177,6 @@ function updateChannelUI(){
   updateSurchargeUI();
   renderLclQuote();
 }
-function updateChannelDetails(channel){
-  if(!channel){
-    endServiceEl.classList.remove('show');
-    endServiceEl.innerHTML = '';
-    return;
-  }
-  const d = channelDetailObj(channel);
-  const html = buildDetailHTML(d, false);
-  if(!html){
-    endServiceEl.classList.remove('show');
-    endServiceEl.innerHTML = '';
-    return;
-  }
-  const lockHint = priceUnlocked ? '' : '<span class="lock-hint">🔒 '+t('点击需密码','Password required')+'</span>';
-  endServiceEl.innerHTML = '<div class="dt-title-bar"><span>📋 '+t('渠道细则','Channel Details')+'</span>'+lockHint+'</div>' + html;
-  endServiceEl.classList.add('show');
-}
-endServiceEl.addEventListener('click', function(e){
-  const h = e.target.closest('.dt-head');
-  if(!h) return;
-  if(!priceUnlocked){
-    openPwdModal('detail', h);
-    return;
-  }
-  h.parentElement.classList.toggle('open');
-});
 function updateBillingUI(channel){
   const dimLabel = document.getElementById('dimLabel');
   const weightLabel = document.getElementById('weightLabel');
@@ -3332,7 +3317,6 @@ refreshFclBadge();
 </script>
 </body>
 </html>
-  
 
 <!--禁止右键-->
 <script>
