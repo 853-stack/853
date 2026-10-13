@@ -1,10 +1,9 @@
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title data-zh="东南亚专线跨境物流Emily" data-en="SE Asia Special Line · JCYT">东南亚专线跨境物流Emily</title>
+<title data-zh="东南亚专线跨境物流" data-en="SE Asia Special Line · JCYT">东南亚专线跨境物流</title>
 <style>
 :root{
   --primary:#403F44;--primary-dark:#2A2930;--primary-light:#F5EDED;
@@ -222,140 +221,101 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .surcharge-item .sc-value{color:#C0392B;font-weight:700;font-size:12.5px;float:right;margin-left:6px;}
 .surcharge-item .sc-tag{display:inline-block;padding:1px 6px;border-radius:5px;font-size:10px;background:#F5A8A6;color:#fff;margin-left:4px;font-weight:600;}
 .surcharge-item .sc-desc{font-size:10.5px;color:#8A8590;display:block;margin-top:2px;}
-
-/* ===== 悬浮客服按钮（优化版） ===== */
-.fab-btn{
-  position:fixed;right:14px;bottom:84px;z-index:40;
-  width:48px;height:48px;border-radius:50%;
-  background:linear-gradient(135deg,#22C26A,#07A94F);
-  color:#fff;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;line-height:1;padding:0;
-  box-shadow:0 5px 14px rgba(7,169,79,.38),0 2px 4px rgba(0,0,0,.10);
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
-  animation:fabPulse 2.6s ease-in-out infinite;
-}
-.fab-btn:hover{
-  transform:translateY(-2px) scale(1.06);
-  box-shadow:0 10px 24px rgba(7,169,79,.50),0 3px 6px rgba(0,0,0,.12);
-}
-.fab-btn:active{transform:scale(.94);}
-.fab-btn .fab-dot{
-  position:absolute;top:0;right:0;
-  width:13px;height:13px;border-radius:50%;
-  background:#4ADE80;border:2.5px solid #fff;
-  box-shadow:0 0 0 1px rgba(7,169,79,.15);
-  animation:dotPulse 1.8s ease-in-out infinite;
-}
-@keyframes dotPulse{
-  0%,100%{box-shadow:0 0 0 1px rgba(7,169,79,.15),0 0 0 0 rgba(74,222,128,.55);}
-  50%    {box-shadow:0 0 0 1px rgba(7,169,79,.15),0 0 0 6px rgba(74,222,128,0);}
-}
-.fab-btn .fab-tip{
-  position:absolute;right:56px;top:50%;transform:translateY(-50%) translateX(4px);
-  background:#2A2930;color:#fff;
-  font-size:11.5px;font-weight:600;letter-spacing:.3px;
-  padding:6px 11px;border-radius:8px;white-space:nowrap;
-  box-shadow:0 4px 14px rgba(42,41,48,.28);
-  opacity:0;pointer-events:none;transition:.25s;
-}
-.fab-btn .fab-tip::after{
-  content:"";position:absolute;right:-5px;top:50%;transform:translateY(-50%);
-  border:5px solid transparent;border-left-color:#2A2930;
-}
-@media (hover:hover){
-  .fab-btn:hover .fab-tip{opacity:1;transform:translateY(-50%) translateX(0);}
-}
-@keyframes fabPulse{
-  0%,100%{box-shadow:0 5px 14px rgba(7,169,79,.38),0 2px 4px rgba(0,0,0,.10),0 0 0 0 rgba(34,194,106,.42);}
-  50%    {box-shadow:0 5px 14px rgba(7,169,79,.38),0 2px 4px rgba(0,0,0,.10),0 0 0 10px rgba(34,194,106,0);}
-}
-
-/* ===== 联系弹窗（优化版） ===== */
-.contact-modal{position:fixed;inset:0;z-index:999;background:rgba(42,41,48,.55);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .22s ease;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
+/* 悬浮客服按钮优化 */
+.fab-btn{position:fixed;right:18px;bottom:88px;z-index:40;height:54px;padding:0 22px;border-radius:27px;background:linear-gradient(135deg,#22C26A,#07A94F);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;box-shadow:0 8px 24px rgba(7,169,79,.42),0 2px 6px rgba(0,0,0,.12);transition:.25s;animation:fabPulse 2.4s ease-in-out infinite;}
+.fab-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 30px rgba(7,169,79,.55);}
+.fab-btn:active{transform:scale(.96);}
+.fab-btn .fab-icon{font-size:20px;line-height:1;}
+@keyframes fabPulse{0%,100%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 0 rgba(34,194,106,.45);}50%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 12px rgba(34,194,106,0);}}
+.contact-modal{position:fixed;inset:0;z-index:999;background:rgba(42,41,48,.55);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .22s ease;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
 .contact-modal.hidden{display:none !important;}
-.contact-modal .contact-card{
-  width:100%;max-width:380px;margin:0;background:#fff;border-radius:22px;
-  padding:0 0 20px;box-shadow:0 24px 60px rgba(42,41,48,.35);
-  animation:popIn .3s cubic-bezier(.2,.9,.3,1.3);
-  position:relative;overflow:hidden;
-}
-.contact-modal .contact-hero{
-  background:radial-gradient(400px 140px at 50% -40%,rgba(255,255,255,.18),transparent 60%),
-             linear-gradient(135deg,#2A2930 0%,#403F44 60%,#4A4950 100%);
-  padding:22px 22px 26px;text-align:center;position:relative;
-}
-.contact-modal .contact-hero::after{
-  content:"";position:absolute;left:20px;right:20px;bottom:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(254,203,202,.35),transparent);
-}
-.contact-modal .contact-avatar{
-  width:56px;height:56px;border-radius:50%;margin:0 auto 10px;
-  background:linear-gradient(135deg,#FECBCA,#F5A8A6);
-  display:flex;align-items:center;justify-content:center;
-  font-size:26px;box-shadow:0 6px 18px rgba(245,168,166,.5);
-  position:relative;
-  overflow:hidden; /* 防止图片溢出圆形 */
-}
-.contact-modal .contact-avatar img{
-  width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;
-}
-.contact-modal .contact-avatar::after{
-  content:"";position:absolute;right:1px;bottom:1px;
-  width:13px;height:13px;border-radius:50%;
-  background:#4ADE80;border:2.5px solid #2A2930;
-}
-.contact-modal .contact-name{
-  font-size:14px;font-weight:700;color:#fff;letter-spacing:.5px;margin-bottom:4px;
-}
-.contact-modal .contact-role{
-  font-size:11px;color:#F5D5D5;letter-spacing:1.2px;opacity:.85;
-}
-.contact-modal .contact-close{
-  position:absolute;top:12px;right:14px;
-  width:28px;height:28px;border-radius:50%;border:none;
-  background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);
-  font-size:14px;line-height:1;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:.2s;z-index:2;
-}
+.contact-modal .contact-card{width:100%;max-width:400px;margin:0;background:#fff;border-radius:20px;padding:24px 22px 18px;box-shadow:0 24px 60px rgba(42,41,48,.35);animation:popIn .28s cubic-bezier(.2,.9,.3,1.3);position:relative;}
+.contact-modal .contact-close{position:absolute;top:12px;right:14px;width:30px;height:30px;border-radius:50%;border:none;background:#F5EDED;color:#8A8590;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
 .contact-modal .contact-close:hover{background:#FECBCA;color:#2A2930;}
-.contact-modal .contact-body{padding:18px 20px 0;}
-.contact-line{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 14px;margin-bottom:10px;
-  background:#FFFBFB;border:1px solid #F0E8E8;border-radius:14px;
-  font-size:13px;transition:.2s;
-}
-.contact-line:last-child{margin-bottom:0;}
-.contact-line:hover{border-color:#F5D0D0;background:#FFF8F8;}
-.contact-line .c-icon{
-  width:34px;height:34px;border-radius:10px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-}
-.contact-line .c-icon.wx{background:linear-gradient(135deg,#E8F7EE,#C8EDD5);}
-.contact-line .c-icon.wa{background:linear-gradient(135deg,#E6F8F0,#C2ECD9);}
-.contact-line .c-info{flex:1;min-width:0;}
-.contact-line .c-label{color:#8A8590;font-size:11px;font-weight:600;letter-spacing:.5px;display:block;margin-bottom:2px;}
-.contact-line .c-value{
-  color:#2A2930;font-weight:700;font-feature-settings:"tnum";
-  letter-spacing:.3px;word-break:break-all;font-size:13.5px;display:block;
-}
+.contact-head{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:12px;text-align:center;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.contact-head::before{content:"◆";color:#F5A8A6;font-size:9px;}
+.contact-line{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13px;}
+.contact-line:last-child{border-bottom:none;}
+.contact-line .c-icon{font-size:15px;flex-shrink:0;}
+.contact-line .c-label{color:#8A8590;font-size:12px;min-width:62px;flex-shrink:0;font-weight:600;}
+.contact-line .c-value{flex:1;color:#2A2930;font-weight:700;font-feature-settings:"tnum";letter-spacing:.3px;word-break:break-all;}
 .contact-line a.c-value{color:#07A94F;text-decoration:none;transition:.2s;}
 .contact-line a.c-value:hover{text-decoration:underline;color:#058a40;}
-.c-copy{
-  padding:6px 12px;border-radius:8px;border:1px solid #F5D0D0;
-  background:#FFF8F8;color:#403F44;font-size:11.5px;font-weight:600;
-  cursor:pointer;transition:.2s;flex-shrink:0;letter-spacing:.3px;
-  white-space:nowrap;
-}
+.c-copy{padding:5px 12px;border-radius:8px;border:1px solid #F5D0D0;background:#FFF8F8;color:#403F44;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;flex-shrink:0;letter-spacing:.3px;}
 .c-copy:hover{border-color:#F5A8A6;background:#FFF0F0;}
 .c-copy:active{transform:scale(.96);}
 .c-copy.done{background:#E8F7EE;border-color:#22C26A;color:#07A94F;}
-.contact-modal .contact-foot{
-  padding:14px 20px 0;text-align:center;
-  font-size:11px;color:#B5B0B8;letter-spacing:.3px;line-height:1.6;
+.dim-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;}
+.unit-switch{display:inline-flex;background:#F5EDED;border-radius:9px;padding:2px;gap:2px;}
+.unit-btn{padding:5px 12px;border:none;background:transparent;border-radius:7px;font-size:11.5px;font-weight:700;color:#8A8590;cursor:pointer;transition:.2s;letter-spacing:.4px;}
+.unit-btn:hover{color:#403F44;}
+.unit-btn.active{background:#fff;color:#2A2930;box-shadow:0 1px 4px rgba(64,63,68,.12);}
+.dim-hint{font-size:11px;color:#A39AA5;font-weight:500;}
+.dim-item{background:#fff;border:1px solid #F5E0E0;border-radius:12px;padding:10px 10px 8px;margin-bottom:8px;transition:.2s;}
+.dim-item:hover{border-color:#F5D0D0;}
+.dim-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.dim-no{font-size:11px;font-weight:800;color:#C97B7B;letter-spacing:.5px;}
+.dim-del{width:22px;height:22px;border-radius:50%;border:none;background:#F5EDED;color:#8A8590;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.dim-del:hover{background:#FECBCA;color:#2A2930;}
+.dim-item .dim-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.dim-item .dim-row:last-child{margin-bottom:0;}
+.dim-item .dim-input{flex:1;min-width:0;position:relative;}
+.dim-item .dim-input input{width:100%;padding:9px 30px 9px 10px;text-align:center;font-feature-settings:"tnum";font-weight:600;font-size:13.5px;color:var(--ink);background:#FFFBFB;border-radius:10px;border:1px solid var(--border);}
+.dim-item .dim-input input:focus{border-color:#F5A8A6;background:#fff;box-shadow:0 0 0 3px rgba(254,203,202,.30);}
+.dim-item .dim-input .unit{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;color:#B5AEB6;font-weight:700;pointer-events:none;letter-spacing:.3px;}
+.dim-item .dim-input.mini{flex:0 0 82px;}
+.dim-cbm{flex:1;font-size:10.5px;color:#8A8590;text-align:right;line-height:1.5;padding-left:4px;}
+.dim-cbm b{color:#C0392B;font-feature-settings:"tnum";font-weight:700;font-size:11px;}
+.dim-add-btn{width:100%;padding:9px;border:1px dashed #F5C2C2;background:#FFFBFC;color:#C97B7B;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;margin-top:6px;letter-spacing:.3px;}
+.dim-add-btn:hover{border-color:#F5A8A6;background:#FFF5F5;color:#B42B2F;}
+.dim-add-btn:active{transform:scale(.98);}
+.report-tip{display:none;margin-top:8px;padding:10px 12px;border-radius:10px;font-size:11.5px;line-height:1.7;letter-spacing:.05px;}
+.report-tip.show{display:block;animation:foldIn .25s ease;}
+.report-tip.warn{background:linear-gradient(135deg,#FFF5F5,#FFEBEB);border:1px solid #F5C2C2;color:#B42B2F;}
+.report-tip.info{background:linear-gradient(135deg,#FFF8F0,#FDF3E5);border:1px solid #F0D8B8;color:#8A6020;}
+.report-tip.ok{background:linear-gradient(135deg,#F2FBF5,#E8F7EE);border:1px solid #B8E5C8;color:#1F7A42;}
+.report-tip .rt-title{font-weight:700;display:block;margin-bottom:3px;letter-spacing:.2px;}
+.report-tip .rt-title.mt{margin-top:7px;}
+.report-tip .rt-line{display:flex;gap:6px;align-items:flex-start;padding:2px 0;}
+.report-tip .rt-line::before{content:"·";font-weight:700;flex-shrink:0;opacity:.7;}
+
+/* 新增：集装箱说明表格样式 */
+.container-tip {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #FFFBFB;
+  border: 1px solid #F5EDED;
+  border-radius: 10px;
+  font-size: 11.5px;
 }
+.container-tip .ct-title {
+  color: #8A5A5A;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.container-tip .pricetable {
+  font-size: 10.5px;
+  margin-top: 4px;
+}
+.container-tip .pricetable th,
+.container-tip .pricetable td {
+  padding: 6px 4px;
+}
+.container-tip .container-row {
+  cursor: pointer;
+  transition: .2s;
+}
+.container-tip .container-row:hover td {
+  background: #FFF0F0 !important;
+  color: #403F44;
+}
+.container-tip .container-row:active td {
+  background: #FECBCA !important;
+}
+
 @media (max-width:380px){
   .home-grid{grid-template-columns:1fr;}
   .card{padding:16px;margin:12px;}
@@ -366,8 +326,9 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   .zip-row{flex-direction:column;}
   .zip-row .zip-input{flex:1;}
   .quote-total b{font-size:20px;}
-  .fab-btn{right:12px;bottom:80px;width:44px;height:44px;font-size:18px;}
-  .fab-btn .fab-tip{right:50px;font-size:11px;padding:5px 10px;}
+  .fab-btn{right:14px;bottom:84px;height:48px;padding:0 16px;font-size:13px;}
+  .fab-btn .fab-icon{font-size:17px;}
+  .container-tip .pricetable{font-size:10px;}
 }
 </style>
 </head><body>
@@ -591,43 +552,47 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="form-row"><label data-zh="中国装柜地址" data-en="Loading Address (China)">中国装柜地址</label><input type="text" id="loadAddr" data-ph-zh="请输入国内装柜地址" data-ph-en="Enter loading address in China" placeholder="请输入国内装柜地址"></div>
   <div class="form-row"><label data-zh="国外卸柜地址" data-en="Discharge Address (Overseas)">国外卸柜地址</label><input type="text" id="unloadAddr" data-ph-zh="请输入国外卸柜地址" data-ph-en="Enter discharge address overseas" placeholder="请输入国外卸柜地址"></div>
   <div class="form-row"><label data-zh="货值" data-en="Goods Value">货值</label><input type="text" id="value" data-ph-zh="请输入货值" data-ph-en="Enter goods value" placeholder="请输入货值"></div>
+  
+  <!-- ★ 优化点：整柜柜型说明与选择 -->
   <div class="form-row">
-    <label data-zh="柜型" data-en="Container Type">柜型</label>
-    <select id="containerType">
-      <option value="20GP" data-zh="20GP (20尺普柜 · 约33CBM)" data-en="20GP (20ft Standard · ~33CBM)">20GP (20尺普柜 · 约33CBM)</option>
-      <option value="40GP" data-zh="40GP (40尺普柜 · 约67CBM)" data-en="40GP (40ft Standard · ~67CBM)">40GP (40尺普柜 · 约67CBM)</option>
-      <option value="40HQ" data-zh="40HQ (40尺高柜 · 约76CBM)" data-en="40HQ (40ft High Cube · ~76CBM)">40HQ (40尺高柜 · 约76CBM)</option>
-      <option value="45HQ" data-zh="45HQ (45尺高柜 · 约86CBM)" data-en="45HQ (45ft High Cube · ~86CBM)">45HQ (45尺高柜 · 约86CBM)</option>
-    </select>
-  </div>
-
-  <!-- 集装箱尺寸参考表（可折叠） -->
-  <div class="section-block fold-block" style="margin-top:-8px; margin-bottom:15px;">
-    <div class="fold-head" style="padding:10px 14px;">
-      <h4 data-zh="📦 集装箱尺寸参考" data-en="📦 Container Size Reference" style="font-size:12px;">📦 集装箱尺寸参考</h4>
-      <span class="fold-badge" data-zh="点击展开" data-en="Tap to expand" style="font-size:10px;">点击展开</span>
-      <span class="fold-arrow" style="font-size:10px;">▼</span>
-    </div>
-    <div class="fold-body" style="padding:0 14px 10px;">
-      <table class="pricetable" style="margin-top:4px;font-size:11px;">
+    <label data-zh="柜型（20GP / 40HQ）" data-en="Container Type (20GP / 40HQ)">柜型（20GP 或 40HQ）</label>
+    <input type="text" id="containerType" data-ph-zh="例如：20GP / 40HQ" data-ph-en="e.g. 20GP / 40HQ" placeholder="例如：20GP / 40HQ">
+    <div class="container-tip">
+      <div class="ct-title" data-zh="💡 点击下方柜型可快速填入，供参考" data-en="💡 Tap a container type below to auto-fill, for reference">💡 点击下方柜型可快速填入，供参考</div>
+      <table class="pricetable">
         <thead>
           <tr>
-            <th data-zh="柜型" data-en="Type" style="padding:7px 4px;">柜型</th>
-            <th data-zh="内部尺寸 (长×宽×高)" data-en="Internal Dims" style="padding:7px 4px;">内部尺寸 (长×宽×高)</th>
-            <th data-zh="理论容积" data-en="Volume" style="padding:7px 4px;">理论容积</th>
+            <th data-zh="柜型" data-en="Type">柜型</th>
+            <th data-zh="内部尺寸 (长×宽×高)" data-en="Internal Size (L×W×H)">内部尺寸 (长×宽×高)</th>
+            <th data-zh="理论容积" data-en="Theoretical Vol.">理论容积</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="key" style="padding:7px 8px;">20GP</td><td style="padding:7px 4px;">5.9m × 2.35m × 2.39m</td><td style="padding:7px 4px;">约 33 m³</td></tr>
-          <tr><td class="key" style="padding:7px 8px;">40GP</td><td style="padding:7px 4px;">12.0m × 2.35m × 2.39m</td><td style="padding:7px 4px;">约 67 m³</td></tr>
-          <tr><td class="key" style="padding:7px 8px;">40HQ</td><td style="padding:7px 4px;">12.0m × 2.35m × 2.69m</td><td style="padding:7px 4px;">约 76 m³</td></tr>
-          <tr><td class="key" style="padding:7px 8px;">45HQ</td><td style="padding:7px 4px;">13.5m × 2.35m × 2.69m</td><td style="padding:7px 4px;">约 86 m³</td></tr>
+          <tr class="container-row" data-val="20GP">
+            <td class="key" data-zh="20GP (20尺普柜)" data-en="20GP (20ft Standard)">20GP (20尺普柜)</td>
+            <td data-zh="约 5.9m × 2.35m × 2.39m" data-en="~ 5.9m × 2.35m × 2.39m">约 5.9m × 2.35m × 2.39m</td>
+            <td data-zh="约 33 立方米" data-en="~ 33 CBM">约 33 立方米</td>
+          </tr>
+          <tr class="container-row" data-val="40GP">
+            <td class="key" data-zh="40GP (40尺普柜)" data-en="40GP (40ft Standard)">40GP (40尺普柜)</td>
+            <td data-zh="约 12.0m × 2.35m × 2.39m" data-en="~ 12.0m × 2.35m × 2.39m">约 12.0m × 2.35m × 2.39m</td>
+            <td data-zh="约 67 立方米" data-en="~ 67 CBM">约 67 立方米</td>
+          </tr>
+          <tr class="container-row" data-val="40HQ">
+            <td class="key" data-zh="40HQ (40尺高柜)" data-en="40HQ (40ft High Cube)">40HQ (40尺高柜)</td>
+            <td data-zh="约 12.0m × 2.35m × 2.69m" data-en="~ 12.0m × 2.35m × 2.69m">约 12.0m × 2.35m × 2.69m</td>
+            <td data-zh="约 76 立方米" data-en="~ 76 CBM">约 76 立方米</td>
+          </tr>
+          <tr class="container-row" data-val="45HQ">
+            <td class="key" data-zh="45HQ (45尺高柜)" data-en="45HQ (45ft High Cube)">45HQ (45尺高柜)</td>
+            <td data-zh="约 13.5m × 2.35m × 2.69m" data-en="~ 13.5m × 2.35m × 2.69m">约 13.5m × 2.35m × 2.69m</td>
+            <td data-zh="约 86 立方米" data-en="~ 86 CBM">约 86 立方米</td>
+          </tr>
         </tbody>
       </table>
-      <div class="tip-orange" style="margin-top:6px; font-size:10.5px; line-height:1.6;" data-zh="💡 以上尺寸和容积为理论参考值，实际装柜需考虑货物包装和摆放方式。整柜询价请直接选择柜型并填写方数。" data-en="💡 Theoretical reference only. Actual loading depends on packing and placement. Select container type and fill in volume for FCL inquiry.">💡 以上尺寸和容积为理论参考值，实际装柜需考虑货物包装和摆放方式。整柜询价请直接选择柜型并填写方数。</div>
     </div>
   </div>
-
+  
   <div class="form-row"><label data-zh="货重" data-en="Total Weight">货重</label><input type="text" id="fclWeight" data-ph-zh="请输入货重" data-ph-en="Enter total weight" placeholder="请输入货重"></div>
   <div class="form-row"><label data-zh="方数" data-en="Volume">方数</label><input type="text" id="cbm" data-ph-zh="请输入方数" data-ph-en="Enter volume" placeholder="请输入方数"></div>
   <div class="form-row">
@@ -739,7 +704,7 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 </div>
 
 <div class="info-tip">
-  <strong data-zh="咨询&下单请联系 Emily · Wechat: GZjcyt006" data-en="Contact Emily for inquiry & order · WeChat: GZjcyt006">咨询&amp;下单请联系 Emily · Wechat: GZjcyt006 | WhatsApp：+86 13149933368</strong><br>
+  <strong data-zh="咨询&下单请联系 Emily" data-en="Contact Emily for inquiry & order">咨询&amp;下单请联系 Emily | WhatsApp：+86 13149933368</strong><br>
   <span data-zh="所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认" data-en="All prices refer to the current channel table. Final freight subject to warehouse measurement; surcharges confirmed by Emily.">所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认</span>
 </div>
 
@@ -757,43 +722,29 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
-<!-- 悬浮客服（优化版） -->
+<!-- 悬浮客服（优化为文字按钮） -->
 <button class="fab-btn" id="fabContact" aria-label="联系客服">
   <span class="fab-icon">💬</span>
-  <span class="fab-dot"></span>
-  <span class="fab-tip" data-zh="联系客服" data-en="Contact us">联系客服</span>
+  <span data-zh="咨询下单" data-en="Contact">咨询下单</span>
 </button>
 
-<!-- 联系弹窗（优化版 + 本地头像 + 销售经理） -->
 <div class="contact-modal hidden" id="contactModal">
   <div class="contact-card">
     <button class="contact-close" id="contactClose" aria-label="关闭">✕</button>
-    <div class="contact-hero">
-      <div class="contact-avatar">
-        <img src="avatar.png" alt="头像">
-      </div>
-      <div class="contact-name">Emily · 君驰运通</div>
-      <div class="contact-role" data-zh="销售经理 · 在线" data-en="Sales Manager · Online">销售经理 · 在线</div>
+    <div class="contact-head" data-zh="咨询 & 下单请联系" data-en="Contact for Inquiry & Order">咨询 & 下单请联系</div>
+    <div class="contact-line">
+      <span class="c-icon">💬</span>
+      <span class="c-label" data-zh="微信" data-en="WeChat">微信</span>
+      <b class="c-value">GZjcyt006</b>
+      <button class="c-copy" id="copyWxFooter" data-zh="复制" data-en="Copy">复制</button>
     </div>
-    <div class="contact-body">
-      <div class="contact-line">
-        <div class="c-icon wx">💬</div>
-        <div class="c-info">
-          <span class="c-label" data-zh="微信" data-en="WeChat">微信</span>
-          <span class="c-value">GZjcyt006</span>
-        </div>
-        <button class="c-copy" id="copyWxFooter" data-zh="复制" data-en="Copy">复制</button>
-      </div>
-      <div class="contact-line">
-        <div class="c-icon wa">📱</div>
-        <div class="c-info">
-          <span class="c-label">WhatsApp</span>
-          <a class="c-value" href="https://wa.me/8613149933368" target="_blank" rel="noopener">+86 13149933368</a>
-        </div>
-        <button class="c-copy" id="copyWaFooter" data-zh="复制" data-en="Copy">复制</button>
-      </div>
+    <div class="contact-line">
+      <span class="c-icon">📱</span>
+      <span class="c-label">WhatsApp</span>
+      <a class="c-value" href="https://wa.me/8613149933368" target="_blank" rel="noopener">+86 13149933368</a>
+      <button class="c-copy" id="copyWaFooter" data-zh="复制" data-en="Copy">复制</button>
     </div>
-    <div class="contact-foot" data-zh="工作时间 9:00–18:00 · 回复较快" data-en="Working hours 9:00–18:00 · Quick reply">工作时间 9:00–18:00 · 回复较快</div>
+    <div style="text-align:center;margin-top:12px;font-size:11.5px;color:#A39AA5;" data-zh="添加好友时请备注“询价”" data-en="Please mention 'Inquiry' when adding">添加好友时请备注“询价”</div>
   </div>
 </div>
 
@@ -815,7 +766,7 @@ const WX_ACCOUNT = "GZjcyt006";
 const WA_ACCOUNT = "+86 13149933368";
 let LANG = "zh";
 
-/* 悬浮客服交互（优化版） */
+/* 悬浮客服 */
 (function(){
   const fab = document.getElementById('fabContact');
   const modal = document.getElementById('contactModal');
@@ -823,27 +774,20 @@ let LANG = "zh";
   const wxBtn = document.getElementById('copyWxFooter');
   const waBtn = document.getElementById('copyWaFooter');
   if(!fab || !modal) return;
-
   function openModal(){ modal.classList.remove('hidden'); }
   function closeModal(){ modal.classList.add('hidden'); }
   fab.addEventListener('click', openModal);
   if(closeBtn) closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
-  });
-
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
   const doCopy = async (btn, text)=>{
     const orig = btn.textContent;
     try{
       await navigator.clipboard.writeText(text);
-      btn.textContent = (typeof t === 'function') ? t('✓ 已复制','✓ Copied') : '✓ 已复制';
+      btn.textContent = (typeof t === 'function') ? t('已复制','Copied') : '已复制';
       btn.classList.add('done');
-      setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('done'); }, 1500);
-    }catch(e){
-      btn.textContent = (typeof t === 'function') ? t('复制失败','Failed') : '复制失败';
-      setTimeout(()=>{ btn.textContent = orig; }, 1500);
-    }
+      setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('done'); }, 1300);
+    }catch(e){}
   };
   if(wxBtn) wxBtn.addEventListener('click', ()=> doCopy(wxBtn, WX_ACCOUNT));
   if(waBtn) waBtn.addEventListener('click', ()=> doCopy(waBtn, WA_ACCOUNT));
@@ -3318,6 +3262,20 @@ if(fclRmkEl) fclRmkEl.addEventListener('input', refreshFclBadge);
   }
 });
 
+/* ★ 整柜柜型选择交互 */
+document.querySelectorAll('.container-row').forEach(row => {
+  row.addEventListener('click', function() {
+    const val = this.getAttribute('data-val');
+    if (val) {
+      const input = document.getElementById('containerType');
+      if (input) {
+        input.value = val;
+        // 可选：滚动到输入框或添加轻微视觉反馈
+      }
+    }
+  });
+});
+
 document.getElementById('genLcl').onclick=function(){
   const g=id=>document.getElementById(id).value;
   const zipVal = (g('zipCode')||'').trim();
@@ -3459,6 +3417,7 @@ loadPolicies();
 </script>
 </body>
 </html>
+
 
 <!--禁止右键-->
 <script>
