@@ -221,7 +221,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .surcharge-item .sc-value{color:#C0392B;font-weight:700;font-size:12.5px;float:right;margin-left:6px;}
 .surcharge-item .sc-tag{display:inline-block;padding:1px 6px;border-radius:5px;font-size:10px;background:#F5A8A6;color:#fff;margin-left:4px;font-weight:600;}
 .surcharge-item .sc-desc{font-size:10.5px;color:#8A8590;display:block;margin-top:2px;}
-/* 悬浮客服 */
 .fab-btn{position:fixed;right:18px;bottom:88px;z-index:40;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#22C26A,#07A94F);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;box-shadow:0 8px 24px rgba(7,169,79,.42),0 2px 6px rgba(0,0,0,.12);transition:.25s;animation:fabPulse 2.4s ease-in-out infinite;}
 .fab-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 30px rgba(7,169,79,.55);}
 .fab-btn:active{transform:scale(.96);}
@@ -247,7 +246,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .c-copy:hover{border-color:#F5A8A6;background:#FFF0F0;}
 .c-copy:active{transform:scale(.96);}
 .c-copy.done{background:#E8F7EE;border-color:#22C26A;color:#07A94F;}
-/* 多尺寸 UI */
 .dim-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;}
 .unit-switch{display:inline-flex;background:#F5EDED;border-radius:9px;padding:2px;gap:2px;}
 .unit-btn{padding:5px 12px;border:none;background:transparent;border-radius:7px;font-size:11.5px;font-weight:700;color:#8A8590;cursor:pointer;transition:.2s;letter-spacing:.4px;}
@@ -272,7 +270,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .dim-add-btn{width:100%;padding:9px;border:1px dashed #F5C2C2;background:#FFFBFC;color:#C97B7B;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;margin-top:6px;letter-spacing:.3px;}
 .dim-add-btn:hover{border-color:#F5A8A6;background:#FFF5F5;color:#B42B2F;}
 .dim-add-btn:active{transform:scale(.98);}
-/* 资质报告提示框 */
 .report-tip{display:none;margin-top:8px;padding:10px 12px;border-radius:10px;font-size:11.5px;line-height:1.7;letter-spacing:.05px;}
 .report-tip.show{display:block;animation:foldIn .25s ease;}
 .report-tip.warn{background:linear-gradient(135deg,#FFF5F5,#FFEBEB);border:1px solid #F5C2C2;color:#B42B2F;}
@@ -1098,13 +1095,15 @@ const REPORT_HS = [
   {p:'3808', reason:{zh:'农药/杀虫剂 (HS 3808) —— 需农药登记 + 危包证', en:'Pesticide HS 3808'}},
   {p:'2710', reason:{zh:'石油产品 (HS 2710) —— 需 MSDS + 危险品资质', en:'Petroleum HS 2710'}}
 ];
-const COUNTRY_POLICY = {
-  sg:{flag:'🇸🇬',
-    zh:['食品不能含肉类/海鲜；单票超 10kg 需借证费 SGD 60','药品：首重 150元/kg、续重 45元/kg，单票 ≤5kg','高货值 CIF > SGD 400 将加 GST 9% + 申报费 SGD 50'],
-    en:['Food: no meat/seafood; over 10kg needs SGD 60 certificate','Medicine: first 150 CNY/kg, add 45, max 5kg/ticket','CIF > SGD 400: +9% GST + SGD 50 declaration fee']},
+
+/* ★ 目的国政策 —— 默认兜底数据（外部 policies.json 加载成功后会覆盖） */
+let COUNTRY_POLICY = {
   my:{flag:'🇲🇾',
     zh:['电子产品（蓝牙/家电）通常需 SIRIM 认证','食品/化妆品需 Halal / JAKIM 认证','药品需 NPRA 注册；电子烟需烟草许可'],
     en:['Electronics usually need SIRIM','Food/cosmetics: Halal / JAKIM','Medicine: NPRA; E-cigarettes: tobacco license']},
+  sg:{flag:'🇸🇬',
+    zh:['食品不能含肉类/海鲜；单票超 10kg 需借证费 SGD 60','药品：首重 150元/kg、续重 45元/kg，单票 ≤5kg','高货值 CIF > SGD 400 将加 GST 9% + 申报费 SGD 50'],
+    en:['Food: no meat/seafood; over 10kg needs SGD 60 certificate','Medicine: first 150 CNY/kg, add 45, max 5kg/ticket','CIF > SGD 400: +9% GST + SGD 50 declaration fee']},
   th:{flag:'🇹🇭',
     zh:['食品/化妆品/药品需泰国 FDA 备案','电器/机器类需 TISI 认证','电子烟、酒、烟草为禁止类'],
     en:['Food/cosmetics/medicine: Thai FDA','Appliances: TISI','E-cigarettes, alcohol, tobacco prohibited']},
@@ -1127,6 +1126,28 @@ const COUNTRY_POLICY = {
     zh:['食品/化妆品/药品需 UAE MOH 注册','电子产品需 ESMA 认证','内置电池 ≤100WH，需 UN3481 电池标'],
     en:['Food/cosmetics/medicine: UAE MOH','Electronics: ESMA','Built-in battery ≤100WH, UN3481 label']}
 };
+
+/* ★ 政策更新时间（外部 JSON 加载后写入） */
+let POLICY_UPDATED = '';
+
+/* ★ 从外部 JSON 加载最新政策 */
+async function loadPolicies(){
+  try{
+    const res = await fetch('policies.json?v=' + Date.now(), { cache:'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(data && typeof data === 'object'){
+      const updated = data._updated || '';
+      delete data._updated;
+      Object.keys(data).forEach(k=>{ COUNTRY_POLICY[k] = data[k]; });
+      POLICY_UPDATED = updated;
+      console.log('✅ 政策已从 policies.json 同步：', updated);
+      if(typeof checkReportRequirement === 'function') checkReportRequirement();
+    }
+  }catch(e){
+    console.warn('⚠️ 外部政策加载失败，使用内置默认数据：', e.message);
+  }
+}
 
 function matchArea(n, list){
   for(let i=0;i<list.length;i++){
@@ -2370,7 +2391,8 @@ function checkReportRequirement(){
     reasons.forEach(r => { html += '<div class="rt-line">' + r + '</div>'; });
   }
   if(policyLines.length){
-    html += '<span class="rt-title' + (reasons.length ? ' mt' : '') + '">' + policy.flag + ' ' + t('目的国政策提示','Destination policy') + '</span>';
+    const updatedTag = POLICY_UPDATED ? ' <span style="font-weight:400;opacity:.7;font-size:10px;">(' + t('更新','Updated') + ' ' + POLICY_UPDATED + ')</span>' : '';
+    html += '<span class="rt-title' + (reasons.length ? ' mt' : '') + '">' + policy.flag + ' ' + t('目的国政策提示','Destination policy') + updatedTag + '</span>';
     policyLines.forEach(r => { html += '<div class="rt-line">' + r + '</div>'; });
   }
   tip.innerHTML = html;
@@ -3065,6 +3087,7 @@ document.querySelectorAll('.country-item[data-country]').forEach(item=>{
     document.querySelectorAll('.tab-item').forEach(x=>x.classList.remove('active'));
     document.querySelector('.tab-item[data-target="lcl"]').classList.add('active');
     showPageRaw('lcl');
+    checkReportRequirement();
   };
 });
 document.querySelectorAll('.calc-tab').forEach(tb=>{
@@ -3151,7 +3174,6 @@ if(lclRmkEl) lclRmkEl.addEventListener('input', refreshLclBadge);
 const fclRmkEl=document.getElementById('fclRemark');
 if(fclRmkEl) fclRmkEl.addEventListener('input', refreshFclBadge);
 
-/* ★ 资质报告联动监听 */
 ['productName','hsCode'].forEach(id=>{
   const el = document.getElementById(id);
   if(el){
@@ -3295,6 +3317,9 @@ refreshFclBadge();
 /* ★ 初始化多尺寸 UI */
 renderDimRows();
 updateDimSummary();
+
+/* ★ 从外部加载最新政策 */
+loadPolicies();
 </script>
 </body>
 </html>
@@ -3304,6 +3329,5 @@ updateDimSummary();
 document.oncontextmenu = function(){return false;}
 document.onselectstart = function(){return false;}
 </script>
-
 
 
