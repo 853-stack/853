@@ -121,11 +121,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .country-item:active{transform:scale(.97);}
 .country-item .code{font-size:18px;font-weight:800;color:#403F44;margin-bottom:4px;letter-spacing:1px;font-feature-settings:"tnum";}
 .country-item .name{font-size:11.5px;color:#8A8590;}
-.notice-card{background:linear-gradient(135deg,#FFFFFF 0%,#FFFBFC 100%);border-radius:var(--radius-lg);padding:20px;margin:14px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
-.notice-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FECBCA,#F5A8A6 60%,#FCF8DF);opacity:.9;}
-.notice-card h3{font-size:13.5px;color:var(--ink);margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:8px;}
-.notice-card h3::before{content:"◆";color:#F5A8A6;font-size:10px;}
-.notice-card p{font-size:12.5px;color:#6B6570;line-height:2;white-space:pre-line;}
 .calc-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .calc-tab{padding:9px 14px;border-radius:10px;background:#F5EDED;font-size:12px;cursor:pointer;color:#6B6570;transition:.22s;border:1px solid transparent;font-weight:500;}
 .calc-tab:hover{background:#F0E5E5;}
@@ -226,57 +221,18 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .surcharge-item .sc-value{color:#C0392B;font-weight:700;font-size:12.5px;float:right;margin-left:6px;}
 .surcharge-item .sc-tag{display:inline-block;padding:1px 6px;border-radius:5px;font-size:10px;background:#F5A8A6;color:#fff;margin-left:4px;font-weight:600;}
 .surcharge-item .sc-desc{font-size:10.5px;color:#8A8590;display:block;margin-top:2px;}
-.fab-btn{
-  position:fixed;right:18px;bottom:88px;z-index:40;
-  width:54px;height:54px;border-radius:50%;
-  background:linear-gradient(135deg,#22C26A,#07A94F);
-  color:#fff;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;line-height:1;
-  box-shadow:0 8px 24px rgba(7,169,79,.42),0 2px 6px rgba(0,0,0,.12);
-  transition:.25s;animation:fabPulse 2.4s ease-in-out infinite;
-}
+/* 悬浮客服 */
+.fab-btn{position:fixed;right:18px;bottom:88px;z-index:40;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#22C26A,#07A94F);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;box-shadow:0 8px 24px rgba(7,169,79,.42),0 2px 6px rgba(0,0,0,.12);transition:.25s;animation:fabPulse 2.4s ease-in-out infinite;}
 .fab-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 30px rgba(7,169,79,.55);}
 .fab-btn:active{transform:scale(.96);}
-.fab-btn .fab-tip{
-  position:absolute;right:64px;top:50%;transform:translateY(-50%);
-  background:#2A2930;color:#fff;font-size:11.5px;font-weight:600;
-  padding:6px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;
-  box-shadow:0 4px 14px rgba(42,41,48,.28);
-  opacity:0;pointer-events:none;transition:.25s;
-}
-.fab-btn .fab-tip::after{
-  content:"";position:absolute;right:-5px;top:50%;transform:translateY(-50%);
-  border:5px solid transparent;border-left-color:#2A2930;
-}
+.fab-btn .fab-tip{position:absolute;right:64px;top:50%;transform:translateY(-50%);background:#2A2930;color:#fff;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;box-shadow:0 4px 14px rgba(42,41,48,.28);opacity:0;pointer-events:none;transition:.25s;}
+.fab-btn .fab-tip::after{content:"";position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#2A2930;}
 @media (hover:hover){.fab-btn:hover .fab-tip{opacity:1;}}
-@keyframes fabPulse{
-  0%,100%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 0 rgba(34,194,106,.45);}
-  50%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 12px rgba(34,194,106,0);}
-}
-.contact-modal{
-  position:fixed;inset:0;z-index:999;
-  background:rgba(42,41,48,.55);
-  display:flex;align-items:center;justify-content:center;padding:20px;
-  animation:fadeIn .22s ease;
-  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
-}
+@keyframes fabPulse{0%,100%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 0 rgba(34,194,106,.45);}50%{box-shadow:0 8px 24px rgba(7,169,79,.42),0 0 0 12px rgba(34,194,106,0);}}
+.contact-modal{position:fixed;inset:0;z-index:999;background:rgba(42,41,48,.55);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .22s ease;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
 .contact-modal.hidden{display:none !important;}
-.contact-modal .contact-card{
-  width:100%;max-width:400px;margin:0;
-  background:#fff;border-radius:20px;padding:24px 22px 18px;
-  box-shadow:0 24px 60px rgba(42,41,48,.35);
-  animation:popIn .28s cubic-bezier(.2,.9,.3,1.3);
-  position:relative;
-}
-.contact-modal .contact-close{
-  position:absolute;top:12px;right:14px;
-  width:30px;height:30px;border-radius:50%;
-  border:none;background:#F5EDED;color:#8A8590;
-  font-size:15px;line-height:1;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:.2s;
-}
+.contact-modal .contact-card{width:100%;max-width:400px;margin:0;background:#fff;border-radius:20px;padding:24px 22px 18px;box-shadow:0 24px 60px rgba(42,41,48,.35);animation:popIn .28s cubic-bezier(.2,.9,.3,1.3);position:relative;}
+.contact-modal .contact-close{position:absolute;top:12px;right:14px;width:30px;height:30px;border-radius:50%;border:none;background:#F5EDED;color:#8A8590;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
 .contact-modal .contact-close:hover{background:#FECBCA;color:#2A2930;}
 .contact-head{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:12px;text-align:center;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:6px;}
 .contact-head::before{content:"◆";color:#F5A8A6;font-size:9px;}
@@ -291,7 +247,7 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .c-copy:hover{border-color:#F5A8A6;background:#FFF0F0;}
 .c-copy:active{transform:scale(.96);}
 .c-copy.done{background:#E8F7EE;border-color:#22C26A;color:#07A94F;}
-/* ★ 多尺寸 UI */
+/* 多尺寸 UI */
 .dim-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;}
 .unit-switch{display:inline-flex;background:#F5EDED;border-radius:9px;padding:2px;gap:2px;}
 .unit-btn{padding:5px 12px;border:none;background:transparent;border-radius:7px;font-size:11.5px;font-weight:700;color:#8A8590;cursor:pointer;transition:.2s;letter-spacing:.4px;}
@@ -316,6 +272,16 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .dim-add-btn{width:100%;padding:9px;border:1px dashed #F5C2C2;background:#FFFBFC;color:#C97B7B;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;margin-top:6px;letter-spacing:.3px;}
 .dim-add-btn:hover{border-color:#F5A8A6;background:#FFF5F5;color:#B42B2F;}
 .dim-add-btn:active{transform:scale(.98);}
+/* 资质报告提示框 */
+.report-tip{display:none;margin-top:8px;padding:10px 12px;border-radius:10px;font-size:11.5px;line-height:1.7;letter-spacing:.05px;}
+.report-tip.show{display:block;animation:foldIn .25s ease;}
+.report-tip.warn{background:linear-gradient(135deg,#FFF5F5,#FFEBEB);border:1px solid #F5C2C2;color:#B42B2F;}
+.report-tip.info{background:linear-gradient(135deg,#FFF8F0,#FDF3E5);border:1px solid #F0D8B8;color:#8A6020;}
+.report-tip.ok{background:linear-gradient(135deg,#F2FBF5,#E8F7EE);border:1px solid #B8E5C8;color:#1F7A42;}
+.report-tip .rt-title{font-weight:700;display:block;margin-bottom:3px;letter-spacing:.2px;}
+.report-tip .rt-title.mt{margin-top:7px;}
+.report-tip .rt-line{display:flex;gap:6px;align-items:flex-start;padding:2px 0;}
+.report-tip .rt-line::before{content:"·";font-weight:700;flex-shrink:0;opacity:.7;}
 @media (max-width:380px){
   .home-grid{grid-template-columns:1fr;}
   .card{padding:16px;margin:12px;}
@@ -370,28 +336,9 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
       <div class="country-item" data-country="ae"><div class="code">AE</div><div class="name" data-zh="阿联酋" data-en="UAE">阿联酋</div></div>
     </div>
   </div>
-
-  <div class="notice-card">
-    <h3 data-zh="君驰运通｜东南亚专线跨境物流" data-en="JCYT Logistics | SE Asia Specialist">君驰运通｜东南亚专线跨境物流</h3>
-    <p data-zh="①深耕东南亚跨境物流10余年。
-				②东南亚本土成熟清关团队，清关效率高、风险低。
-				③马来西亚自有海外仓 + 自营车队派送，链路自主。
-				④时效稳定、全程可追踪，标准化操作流程。
-				⑤全线路自有渠道，一手实力庄家，无中间商加价。"
-       data-en="① Over 10 years in SE Asia cross-border logistics.
-				② Local, mature customs clearance teams in SE Asia — high efficiency, low risk. 
-				③ Own overseas warehouse + self-operated fleet in Malaysia. 
-				④ Stable transit time, full tracking, standardized operations. 
-				⑤ Direct carrier on all lines, no middlemen markup."
-	   >①深耕东南亚跨境物流10余年。
-		②东南亚本土成熟清关团队，清关效率高、风险低。
-		③马来西亚自有海外仓 + 自营车队派送，链路自主。
-		④时效稳定、全程可追踪，标准化操作流程。
-		⑤全线路自有渠道，一手实力庄家，无中间商加价。</p>
-  </div>
 </div>
 
-<!-- 运费价格表（已解锁） -->
+<!-- 运费价格表 -->
 <div id="price" class="card hidden">
   <h2 data-zh="运费价格表（9.18执行）" data-en="Freight Rate Table (Effective 9.18)">运费价格表（9.18执行）</h2>
   <div class="tip-orange" style="margin-bottom:14px;"
@@ -427,21 +374,18 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <select id="quoteOpt"></select>
   </div>
 
-  <!-- 越南目的地省份 -->
   <div class="form-row" id="vnProvinceRow" style="display:none;">
     <label id="vnProvinceLabel" data-zh="越南目的地省份（派送费按省份计算）" data-en="Vietnam Destination Province (delivery by province)">越南目的地省份（派送费按省份计算）</label>
     <select id="vnProvinceSelect"></select>
     <div class="tip-orange" id="vnProvinceTip" style="margin-top:6px;"></div>
   </div>
 
-  <!-- 目的地转运派送费 -->
   <div class="form-row" id="deliveryFeeRow" style="display:none;">
     <label id="deliveryFeeLabel" data-zh="目的地转运派送费" data-en="Destination Delivery Fee">目的地转运派送费</label>
     <select id="deliveryFeeSelect"></select>
     <div class="tip-orange" id="deliveryFeeTip" style="margin-top:6px;"></div>
   </div>
 
-  <!-- 附加费预估 -->
   <div class="form-row" id="surchargeRow" style="display:none;">
     <label id="surchargeLabel" data-zh="附加费预估（自动检测 + 手动勾选）" data-en="Surcharge Estimate (auto + manual)">附加费预估（自动检测 + 手动勾选）</label>
     <div class="surcharge-box" id="surchargeBox"></div>
@@ -452,7 +396,7 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <input type="text" id="productName"
       data-ph-zh="输入品名，自动判断是否需要资质报告" data-ph-en="Enter product name to check report requirement"
       placeholder="输入品名，自动判断是否需要资质报告">
-    <div id="reportTip" class="tip-red"></div>
+    <div id="reportTip" class="report-tip"></div>
   </div>
 
   <div class="form-row">
@@ -474,7 +418,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <select id="countrySelect"></select>
   </div>
 
-  <!-- ★ 多尺寸 + 单位切换 + CBM 显示 -->
   <div class="form-row">
     <label id="dimLabel" data-zh="包装后尺寸 / 重量（支持多组尺寸，每件可不同）" data-en="Packed Size / Weight (multiple sizes supported)">包装后尺寸 / 重量（支持多组尺寸，每件可不同）</label>
     <div class="dim-toolbar">
@@ -495,7 +438,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 
   <div class="remote-note" id="remoteNote"></div>
 
-  <!-- 隐藏的兼容字段 -->
   <input type="hidden" id="dimL">
   <input type="hidden" id="dimW">
   <input type="hidden" id="dimH">
@@ -704,13 +646,12 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
-<!-- 悬浮客服按钮 -->
+<!-- 悬浮客服 -->
 <button class="fab-btn" id="fabContact" aria-label="联系客服">
   💬
   <span class="fab-tip" data-zh="联系客服" data-en="Contact us">联系客服</span>
 </button>
 
-<!-- 联系弹窗 -->
 <div class="contact-modal hidden" id="contactModal">
   <div class="contact-card">
     <button class="contact-close" id="contactClose" aria-label="关闭">✕</button>
@@ -730,7 +671,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   </div>
 </div>
 
-<!-- 密码弹窗 -->
 <div class="pwd-modal hidden" id="pwdModal">
   <div class="pwd-box">
     <h3>🔒 访问受限</h3>
@@ -749,7 +689,7 @@ const WX_ACCOUNT = "GZjcyt006";
 const WA_ACCOUNT = "+86 13149933368";
 let LANG = "zh";
 
-/* ============ 悬浮客服按钮 + 联系弹窗 ============ */
+/* 悬浮客服 */
 (function(){
   const fab = document.getElementById('fabContact');
   const modal = document.getElementById('contactModal');
@@ -757,15 +697,12 @@ let LANG = "zh";
   const wxBtn = document.getElementById('copyWxFooter');
   const waBtn = document.getElementById('copyWaFooter');
   if(!fab || !modal) return;
-
   function openModal(){ modal.classList.remove('hidden'); }
   function closeModal(){ modal.classList.add('hidden'); }
-
   fab.addEventListener('click', openModal);
   if(closeBtn) closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
-
   const doCopy = async (btn, text)=>{
     const orig = btn.textContent;
     try{
@@ -779,7 +716,7 @@ let LANG = "zh";
   if(waBtn) waBtn.addEventListener('click', ()=> doCopy(waBtn, WA_ACCOUNT));
 })();
 
-/* ============ 密码保护（已解锁） ============ */
+/* 密码保护 */
 const PRICE_PASSWORD = "Emily Wu";
 let priceUnlocked = true;
 
@@ -947,7 +884,6 @@ const VN_DELIVERY_PROVINCES = [
 const VN_REGION_ZH = {north:"北部", central:"中部", south:"南部"};
 const VN_REGION_EN = {north:"North", central:"Central", south:"South"};
 
-/* 目的地转运派送费规则 */
 const DELIVERY_FEE_RULES = {
   my_air:{options:[
       {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
@@ -1032,7 +968,6 @@ const DELIVERY_FEE_RULES = {
     ]}
 };
 
-/* 渠道附加费配置 */
 const SURCHARGE_CONFIG = {
   "马来西亚空运包税专线": {
     auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize (>68KG or >150×80×80cm)'}, check:v=>v.unitWeight>68||v.L>150||v.W>80||v.H>80, fee:{type:'fixed', value:150}}],
@@ -1126,6 +1061,71 @@ const SURCHARGE_CONFIG = {
     auto: [{id:'oversize', label:{zh:'超尺寸附加费（单边>120cm或单件>40KG）', en:'Oversize'}, check:v=>v.unitWeight>40||v.L>120||v.W>120||v.H>120, fee:{type:'fixed', value:150}}],
     manual: [{id:'ae_remote', label:{zh:'阿联酋偏远地区派送费（单询）', en:'UAE remote delivery (on request)'}, calc:{type:'none'}}]
   }
+};
+
+/* ★ 资质/报告智能判断规则 */
+const REPORT_KEYWORDS = [
+  {kw:['电池','充电宝','移动电源','锂电池','电芯','li-ion','battery','蓄电池'], reason:{zh:'带电产品 —— 需 UN38.3 测试报告 + MSDS', en:'Battery — UN38.3 + MSDS'}},
+  {kw:['化妆品','护肤品','口红','粉底','眼影','面膜','精华','乳液','skincare','cosmetic'], reason:{zh:'化妆品类 —— 需 MSDS + 化妆品备案（部分国家需当地注册）', en:'Cosmetics — MSDS + registration'}},
+  {kw:['药品','中药','西药','胶囊','药片','medicine','drug','pharma'], reason:{zh:'药品类 —— 需进口药品许可证 + 药监局备案', en:'Medicine — import license + registration'}},
+  {kw:['食品','零食','饮料','茶叶','food','snack','beverage','饼干','糖果'], reason:{zh:'食品类 —— 需进口食品许可 + 成分检测报告', en:'Food — import license + test report'}},
+  {kw:['液体','粉末','膏状','香水','酒精','消毒液','lotion','liquid','powder'], reason:{zh:'液体/粉末类 —— 需 MSDS + 运输鉴定报告', en:'Liquid/Powder — MSDS + shipping report'}},
+  {kw:['磁','磁铁','喇叭','扬声器','马达','电机','magnet'], reason:{zh:'带磁产品 —— 需磁检报告', en:'Magnetic — magnetic inspection'}},
+  {kw:['品牌','牌子','仿牌','branded','replica','假货','高仿'], reason:{zh:'品牌/仿牌 —— 需品牌授权书或自行承担风险', en:'Branded/Replica — authorization or risk'}},
+  {kw:['刀具','管制','仿真枪','弓弩','武器'], reason:{zh:'管制/敏感类 —— 多数国家禁止进口', en:'Controlled items — mostly prohibited'}}
+];
+const REPORT_HS = [
+  {p:'8507', reason:{zh:'锂电池/蓄电池 (HS 8507) —— 需 UN38.3 + MSDS', en:'Battery HS 8507 — UN38.3 + MSDS'}},
+  {p:'8504', reason:{zh:'变压器/充电器 (HS 8504) —— 需电子产品认证 + 电池报告', en:'Charger HS 8504'}},
+  {p:'8471', reason:{zh:'电脑及配件 (HS 8471) —— 部分国家需强制认证', en:'Computer HS 8471'}},
+  {p:'8517', reason:{zh:'手机/通讯设备 (HS 8517) —— 需 IMEI + 部分国家强制认证', en:'Phone HS 8517'}},
+  {p:'3303', reason:{zh:'香水 (HS 3303) —— 需 MSDS + 化妆品备案', en:'Perfume HS 3303'}},
+  {p:'3304', reason:{zh:'化妆品 (HS 3304) —— 需 MSDS + 备案', en:'Cosmetics HS 3304'}},
+  {p:'3305', reason:{zh:'护发品 (HS 3305) —— 需 MSDS + 备案', en:'Hair care HS 3305'}},
+  {p:'3307', reason:{zh:'香水/盥洗用品 (HS 3307) —— 需 MSDS', en:'Toiletries HS 3307'}},
+  {p:'3004', reason:{zh:'药品 (HS 3004) —— 需进口药品许可证', en:'Medicine HS 3004'}},
+  {p:'3005', reason:{zh:'医用敷料 (HS 3005) —— 需医疗器械备案', en:'Medical dressing HS 3005'}},
+  {p:'9018', reason:{zh:'医疗器械 (HS 9018) —— 需医疗器械注册证', en:'Medical device HS 9018'}},
+  {p:'2106', reason:{zh:'食品/保健品 (HS 2106) —— 需进口食品许可', en:'Food HS 2106'}},
+  {p:'1905', reason:{zh:'烘焙食品 (HS 1905) —— 需食品进口许可', en:'Bakery HS 1905'}},
+  {p:'2204', reason:{zh:'酒类 (HS 2204) —— 需酒类进口许可', en:'Alcohol HS 2204'}},
+  {p:'2402', reason:{zh:'香烟 (HS 2402) —— 多数国家禁止进口', en:'Tobacco HS 2402'}},
+  {p:'8543', reason:{zh:'电子烟/电子雾化 (HS 8543) —— 需烟草经营许可', en:'E-cigarette HS 8543'}},
+  {p:'9503', reason:{zh:'玩具 (HS 9503) —— 需 EN71 / ASTM 玩具认证', en:'Toys HS 9503'}},
+  {p:'9504', reason:{zh:'电子游戏机 (HS 9504) —— 需电子认证或电池报告', en:'Gaming HS 9504'}},
+  {p:'2804', reason:{zh:'无机化学品 (HS 2804) —— 需 MSDS + 危包证', en:'Chemicals HS 2804'}},
+  {p:'2905', reason:{zh:'有机化学品 (HS 2905) —— 需 MSDS + 危包证', en:'Chemicals HS 2905'}},
+  {p:'3808', reason:{zh:'农药/杀虫剂 (HS 3808) —— 需农药登记 + 危包证', en:'Pesticide HS 3808'}},
+  {p:'2710', reason:{zh:'石油产品 (HS 2710) —— 需 MSDS + 危险品资质', en:'Petroleum HS 2710'}}
+];
+const COUNTRY_POLICY = {
+  sg:{flag:'🇸🇬',
+    zh:['食品不能含肉类/海鲜；单票超 10kg 需借证费 SGD 60','药品：首重 150元/kg、续重 45元/kg，单票 ≤5kg','高货值 CIF > SGD 400 将加 GST 9% + 申报费 SGD 50'],
+    en:['Food: no meat/seafood; over 10kg needs SGD 60 certificate','Medicine: first 150 CNY/kg, add 45, max 5kg/ticket','CIF > SGD 400: +9% GST + SGD 50 declaration fee']},
+  my:{flag:'🇲🇾',
+    zh:['电子产品（蓝牙/家电）通常需 SIRIM 认证','食品/化妆品需 Halal / JAKIM 认证','药品需 NPRA 注册；电子烟需烟草许可'],
+    en:['Electronics usually need SIRIM','Food/cosmetics: Halal / JAKIM','Medicine: NPRA; E-cigarettes: tobacco license']},
+  th:{flag:'🇹🇭',
+    zh:['食品/化妆品/药品需泰国 FDA 备案','电器/机器类需 TISI 认证','电子烟、酒、烟草为禁止类'],
+    en:['Food/cosmetics/medicine: Thai FDA','Appliances: TISI','E-cigarettes, alcohol, tobacco prohibited']},
+  vn:{flag:'🇻🇳',
+    zh:['药品/化妆品/食品需越南 MOH 卫生部备案','电子类需 MIC 认证','仿牌类如没收只退运费无赔偿'],
+    en:['Medicine/cosmetics/food: Vietnam MOH','Electronics: MIC','Replicas: freight refund only']},
+  ph:{flag:'🇵🇭',
+    zh:['食品/化妆品/药品需 FDA Philippines 注册','纯电池/充电宝需 UN38.3 报告','药品/化工属特殊货，仅马尼拉可运'],
+    en:['Food/cosmetics/medicine: FDA PH','Pure battery: UN38.3','Medicine/chemical: Manila only']},
+  id:{flag:'🇮🇩',
+    zh:['化妆品/食品/药品需 BPOM 注册','电子电器/玩具需 SNI 认证','服装仅接受全新'],
+    en:['Cosmetics/food/medicine: BPOM','Electronics/toys: SNI','Apparel: brand new only']},
+  kh:{flag:'🇰🇭',
+    zh:['食品/药品需柬埔寨卫生部备案','品牌/高价值货需授权或单询'],
+    en:['Food/medicine: MoH Cambodia','Brand/high-value: authorization']},
+  la:{flag:'🇱🇦',
+    zh:['食品/大型设备/手表/化妆品属敏感货，需单询','仿牌/液体/粉末/鲜活拒收'],
+    en:['Food/large equipment/watches/cosmetics: sensitive','Replicas/liquids/powders prohibited']},
+  ae:{flag:'🇦🇪',
+    zh:['食品/化妆品/药品需 UAE MOH 注册','电子产品需 ESMA 认证','内置电池 ≤100WH，需 UN3481 电池标'],
+    en:['Food/cosmetics/medicine: UAE MOH','Electronics: ESMA','Built-in battery ≤100WH, UN3481 label']}
 };
 
 function matchArea(n, list){
@@ -1313,7 +1313,6 @@ function evaluateZip(zone, raw){
   return null;
 }
 
-/* 渠道细则公共文本 */
 const COMP_STD = {
   zh:"1. 物品遗失或者扣关按运费两倍且退回已支付运费或者申报货值，取低者规则理赔。如因客户的资料与实际货物不符或货物本身质量问题，以及涉及具体认证问题等均不受理赔偿；如遇战争、自然灾害等不可抗力因素导致货物破坏或丢失不受理赔偿；运输过程中如遇航班延误/清关延误等引起的总体时效延误均不受理赔偿；货物部分破损不赔偿，只对货件遗失进行赔偿。一旦交付货物即默认本条款规则。\n2. 经香港的货物，如在出口口岸经我司确认被海关查扣，按40RMB/Kg赔偿，不作其它任何连带责任或价值赔偿。\n3. 在运输过程中如遇到航班延误、清关延误等引起的总体时效延误均不受理赔偿。\n4. 如有查获烟酒、银行卡4件套等违禁品，罚款5000RMB/票，并且报警处理。\n5. 如发现冲货行为，没收货物并罚款1000RMB-10000RMB，其他后果自负。敏感货冲普货，一经发现没收货物，并罚款5000/票，如海关查验由此产生的所有费用均由发货方全部承担。\n6. 客户虚报、瞒报、漏报货物信息以及敏感货充当普货的情况下，若出现丢件、少件情况，我司概不赔偿。",
   en:"1. Loss or customs seizure: compensation = the lower of (2× freight + refund of paid freight) or declared value. No compensation for document mismatch, product quality issues, certification issues, force majeure, or transit/customs delays. Partial damage is not compensated — only total loss. Handing over the goods means acceptance of these terms.\n2. Goods via Hong Kong seized at export: 40 CNY/kg, no other liability.\n3. No compensation for flight or customs delays.\n4. Tobacco/alcohol or bank-card sets found: 5,000 CNY/ticket fine + police report.\n5. False declaration: goods confiscated + 1,000–10,000 CNY fine; sensitive goods declared as general: confiscated + 5,000 CNY/ticket, all customs-related costs borne by the shipper.\n6. No compensation for loss/shortage if the shipper mis-declared or shipped sensitive goods as general cargo."
@@ -1427,7 +1426,6 @@ const AE_DETAIL = {
   compensation: COMP_STD
 };
 
-/* 渠道价格 */
 const PRICE_CHANNELS = [
   {type:"air", country:"my",
    billing:{mode:'weight', divisor:6000, foam:'half', remoteSurcharge:3.5},
@@ -2019,7 +2017,6 @@ function updateChannelUI(){
 }
 function updateBillingUI(channel){
   const dimLabel = document.getElementById('dimLabel');
-  const weightLabel = document.getElementById('weightLabel');
   if(!channel || !channel.billing){
     dimLabel.textContent = t("包装后尺寸 / 重量（支持多组尺寸，每件可不同）","Packed Size / Weight (multiple sizes supported)");
     calcFormulaEl.classList.remove('show');
@@ -2028,12 +2025,9 @@ function updateBillingUI(channel){
   }
   const b = channel.billing;
   if(b.mode === 'weight'){
-    let extra = '';
-    if(b.divisor) extra = ' · ' + t('用于算体积重÷'+b.divisor, ' for ÷'+b.divisor+' volumetric');
     dimLabel.innerHTML = t("包装后尺寸 / 重量（支持多组尺寸，每件可不同）", "Packed Size / Weight (multiple sizes supported)") +
       '<span class="billing-tag weight">'+t('按重量','By weight')+'</span>';
   } else {
-    let extra = b.minCbm ? ' · ' + t('最低'+b.minCbm+'方起', ' min '+b.minCbm+' CBM') : '';
     dimLabel.innerHTML = t("包装后尺寸 / 重量（支持多组尺寸，每件可不同）", "Packed Size / Weight (multiple sizes supported)") +
       '<span class="billing-tag volume">'+t('按体积','By volume')+'</span>';
   }
@@ -2108,7 +2102,7 @@ function updateZipUI(channel){
   remoteNoteEl.innerHTML = html;
 }
 
-/* ★ 多尺寸数据与工具 */
+/* 多尺寸数据与工具 */
 let dimRows = [{L:'', W:'', H:'', qty:1, weight:''}];
 let currentUnit = 'cm';
 const dimSummaryEl = document.getElementById('dimSummary');
@@ -2330,6 +2324,59 @@ function updateDimSummary(){
   dimSummaryEl.classList.add('show');
 }
 
+/* ★ 资质报告智能判断（品名 + HS + 国家/邮编 联动） */
+function checkReportRequirement(){
+  const tip = document.getElementById('reportTip');
+  if(!tip) return;
+  const product = (document.getElementById('productName').value || '').toLowerCase().trim();
+  const hsCode = (document.getElementById('hsCode').value || '').trim();
+  const info = parseChannelVal(channelSelect.value);
+  const countryCode = info ? info.channel.country : (countrySelect.value || '');
+  const zip = (zipEl.value || '').trim();
+
+  const reasons = [];
+  const seen = new Set();
+
+  if(product){
+    REPORT_KEYWORDS.forEach(rule=>{
+      if(rule.kw.some(k => product.includes(k.toLowerCase()))){
+        const r = LANG === 'zh' ? rule.reason.zh : rule.reason.en;
+        if(!seen.has(r)){ seen.add(r); reasons.push(r); }
+      }
+    });
+  }
+  if(/^\d{4,}/.test(hsCode)){
+    const p4 = hsCode.slice(0,4);
+    REPORT_HS.forEach(rule=>{
+      if(rule.p === p4){
+        const r = LANG === 'zh' ? rule.reason.zh : rule.reason.en;
+        if(!seen.has(r)){ seen.add(r); reasons.push(r); }
+      }
+    });
+  }
+
+  const policy = COUNTRY_POLICY[countryCode];
+  const policyLines = policy ? (LANG === 'zh' ? policy.zh : policy.en) : [];
+
+  if(reasons.length === 0 && policyLines.length === 0){
+    tip.className = 'report-tip';
+    tip.innerHTML = '';
+    return;
+  }
+
+  let html = '';
+  if(reasons.length){
+    html += '<span class="rt-title">⚠️ ' + t('该品类大概率需资质/报告','Likely requires documents') + '</span>';
+    reasons.forEach(r => { html += '<div class="rt-line">' + r + '</div>'; });
+  }
+  if(policyLines.length){
+    html += '<span class="rt-title' + (reasons.length ? ' mt' : '') + '">' + policy.flag + ' ' + t('目的国政策提示','Destination policy') + '</span>';
+    policyLines.forEach(r => { html += '<div class="rt-line">' + r + '</div>'; });
+  }
+  tip.innerHTML = html;
+  tip.className = 'report-tip show ' + (reasons.length ? 'warn' : 'info');
+}
+
 let userOverridePriceType = false;
 
 function autoSelectPriceTypeByZip(channel, zip){
@@ -2393,6 +2440,7 @@ zipEl.addEventListener('input', ()=>{
   updateDeliveryFeeTip();
   refreshSurchargeDisplay();
   renderLclQuote();
+  checkReportRequirement();
 });
 zipEl.addEventListener('blur', ()=>{
   updateZipUI(getCurrentChannel());
@@ -2401,6 +2449,7 @@ zipEl.addEventListener('blur', ()=>{
   updateDeliveryFeeTip();
   refreshSurchargeDisplay();
   renderLclQuote();
+  checkReportRequirement();
 });
 channelSelect.addEventListener('change', ()=>{
   userOverridePriceType = false;
@@ -2411,9 +2460,11 @@ channelSelect.addEventListener('change', ()=>{
   updateDimSummary();
   autoSelectPriceTypeByZip(getCurrentChannel(), (zipEl.value||'').trim());
   renderLclQuote();
+  checkReportRequirement();
 });
 countrySelect.addEventListener('change', ()=>{
   autoSelectFirstChannel(countrySelect.value);
+  checkReportRequirement();
 });
 
 const QUOTE_RULES = {
@@ -2503,7 +2554,6 @@ function pickRate(cols, row, qty, rule, optIdx){
   return null;
 }
 
-/* 目的地转运派送费 */
 function getDeliveryFeeRule(){
   const ch = getCurrentChannel();
   if(!ch) return null;
@@ -2594,7 +2644,6 @@ document.getElementById('deliveryFeeSelect').addEventListener('change', function
   renderLclQuote();
 });
 
-/* 附加费预估 */
 function updateSurchargeUI(){
   const row = document.getElementById('surchargeRow');
   const box = document.getElementById('surchargeBox');
@@ -2752,7 +2801,6 @@ function refreshSurchargeDisplay(){
   }
 }
 
-/* 散货报价计算 */
 function computeLclQuote(){
   const info = parseChannelVal(channelSelect.value);
   if(!info) return {err:'nochannel'};
@@ -3053,6 +3101,7 @@ function applyLang(lang){
   updateDeliveryFee();
   updateSurchargeUI();
   renderLclQuote();
+  checkReportRequirement();
 }
 document.querySelectorAll('.lang-btn').forEach(btn=>{
   btn.onclick=()=>{
@@ -3101,17 +3150,16 @@ const lclRmkEl=document.getElementById('lclRemark');
 if(lclRmkEl) lclRmkEl.addEventListener('input', refreshLclBadge);
 const fclRmkEl=document.getElementById('fclRemark');
 if(fclRmkEl) fclRmkEl.addEventListener('input', refreshFclBadge);
-const needReport = ["电池","充电宝","移动电源","化妆品","护肤品","医疗器械","药品","带电","磁","食品","液体","粉末"];
-document.getElementById('productName').oninput=function(){
-  const v=this.value.toLowerCase();
-  const tip=document.getElementById('reportTip');
-  const hit = needReport.some(w=>v.includes(w));
-  if(hit){
-    tip.textContent = t("⚠️该品类大概率需要资质/运输鉴定报告（如 MSDS / UN38.3 / 商检），请备好报告","⚠️ This category likely requires MSDS / UN38.3 / inspection report. Please prepare documents.");
-  } else {
-    tip.textContent = "";
+
+/* ★ 资质报告联动监听 */
+['productName','hsCode'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el){
+    el.addEventListener('input', checkReportRequirement);
+    el.addEventListener('change', checkReportRequirement);
   }
-};
+});
+
 document.getElementById('genLcl').onclick=function(){
   const g=id=>document.getElementById(id).value;
   const zipVal = (g('zipCode')||'').trim();
@@ -3256,8 +3304,6 @@ updateDimSummary();
 document.oncontextmenu = function(){return false;}
 document.onselectstart = function(){return false;}
 </script>
-
-
 
 
 
