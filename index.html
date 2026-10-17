@@ -173,14 +173,12 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .pbtn.active{background:linear-gradient(135deg,#FECBCA,#F5A8A6);color:#2A2930;border-color:transparent;box-shadow:0 4px 12px rgba(245,168,166,.35);font-weight:700;}
 #channelSelect optgroup{font-weight:700;color:#403F44;font-size:12.5px;padding:6px 0;}
 .detail-section-title{font-size:12.5px;font-weight:700;color:#8A5A5A;letter-spacing:.2px;padding:12px 0 6px;margin-top:14px;border-top:1px dashed var(--border);display:flex;align-items:center;justify-content:space-between;}
-.detail-section-title .lock-hint{font-size:10.5px;color:#C97B7B;font-weight:600;letter-spacing:.2px;}
 .dt-accordion{margin-top:4px;padding-top:0;}
 .dt-item{border-bottom:1px solid #F7EFEF;}
 .dt-item:last-child{border-bottom:none;}
 .dt-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 4px;cursor:pointer;font-size:12.5px;font-weight:700;color:#403F44;user-select:none;-webkit-tap-highlight-color:transparent;transition:.2s;}
 .dt-head:hover{color:#C97B7B;}
 .dt-head span:first-child{flex:1;}
-.dt-head .dt-lock{font-size:10px;color:#C97B7B;margin-left:6px;opacity:.85;}
 .dt-arrow{font-size:9px;color:#B5B0B8;transition:.28s cubic-bezier(.4,.2,.2,1);flex-shrink:0;}
 .dt-item.open .dt-arrow{transform:rotate(180deg);color:#F5A8A6;}
 .dt-body{display:none;padding:0 4px 12px;font-size:11.5px;line-height:1.85;color:#6B6570;white-space:pre-line;letter-spacing:.05px;}
@@ -206,6 +204,11 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .quote-line b{color:#2A2930;font-feature-settings:"tnum";text-align:right;word-break:break-all;flex:0 1 auto;}
 .quote-line.accent b{color:#C0392B;}
 .quote-line.eta-strong b{color:#07A94F;font-weight:700;}
+.quote-line.transit b{color:#B8860B;}
+.quote-line.transit-info b{color:#8A7020;font-weight:600;}
+.quote-line.rule b{color:#8A4A48;font-weight:600;}
+.quote-line.mincharge b{color:#C0392B;font-weight:600;}
+.quote-line.oversize b{color:#D97706;font-weight:700;}
 .quote-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:12px;border-top:2px solid #F0DEDE;}
 .quote-total span{font-size:13px;font-weight:800;color:#403F44;}
 .quote-total b{font-size:24px;font-weight:800;color:#C0392B;font-feature-settings:"tnum";letter-spacing:.5px;}
@@ -239,8 +242,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .contact-line .c-icon{font-size:15px;flex-shrink:0;}
 .contact-line .c-label{color:#8A8590;font-size:12px;min-width:62px;flex-shrink:0;font-weight:600;}
 .contact-line .c-value{flex:1;color:#2A2930;font-weight:700;font-feature-settings:"tnum";letter-spacing:.3px;word-break:break-all;}
-.contact-line a.c-value{color:#07A94F;text-decoration:none;transition:.2s;}
-.contact-line a.c-value:hover{text-decoration:underline;color:#058a40;}
 .c-copy{padding:5px 12px;border-radius:8px;border:1px solid #F5D0D0;background:#FFF8F8;color:#403F44;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;flex-shrink:0;letter-spacing:.3px;}
 .c-copy:hover{border-color:#F5A8A6;background:#FFF0F0;}
 .c-copy:active{transform:scale(.96);}
@@ -295,31 +296,18 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .eta-chip{display:inline-block;background:#E8F7EE;color:#07A94F;padding:1px 6px;border-radius:5px;font-size:10px;font-weight:600;letter-spacing:.1px;}
 .eta-line, .eta-line.multi .eta-chip{cursor:help;-webkit-tap-highlight-color:transparent;}
 .eta-line:active{opacity:.7;}
-.eta-tip{position:fixed;z-index:998;max-width:280px;
-  background:linear-gradient(135deg,#2A2930 0%,#403F44 100%);
-  color:#fff;border-radius:12px;padding:12px 14px;
-  font-size:11.5px;line-height:1.7;letter-spacing:.1px;
-  box-shadow:0 10px 32px rgba(42,41,48,.42),0 2px 8px rgba(42,41,48,.18);
-  opacity:0;transform:translateY(-4px) scale(.96);
-  pointer-events:none;transition:opacity .18s ease,transform .2s cubic-bezier(.2,.9,.3,1.3);
-}
+.eta-tip{position:fixed;z-index:998;max-width:280px;background:linear-gradient(135deg,#2A2930 0%,#403F44 100%);color:#fff;border-radius:12px;padding:12px 14px;font-size:11.5px;line-height:1.7;letter-spacing:.1px;box-shadow:0 10px 32px rgba(42,41,48,.42),0 2px 8px rgba(42,41,48,.18);opacity:0;transform:translateY(-4px) scale(.96);pointer-events:none;transition:opacity .18s ease,transform .2s cubic-bezier(.2,.9,.3,1.3);}
 .eta-tip.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
-.eta-tip::before{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
-  width:12px;height:8px;background:#2A2930;
-  clip-path:polygon(50% 100%,0 0,100% 0);}
+.eta-tip::before{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);width:12px;height:8px;background:#2A2930;clip-path:polygon(50% 100%,0 0,100% 0);}
 .eta-tip.below::before{top:-6px;bottom:auto;clip-path:polygon(50% 0,0 100%,100% 100%);}
-.eta-tip-title{font-weight:700;font-size:12px;margin-bottom:7px;color:#FECBCA;
-  display:flex;align-items:center;gap:5px;letter-spacing:.3px;}
+.eta-tip-title{font-weight:700;font-size:12px;margin-bottom:7px;color:#FECBCA;display:flex;align-items:center;gap:5px;letter-spacing:.3px;}
 .eta-tip-title::before{content:"⏱";font-size:11px;}
 .eta-tip-body{color:rgba(255,255,255,.9);}
 .eta-tip-body .tip-line{display:flex;gap:6px;padding:2.5px 0;align-items:flex-start;}
 .eta-tip-body .tip-line::before{content:"·";font-weight:700;flex-shrink:0;opacity:.55;}
 .eta-tip-body .tip-line.hl{color:#FECBCA;font-weight:600;}
 .eta-tip-body .tip-line.hl::before{color:#F5A8A6;opacity:1;}
-.eta-tip-close{position:absolute;top:8px;right:10px;width:22px;height:22px;border-radius:50%;
-  border:none;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);
-  font-size:12px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;
-  transition:.2s;}
+.eta-tip-close{position:absolute;top:8px;right:10px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:12px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;transition:.2s;}
 .eta-tip-close:hover{background:rgba(254,203,202,.25);color:#FECBCA;}
 @media (hover:none){.eta-tip-close{display:flex;}}
 @media (max-width:380px){
@@ -335,7 +323,16 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   .fab-btn{right:12px;bottom:78px;height:40px;padding:0 12px;font-size:12px;border-radius:20px;}
   .fab-btn .fab-icon{font-size:15px;}
   .container-tip .pricetable{font-size:10px;}
+  .country-grid{grid-template-columns:repeat(2,1fr);}
+  .price-body{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .pricetable{min-width:420px;}
 }
+.home-item .icon{flex:0 0 46px;}
+.home-item > div:last-child{flex:1;min-width:0;}
+.eta-tip::before{left:var(--arrow-x,50%);}
+body{-webkit-user-select:text;user-select:text;}
+input,textarea,select{-webkit-user-select:text;user-select:text;}
+.form-step-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#FECBCA,#F5A8A6);color:#2A2930;font-size:11px;font-weight:800;margin-right:6px;vertical-align:middle;}
 </style>
 </head><body>
 	<div class="container">
@@ -356,9 +353,9 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <h2 data-zh="快捷功能" data-en="Quick Functions">快捷功能</h2>
     <div class="home-grid">
       <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="填写即自动报价" data-en="Instant auto-quote">填写即自动报价</div></div></div>
-      <div class="home-item" data-goto="fcl"><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div><div class="icon green">🚢</div></div>
+      <div class="home-item" data-goto="fcl"><div class="icon green">🚢</div><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div></div>
       <div class="home-item" data-goto="calc"><div class="icon orange">🧮</div><div><div class="name" data-zh="计算器" data-en="Calculator">计算器</div><div class="desc" data-zh="渠道计费 / CBM" data-en="Billing / CBM">渠道计费 / CBM</div></div></div>
-      <div class="home-item" data-goto="price"><div><div class="name" data-zh="运费价格表" data-en="Freight Rates">运费价格表</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div><div class="icon pink">📋</div></div>
+      <div class="home-item" data-goto="price"><div class="icon pink">📋</div><div><div class="name" data-zh="运费价格表" data-en="Freight Rates">运费价格表</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div></div>
     </div>
   </div>
 
@@ -379,10 +376,10 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 </div>
 
 <div id="price" class="card hidden">
-  <h2 data-zh="运费价格表（9.18执行）" data-en="Freight Rate Table (Effective 9.18)">运费价格表（9.18执行）</h2>
+  <h2 data-zh="运费价格表（10.16执行）" data-en="Freight Rate Table (Effective 10.16)">运费价格表（10.16执行）</h2>
   <div class="tip-orange" style="margin-bottom:14px;"
-       data-zh="💡 以下价格取自君驰运通 9.18 报价表。点击渠道卡片展开查看价格明细，卡片内「📋 渠道细则」可查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。"
-       data-en="💡 Rates are from JCYT 9.18 price sheet. Tap a channel card to expand, then open 'Channel Details' inside the card for billing / packing limits / customs / end service / prohibited / compensation. Final freight subject to warehouse measurement and Emily's confirmation.">💡 以下价格取自君驰运通 9.18 报价表。点击渠道卡片展开查看价格明细，卡片内「📋 渠道细则」可查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。</div>
+       data-zh="💡 以下价格取自君驰运通 10.16 报价表。点击渠道卡片展开查看价格明细，卡片内「📋 渠道细则」可查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。"
+       data-en="💡 Rates are from JCYT 10.16 price sheet. Tap a channel card to expand, then open 'Channel Details' inside the card for billing / packing limits / customs / end service / prohibited / compensation. Final freight subject to warehouse measurement and Emily's confirmation.">💡 以下价格取自君驰运通 10.16 报价表。点击渠道卡片展开查看价格明细，卡片内「📋 渠道细则」可查看计费方式 / 包装限制 / 报关清关 / 末端服务 / 禁限运 / 赔偿标准。最终运费以仓库实测、Emily 确认为准。</div>
   <div class="price-filter" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
     <button class="btn btn-outline pbtn active" data-pf="all" data-zh="全部" data-en="All">全部</button>
     <button class="btn btn-outline pbtn" data-pf="air" data-zh="空运" data-en="Air">空运</button>
@@ -390,14 +387,35 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <button class="btn btn-outline pbtn" data-pf="land" data-zh="陆运" data-en="Land">陆运</button>
   </div>
   <div id="priceList"></div>
-</div>
-
-<div id="lcl" class="card hidden">
+</div><div id="lcl" class="card hidden">
   <h2 data-zh="散货询价" data-en="LCL Inquiry">散货询价</h2>
 
-  <div class="section-block fold-block open" id="channelFold">
+  <!-- ① 目的国 -->
+  <div class="form-row">
+    <label><span class="form-step-badge">1</span><span data-zh="收件人国家" data-en="Destination Country">收件人国家</span></label>
+    <select id="countrySelect"></select>
+  </div>
+
+  <!-- ② 邮编 + 地址 -->
+  <div class="form-row">
+    <label><span class="form-step-badge">2</span><span data-zh="收件人完整地址邮编（自动识别城市/区域）" data-en="Full Address + Postcode (auto-detect city)">收件人完整地址邮编（自动识别城市/区域）</span></label>
+    <div class="zip-row">
+      <div class="zip-input">
+        <input type="text" id="zipCode" inputmode="numeric" autocomplete="off">
+      </div>
+      <div class="addr-input">
+        <input type="text" id="address"
+          data-ph-zh="详细地址" data-ph-en="Full address" placeholder="详细地址">
+      </div>
+    </div>
+    <div class="zip-status" id="zipStatus"></div>
+  </div>
+  <div class="remote-note" id="remoteNote"></div>
+
+  <!-- ③ 选择物流渠道（根据国家+邮编自动筛选/排序） -->
+  <div class="section-block fold-block open" id="channelFold" style="margin-top:16px;">
     <div class="fold-head">
-      <h4 data-zh="选择物流渠道" data-en="Select Channel">选择物流渠道</h4>
+      <h4><span class="form-step-badge">3</span><span data-zh="选择物流渠道（已按目的国智能筛选）" data-en="Select Channel">选择物流渠道（已按目的国智能筛选）</span></h4>
       <span class="fold-badge" id="channelBadge" data-zh="点击选择渠道" data-en="Tap to select">点击选择渠道</span>
       <span class="fold-arrow">▼</span>
     </div>
@@ -418,12 +436,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <div class="tip-orange" id="vnProvinceTip" style="margin-top:6px;"></div>
   </div>
 
-  <div class="form-row" id="deliveryFeeRow" style="display:none;">
-    <label id="deliveryFeeLabel" data-zh="目的地转运派送费" data-en="Destination Delivery Fee">目的地转运派送费</label>
-    <select id="deliveryFeeSelect"></select>
-    <div class="tip-orange" id="deliveryFeeTip" style="margin-top:6px;"></div>
-  </div>
-
   <div class="form-row" id="surchargeRow" style="display:none;">
     <label id="surchargeLabel" data-zh="附加费预估（自动检测 + 手动勾选）" data-en="Surcharge Estimate (auto + manual)">附加费预估（自动检测 + 手动勾选）</label>
     <div class="surcharge-box" id="surchargeBox"></div>
@@ -435,25 +447,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
       data-ph-zh="输入品名，自动判断是否需要资质报告" data-ph-en="Enter product name to check report requirement"
       placeholder="输入品名，自动判断是否需要资质报告">
     <div id="reportTip" class="report-tip"></div>
-  </div>
-
-  <div class="form-row">
-    <label data-zh="收件人完整地址邮编" data-en="Full Address + Postcode">收件人完整地址邮编</label>
-    <div class="zip-row">
-      <div class="zip-input">
-        <input type="text" id="zipCode" inputmode="numeric" autocomplete="off">
-      </div>
-      <div class="addr-input">
-        <input type="text" id="address"
-          data-ph-zh="详细地址" data-ph-en="Full address" placeholder="详细地址">
-      </div>
-    </div>
-    <div class="zip-status" id="zipStatus"></div>
-  </div>
-
-  <div class="form-row">
-    <label data-zh="收件人国家（自动匹配渠道）" data-en="Country (auto-match channel)">收件人国家（自动匹配渠道）</label>
-    <select id="countrySelect"></select>
   </div>
 
   <div class="form-row">
@@ -473,8 +466,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
       <div class="dim-summary" id="dimSummary"></div>
     </div>
   </div>
-
-  <div class="remote-note" id="remoteNote"></div>
 
   <input type="hidden" id="dimL">
   <input type="hidden" id="dimW">
@@ -543,7 +534,7 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <div class="tip-green" id="wxTip"></div>
   </div>
 </div>
-<!-- 整柜询价 -->
+
 <div id="fcl" class="card hidden">
   <h2 data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</h2>
   <div class="form-row"><label data-zh="产品图片" data-en="Product Image">产品图片</label><input type="text" id="fclImg" data-ph-zh="选填" data-ph-en="Optional" placeholder="选填"></div>
@@ -553,7 +544,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="form-row"><label data-zh="中国装柜地址" data-en="Loading Address (China)">中国装柜地址</label><input type="text" id="loadAddr" data-ph-zh="请输入国内装柜地址" data-ph-en="Enter loading address in China" placeholder="请输入国内装柜地址"></div>
   <div class="form-row"><label data-zh="国外卸柜地址" data-en="Discharge Address (Overseas)">国外卸柜地址</label><input type="text" id="unloadAddr" data-ph-zh="请输入国外卸柜地址" data-ph-en="Enter discharge address overseas" placeholder="请输入国外卸柜地址"></div>
   <div class="form-row"><label data-zh="货值" data-en="Goods Value">货值</label><input type="text" id="value" data-ph-zh="请输入货值" data-ph-en="Enter goods value" placeholder="请输入货值"></div>
-  
   <div class="form-row">
     <label data-zh="柜型（20GP / 40HQ）" data-en="Container Type (20GP / 40HQ)">柜型（20GP 或 40HQ）</label>
     <input type="text" id="containerType" data-ph-zh="例如：20GP / 40HQ" data-ph-en="e.g. 20GP / 40HQ" placeholder="例如：20GP / 40HQ">
@@ -592,7 +582,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
       </table>
     </div>
   </div>
-  
   <div class="form-row"><label data-zh="货重" data-en="Total Weight">货重</label><input type="text" id="fclWeight" data-ph-zh="请输入货重" data-ph-en="Enter total weight" placeholder="请输入货重"></div>
   <div class="form-row"><label data-zh="方数" data-en="Volume">方数</label><input type="text" id="cbm" data-ph-zh="请输入方数" data-ph-en="Enter volume" placeholder="请输入方数"></div>
   <div class="form-row">
@@ -647,7 +636,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   </div>
 </div>
 
-<!-- 计算器 -->
 <div id="calc" class="card hidden">
   <h2 data-zh="计算器" data-en="Calculator">计算器</h2>
   <div class="calc-tabs">
@@ -716,7 +704,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 
 </div>
 
-<!-- 底部导航 -->
 <div class="tab-bar">
   <div class="tab-item active" data-target="home"><div class="icon">🏠</div><span data-zh="首页" data-en="Home">首页</span></div>
   <div class="tab-item" data-target="lcl"><div class="icon">📦</div><span data-zh="散货询价" data-en="LCL">散货询价</span></div>
@@ -724,14 +711,12 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
-<!-- 时效说明 tooltip -->
 <div class="eta-tip" id="etaTip" role="tooltip" aria-hidden="true">
   <button type="button" class="eta-tip-close" id="etaTipClose" aria-label="关闭">✕</button>
   <div class="eta-tip-title" id="etaTipTitle">时效说明</div>
   <div class="eta-tip-body" id="etaTipBody"></div>
 </div>
 
-<!-- 悬浮客服 -->
 <button class="fab-btn" id="fabContact" aria-label="联系客服">
   <span class="fab-icon">💬</span>
   <span data-zh="咨询下单" data-en="Contact">咨询下单</span>
@@ -762,11 +747,11 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
       <button class="btn btn-primary" id="pwdConfirm" data-zh="确认" data-en="Confirm">确认</button>
     </div>
   </div>
-</div><script>const WX_ACCOUNT = "GZjcyt006";
+</div><script>
+const WX_ACCOUNT = "GZjcyt006";
 const WA_ACCOUNT = "+86 13149933368";
 let LANG = "zh";
 
-/* 悬浮客服 */
 (function(){
   const fab = document.getElementById('fabContact');
   const modal = document.getElementById('contactModal');
@@ -791,10 +776,8 @@ let LANG = "zh";
   if(wxBtn) wxBtn.addEventListener('click', ()=> doCopy(wxBtn, WX_ACCOUNT));
 })();
 
-/* 密码保护 */
-const PRICE_PASSWORD = "Emily Wu";
-let priceUnlocked = false;
-try { if (sessionStorage.getItem('jcyt_price_unlocked') === '1') priceUnlocked = true; } catch(e){}
+const PRICE_PASSWORD = "";
+let priceUnlocked = true;
 
 const pwdModal = document.getElementById('pwdModal');
 const pwdInput = document.getElementById('pwdInput');
@@ -856,14 +839,19 @@ pwdModal.addEventListener('click', (e)=>{ if(e.target === pwdModal){ pendingDeta
 const t = (zh, en) => (LANG === "zh" ? zh : en);
 const tObj = (o) => (o ? (LANG === "zh" ? o.zh : o.en) : '');
 
+/* ═══════════════════════════════════════════════════════════
+   马来西亚偏远邮编表
+   ═══════════════════════════════════════════════════════════ */
 const MY_SEA_REMOTE = [
   {zh:'彭亨 PAHANG',en:'Pahang',r:[[25000,28800]]},
   {zh:'吉兰丹 KELANTAN',en:'Kelantan',r:[[15000,18500]]},
   {zh:'丁加奴 TERENGGANU',en:'Terengganu',r:[[20000,24300]]},
+  {zh:'吉打黑木山 Kayu Hitam',en:'Kedah Kayu Hitam',r:[[6010,6050]]},
   {zh:'玻璃市 PERLIS',en:'Perlis',r:[[1000,2800]]},
   {zh:'金马仑高原 Cameron Highlands',en:'Cameron Highlands',r:[[39000,39200]]},
   {zh:'云顶高原 Genting Highlands',en:'Genting Highlands',r:[[69000,69000]]},
   {zh:'兰卡威 Langkawi',en:'Langkawi',r:[[7000,7100]]},
+  {zh:'邦咯岛 Pulau Pangkor',en:'Pulau Pangkor',r:[[32300,32399]]},
   {zh:'柔佛 Mersing / Kukup / Endau / Pengerang / Kahang / Penawar',en:'Johor Mersing / Kukup / Endau / Pengerang / Kahang / Penawar',r:[[86800,86800],[82300,82300],[86900,86900],[81600,81620],[86700,86700],[81930,81930]]},
   {zh:'彭亨 Kuala Rompin / Muadzam Shah',en:'Pahang Kuala Rompin / Muadzam Shah',r:[[26800,26820],[26700,26700]]},
   {zh:'森美兰 Titi Jelebu / Kuala Pilah / Bahau',en:'Negeri Sembilan Titi Jelebu / Kuala Pilah / Bahau',r:[[76400,76400],[72000,72000],[72100,72500]]},
@@ -886,12 +874,22 @@ const POSTAL_META = {
   ph:{len:4, ph:{zh:'4位邮编，如 1000',en:'4-digit postcode, e.g. 1000'}},
   vn:{len:6, ph:{zh:'5位或6位邮编，如 10000 / 100000',en:'5 or 6-digit postcode, e.g. 10000 / 100000'}},
   id:{len:5, ph:{zh:'5位邮编，如 10110',en:'5-digit postcode, e.g. 10110'}},
-  kh:{len:5, ph:{zh:'5位邮编（选填）',en:'5-digit postcode (optional)'}},
-  la:{len:5, ph:{zh:'5位邮编（选填）',en:'5-digit postcode (optional)'}},
+  kh:{len:5, ph:{zh:'5位邮编，如 12000（金边）',en:'5-digit postcode, e.g. 12000 (Phnom Penh)'}},
+  la:{len:5, ph:{zh:'5位邮编，如 01000（万象）',en:'5-digit postcode, e.g. 01000 (Vientiane)'}},
   ae:{len:0, ph:{zh:'填写城市名（迪拜 / 沙迦 等）',en:'Enter city name (Dubai / Sharjah etc.)'}}
 };
 
+const TH_BANGKOK_ZIP_WHITELIST = [
+  10900, 10800, 10700, 10600, 10530, 10520, 10510, 10500, 10400,
+  10330, 10310, 10300, 10260, 10250, 10240, 10230, 10220, 10210, 10200,
+  10170, 10160, 10150, 10140, 10120, 10110, 10100
+];
+
 const VN_DELIVERY_PROVINCES = [
+  {zh:"河内", vi:"Hà Nội", region:"north", kg:0, cbm:0, note:"免费派送"},
+  {zh:"海防", vi:"Hải Phòng", region:"north", kg:0.3, cbm:50, minFee:300},
+  {zh:"北宁", vi:"Bắc Ninh", region:"north", kg:0.3, cbm:50, minFee:300},
+  {zh:"海阳", vi:"Hải Dương", region:"north", kg:0.3, cbm:50, minFee:300},
   {zh:"北江", vi:"Bắc Giang", region:"north", kg:1, cbm:200},
   {zh:"和平", vi:"Hòa Bình", region:"north", kg:1, cbm:200},
   {zh:"太平", vi:"Thái Bình", region:"north", kg:1, cbm:200},
@@ -928,6 +926,10 @@ const VN_DELIVERY_PROVINCES = [
   {zh:"平定", vi:"Bình Định", region:"central", kg:2, cbm:400},
   {zh:"富安", vi:"Phú Yên", region:"central", kg:2.5, cbm:500},
   {zh:"庆和", vi:"Khánh Hòa", region:"central", kg:2.5, cbm:500},
+  {zh:"胡志明", vi:"Hồ Chí Minh", region:"south", kg:0.3, cbm:50, minFee:200, maxFee:1500},
+  {zh:"平阳", vi:"Bình Dương", region:"south", kg:0.3, cbm:50, minFee:300},
+  {zh:"同奈", vi:"Đồng Nai", region:"south", kg:0.3, cbm:50, minFee:300},
+  {zh:"隆安", vi:"Long An", region:"south", kg:0.3, cbm:50, minFee:300},
   {zh:"薄辽", vi:"Bạc Liêu", region:"south", kg:2, cbm:400},
   {zh:"芹苴", vi:"Cần Thơ", region:"south", kg:1.5, cbm:300},
   {zh:"金瓯", vi:"Cà Mau", region:"south", kg:2.5, cbm:500},
@@ -951,67 +953,105 @@ const VN_DELIVERY_PROVINCES = [
 const VN_REGION_ZH = {north:"北部", central:"中部", south:"南部"};
 const VN_REGION_EN = {north:"North", central:"Central", south:"South"};
 
+const VN_POSTAL_MAP = {
+  '10':'河内','11':'河内','12':'河内','13':'河内','14':'河内','15':'河内',
+  '16':'北宁','17':'北宁','18':'海阳','19':'海防',
+  '20':'广宁','21':'广宁','22':'太原','23':'太原','24':'北浒',
+  '25':'谅山','26':'谅山','27':'高平','28':'高平','29':'宣光',
+  '30':'河江','31':'河江','32':'安沛','33':'安沛','34':'老街',
+  '35':'莱州','36':'莱州','37':'山萝','38':'山萝','39':'奠边',
+  '40':'和平','41':'和平','42':'河南','43':'宁平','44':'南定','45':'太平',
+  '46':'清化','47':'义安','48':'河静','49':'广平','50':'广治','51':'顺化',
+  '52':'岘港','53':'广南','54':'广义','55':'崑嵩','56':'平定','57':'嘉莱',
+  '58':'富安','59':'得乐','60':'庆和','61':'林同','62':'得农','63':'宁顺',
+  '64':'平顺','65':'平福','66':'西宁','67':'平阳','68':'同奈','69':'巴地头顿',
+  '70':'胡志明','71':'胡志明','72':'胡志明','73':'胡志明','74':'胡志明',
+  '75':'隆安','76':'前江','77':'前江','78':'槟椥','79':'茶荣',
+  '80':'永隆','81':'永隆','82':'同塔','83':'安江','84':'安江',
+  '85':'坚江','86':'坚江','87':'芹苴','88':'芹苴','89':'后江',
+  '90':'朔庄','91':'朔庄','92':'薄辽','93':'金瓯','94':'金瓯'
+};
+
+const LA_POSTAL_MAP = {
+  '01':'万象',
+  '02':'其它城市','03':'其它城市','04':'孟赛','05':'其它城市',
+  '06':'琅勃拉邦','07':'其它城市','08':'其它城市','09':'其它城市',
+  '10':'其它城市','11':'塔克','12':'塔克',
+  '13':'沙湾拿吉','14':'其它城市','15':'其它城市',
+  '16':'巴色','17':'其它城市','18':'其它城市'
+};
+
+const KH_POSTAL_MAP = {
+  '12':'金边','17':'暹粒','18':'西港',
+  '01':'其它城市','02':'其它城市','03':'其它城市','04':'其它城市','05':'其它城市',
+  '06':'其它城市','07':'其它城市','08':'其它城市','09':'其它城市','10':'其它城市',
+  '11':'其它城市','13':'其它城市','14':'其它城市','15':'其它城市','16':'其它城市',
+  '19':'其它城市','20':'其它城市','21':'其它城市'
+};
+
+function vnPostalPrefix(digits){
+  if(digits.length === 6){
+    const head = digits.slice(0,2);
+    if(VN_POSTAL_MAP[head]) return head;
+    const mid = digits.slice(1,3);
+    if(VN_POSTAL_MAP[mid]) return mid;
+    return head;
+  }
+  return digits.slice(0,2);
+}
+function khPostalPrefix(digits){ return digits.slice(0,2); }
+function laPostalPrefix(digits){ return digits.slice(0,2); }
+
 const DELIVERY_FEE_RULES = {
   my_air:{options:[
-      {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'west_remote', zh:'西马偏远：+3.5 元/KG（体积÷6000 取大）', en:'West MY remote: +3.5 CNY/KG', calc:{type:'perkg', rate:3.5, divisor:6000, foam:'half'}},
-      {v:'east_remote', zh:'东马偏远（纳闽/老越）：首 1KG 20元 + 续 1KG 15元', en:'East MY remote', calc:{type:'firstadd', first:20, add:15, unit:1, divisor:6000}}
+      {v:'west_remote', zh:'西马偏远：+3.5 元/KG（实重 vs 体积重÷6000 取大）', en:'West MY remote: +3.5 CNY/KG', calc:{type:'perkg', rate:3.5, divisor:6000}},
+      {v:'east_remote', zh:'东马偏远（纳闽/老越）：首 1KG 20元 + 续 1KG 15元', en:'East MY remote: first 1KG 20 + add 1KG 15', calc:{type:'firstadd', first:20, add:15, unit:1, divisor:6000}}
     ]},
   my_west_sea:{options:[
-      {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'west_remote', zh:'西马偏远：+2 元/KG', en:'West MY remote: +2 CNY/KG', calc:{type:'perkg', rate:2, divisor:6000}},
-      {v:'wooden', zh:'木箱/木架/托盘：+50 元/方', en:'Wooden crate/rack/pallet: +50 CNY/CBM', calc:{type:'percbm', rate:50}}
+      {v:'west_remote', zh:'西马偏远：+2 元/KG（实重 vs 体积重÷6000 取大）', en:'West MY remote: +2 CNY/KG', calc:{type:'perkg', rate:2, divisor:6000}}
     ]},
   my_east_sea:{options:[
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'sensitive', zh:'敏感货：+100 元/方', en:'Sensitive cargo: +100 CNY/CBM', calc:{type:'percbm', rate:100}}
+      {v:'east_remote', zh:'东马偏远（纳闽/老越）：首 1KG 20元 + 续 1KG 15元', en:'East MY remote: first 1KG 20 + add 1KG 15', calc:{type:'firstadd', first:20, add:15, unit:1, divisor:6000}}
     ]},
   sg:{options:[
-      {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'remote', zh:'偏远派送费：+SGD 40/地址（约 RMB 200）', en:'Remote delivery: +SGD 40/address', calc:{type:'fixed', rate:200}},
-      {v:'high_value', zh:'高货值：GST 9% + 申报费 SGD 50（收件人支付）', en:'High value: GST 9% + SGD 50', calc:{type:'none'}}
+      {v:'remote', zh:'偏远派送费：+SGD 40/地址（约 RMB 200）', en:'Remote delivery: +SGD 40/address', calc:{type:'fixed', rate:200}}
     ]},
   ph_air:{options:[
-      {v:'auto', zh:'自动判断（马尼拉包派区免派送费）', en:'Auto (Manila covered area free)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'outside_manila', zh:'马尼拉以外转运派送：首 35元/KG + 续 15元/KG（体积÷3500）', en:'Outside Manila', calc:{type:'firstadd', first:35, add:15, unit:1, divisor:3500}}
+      {v:'outside_manila', zh:'马尼拉以外转运派送：首 35元/KG + 续 15元/KG（体积÷3500 vs 实重取大）', en:'Outside Manila: first 35 + add 15 CNY/KG (÷3500)', calc:{type:'firstadd', first:35, add:15, unit:1, divisor:3500}}
     ]},
   ph_sea:{options:[
-      {v:'auto', zh:'自动判断（马尼拉包派区免派送费）', en:'Auto (Manila covered area free)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
+      {v:'under_cbm', zh:'马尼拉不足 1 方操作费：+100 元/票', en:'Manila <1 CBM: +100 CNY/ticket', calc:{type:'fixed', rate:100, onlyIfUnder1Cbm:true}},
       {v:'other_city', zh:'宿务/达沃/卡加延等其它城市：派送费单询', en:'Other cities: on request', calc:{type:'none'}}
     ]},
   th_land:{options:[
-      {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'outside_remote', zh:'曼谷以外偏远（邮编 84000+）：+3 元/KG', en:'Outside Bangkok remote: +3 CNY/KG', calc:{type:'perkg', rate:3}},
-      {v:'low_cbm', zh:'低于 1CBM 操作费：+100 元/票', en:'Below 1 CBM handling: +100 CNY/ticket', calc:{type:'fixed', rate:100}}
+      {v:'bkk_under_cbm', zh:'曼谷市区不足 1CBM 操作费：+100 元/票', en:'Bangkok <1 CBM handling: +100 CNY/ticket', calc:{type:'fixed', rate:100, onlyIfUnder1Cbm:true}},
+      {v:'outside_remote', zh:'曼谷以外偏远（邮编 84000+）：+3 元/KG（体积÷6000 vs 实重取大）', en:'Outside Bangkok remote: +3 CNY/KG', calc:{type:'perkg', rate:3, divisor:6000}}
     ]},
   th_land_bulk:{options:[
-      {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'low_cbm', zh:'曼谷低于 1CBM 操作费：+100 元/票', en:'Bangkok below 1 CBM', calc:{type:'fixed', rate:100}},
-      {v:'outside_remote', zh:'曼谷以外偏远（邮编 84000+）：+3 元/KG', en:'Outside Bangkok remote', calc:{type:'perkg', rate:3}}
+      {v:'low_cbm', zh:'曼谷低于 1CBM 操作费：+100 元/票', en:'Bangkok below 1 CBM', calc:{type:'fixed', rate:100, onlyIfUnder1Cbm:true}},
+      {v:'outside_remote', zh:'曼谷以外偏远（邮编 84000+）：+3 元/KG（体积÷6000 vs 实重取大）', en:'Outside Bangkok remote', calc:{type:'perkg', rate:3, divisor:6000}}
     ]},
   th_sea:{options:[
-      {v:'auto', zh:'自动判断（按邮编）', en:'Auto (by postcode)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'low_cbm', zh:'曼谷低于 1CBM 操作费：+100 元/票', en:'Bangkok below 1 CBM', calc:{type:'fixed', rate:100}},
-      {v:'outside_remote', zh:'曼谷以外偏远（邮编 84000+）：+3 元/KG', en:'Outside Bangkok remote', calc:{type:'perkg', rate:3}}
+      {v:'low_cbm', zh:'曼谷低于 1CBM 操作费：+100 元/票', en:'Bangkok below 1 CBM', calc:{type:'fixed', rate:100, onlyIfUnder1Cbm:true}},
+      {v:'outside_remote', zh:'曼谷以外偏远（邮编 84000+）：+3 元/KG（体积÷6000 vs 实重取大）', en:'Outside Bangkok remote', calc:{type:'perkg', rate:3, divisor:6000}}
     ]},
   id_air:{options:[
-      {v:'auto', zh:'自动判断（雅加达 ≥20KG 免派送费）', en:'Auto (Jakarta ≥20KG free)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'jakarta_small', zh:'雅加达 <20KG 派送费：+50 元/票', en:'Jakarta <20KG: +50 CNY/ticket', calc:{type:'fixed', rate:50}},
+      {v:'jakarta_small', zh:'雅加达 <20KG 派送费：+50 元/票', en:'Jakarta <20KG: +50 CNY/ticket', calc:{type:'fixed', rate:50, onlyIfWeightUnder:20}},
       {v:'other_area', zh:'雅加达以外地区：派送费实报实销（单询）', en:'Outside Jakarta: actual cost', calc:{type:'none'}}
     ]},
   id_sea:{options:[
-      {v:'auto', zh:'自动判断（满 1 方免费派送）', en:'Auto (free ≥1 CBM)'},
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'under_cbm', zh:'不足 1 方末端派送费：+200 元/次', en:'Below 1 CBM: +200 CNY/trip', calc:{type:'fixed', rate:200}},
+      {v:'low_cbm', zh:'不足 1 方：+200 元/次末端派送费', en:'<1 CBM: +200 CNY/trip', calc:{type:'fixed', rate:200, onlyIfUnder1Cbm:true}},
       {v:'remote', zh:'雅加达/唐格朗以外：偏远物流及快递费另计', en:'Outside Jakarta/Tangerang', calc:{type:'none'}}
     ]},
   kh_parcel:{options:[
@@ -1020,7 +1060,7 @@ const DELIVERY_FEE_RULES = {
     ]},
   kh_bulk:{options:[
       {v:'none', zh:'不附加派送费', en:'No surcharge'},
-      {v:'under_cbm', zh:'不足 1 方：+100 元', en:'Below 1 CBM: +100 CNY', calc:{type:'fixed', rate:100}},
+      {v:'low_cbm', zh:'不足 1 方操作费：+100 元/票', en:'<1 CBM: +100 CNY/ticket', calc:{type:'fixed', rate:100, onlyIfUnder1Cbm:true}},
       {v:'other_city', zh:'金边以外城市：派送费单询', en:'Outside Phnom Penh: on request', calc:{type:'none'}}
     ]},
   la:{options:[
@@ -1032,102 +1072,140 @@ const DELIVERY_FEE_RULES = {
       {v:'none', zh:'不附加派送费（迪拜市区正常派送）', en:'No surcharge (Dubai downtown)'},
       {v:'remote', zh:'偏远地区（阿布扎比/沙迦部分/杰贝阿里等）：派送费单询', en:'Remote areas: on request', calc:{type:'none'}},
       {v:'fujairah', zh:'Fujairah 全区：无派送服务', en:'Fujairah: no delivery service', calc:{type:'none'}}
+    ]},
+  vn_bulk:{options:[
+      {v:'hanoi_free', zh:'河内免费派送', en:'Hanoi: free delivery', calc:{type:'fixed', rate:0}},
+      {v:'by_province', zh:'按省份计算：max(毛重×元/KG, 立方×元/CBM)', en:'By province: max(weight×CNY/KG, CBM×CNY/CBM)', calc:{type:'vnProvince'}}
+    ]},
+  vn_parcel:{options:[
+      {v:'included', zh:'小货报价已含派送费（河内/北部其它/胡志明/南部中部）', en:'Delivery included in parcel rate', calc:{type:'none', included:true}}
     ]}
+};
+
+const AUTO_SURCHARGE_TABLE = {
+  "马来西亚空运包税专线": { rules: [
+      { id:'over_68kg', label:{zh:'超重附加费（单件>68KG）',en:'Overweight (>68KG/pc)'}, check:v => v.unitWeight > 68, calc:{type:'fixed', value:150} },
+      { id:'over_size_1508080', label:{zh:'超尺寸附加费（>150×80×80cm）',en:'Oversize (>150×80×80cm)'}, check:v => v.L>150 || v.W>80 || v.H>80, calc:{type:'fixed', value:150} }
+  ]},
+  "马来西亚西马海运": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "马来西亚东马海运": { rules: [
+      { id:'over_100kg', label:{zh:'超重附加费（单件>100KG）',en:'Overweight (>100KG/pc)'}, check:v => v.unitWeight > 100, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "新加坡空运专线（不包税）": { rules: [
+      { id:'over_40kg', label:{zh:'超重附加费（单件>40KG）',en:'Overweight (>40KG/pc)'}, check:v => v.unitWeight > 40, calc:{type:'fixed', value:200} },
+      { id:'over_120cm', label:{zh:'超长附加费（单边>120cm）',en:'Oversize (>120cm/side)'}, check:v => v.maxSide > 120, calc:{type:'fixed', value:200} }
+  ]},
+  "新加坡空运专线（包税）": { rules: [
+      { id:'over_40kg', label:{zh:'超重附加费（单件>40KG）',en:'Overweight (>40KG/pc)'}, check:v => v.unitWeight > 40, calc:{type:'fixed', value:200} },
+      { id:'over_120cm', label:{zh:'超长附加费（单边>120cm）',en:'Oversize (>120cm/side)'}, check:v => v.maxSide > 120, calc:{type:'fixed', value:200} }
+  ]},
+  "新加坡海运专线": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "新加坡海运小包（包税到门）": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "菲律宾空运包税专线": { rules: [
+      { id:'over_68kg', label:{zh:'超重附加费（单件>68KG）',en:'Overweight (>68KG/pc)'}, check:v => v.unitWeight > 68, calc:{type:'fixed', value:150} },
+      { id:'over_size_1508080', label:{zh:'超尺寸附加费（>150×80×80cm）',en:'Oversize (>150×80×80cm)'}, check:v => v.L>150 || v.W>80 || v.H>80, calc:{type:'fixed', value:150} }
+  ]},
+  "菲律宾海运包税专线": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "泰国陆运双清包税": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "泰国海运大货专线 DDP": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "泰国陆运大货专线 DDP": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "越南陆运大货双清包税": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "越南陆运小货双清包税": { rules: [
+      { id:'forklift_150', label:{zh:'叉车费（单件>150cm 或 >100KG）',en:'Forklift (>150cm or >100KG)'}, check:v => v.unitWeight > 100 || v.maxSide > 150, calc:{type:'fixed', value:150} }
+  ]},
+  "印度尼西亚空运包税": { rules: [
+      { id:'over_68kg', label:{zh:'超重附加费（单件>68KG）',en:'Overweight (>68KG/pc)'}, check:v => v.unitWeight > 68, calc:{type:'fixed', value:150} },
+      { id:'over_size_1508080', label:{zh:'超尺寸附加费（>150×80×80cm）',en:'Oversize (>150×80×80cm)'}, check:v => v.L>150 || v.W>80 || v.H>80, calc:{type:'fixed', value:150} }
+  ]},
+  "印度尼西亚海运包税": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "柬埔寨陆运小包专线": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "柬埔寨陆运大货包税": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "老挝陆运包税": { rules: [
+      { id:'over_200kg', label:{zh:'超重附加费（单件>200KG）',en:'Overweight (>200KG/pc)'}, check:v => v.unitWeight > 200, calc:{type:'fixed', value:150} },
+      { id:'over_200cm', label:{zh:'超长附加费（单边>200cm）',en:'Oversize (>200cm/side)'}, check:v => v.maxSide > 200, calc:{type:'fixed', value:150} }
+  ]},
+  "阿联酋空运包税": { rules: [
+      { id:'over_40kg', label:{zh:'超重附加费（单件>40KG）',en:'Overweight (>40KG/pc)'}, check:v => v.unitWeight > 40, calc:{type:'fixed', value:150} },
+      { id:'over_120cm', label:{zh:'超长附加费（单边>120cm）',en:'Oversize (>120cm/side)'}, check:v => v.maxSide > 120, calc:{type:'fixed', value:150} }
+  ]}
 };
 
 const SURCHARGE_CONFIG = {
   "马来西亚空运包税专线": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize'}, check:v=>v.unitWeight>68||v.L>150||v.W>80||v.H>80, fee:{type:'fixed', value:150}}],
-    manual: [{id:'wooden', label:{zh:'木箱/木架/托盘包装（+1元/KG，半泡取大）', en:'Wooden crate/rack/pallet (+1 CNY/KG)'}, calc:{type:'perkg', rate:1, divisor:6000, foam:'half'}}]
+    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize (>68KG or >150×80×80cm)'}, check:v=>v.unitWeight>68||v.L>150||v.W>80||v.H>80, fee:{type:'fixed', value:150}}],
+    manual: [{id:'wooden', label:{zh:'木箱/木架/托盘包装（+1元/KG，实重 vs 体积重取大）', en:'Wooden crate/rack/pallet (+1 CNY/KG)'}, calc:{type:'perkg', rate:1, divisor:6000}}]
   },
   "马来西亚西马海运": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
+    auto: [],
     manual: [{id:'wooden', label:{zh:'木箱/木架/托盘包装（+50元/方）', en:'Wooden crate/rack/pallet (+50 CNY/CBM)'}, calc:{type:'percbm', rate:50}}]
   },
   "马来西亚东马海运": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>100KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>100||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
+    auto: [],
     manual: [{id:'sensitive', label:{zh:'敏感货附加（+100元/方）', en:'Sensitive cargo (+100 CNY/CBM)'}, calc:{type:'percbm', rate:100}}]
   },
   "新加坡空运专线（不包税）": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单边>120cm或单件>40KG）', en:'Oversize'}, check:v=>v.unitWeight>40||v.L>120||v.W>120||v.H>120, fee:{type:'fixed', value:200}}],
+    auto: [],
     manual: [
-      {id:'wooden', label:{zh:'木箱/木架/托盘包装（+2元/KG）', en:'Wooden crate/rack/pallet (+2 CNY/KG)'}, calc:{type:'perkg', rate:2, divisor:6000, foam:'half'}},
-      {id:'highvalue', label:{zh:'高货值（CIF>SGD400）GST 9% + 申报费SGD50', en:'High value GST 9% + SGD 50'}, calc:{type:'none'}}
+      {id:'wooden', label:{zh:'木箱/木架/托盘包装（+2元/KG）', en:'Wooden crate/rack/pallet (+2 CNY/KG)'}, calc:{type:'perkg', rate:2, divisor:6000}},
+      {id:'highvalue', label:{zh:'高货值（CIF>SGD400）GST 9% + 申报费SGD50', en:'High value (CIF>SGD400) GST 9% + SGD 50'}, calc:{type:'none'}}
     ]
   },
   "新加坡空运专线（包税）": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单边>120cm或单件>40KG）', en:'Oversize'}, check:v=>v.unitWeight>40||v.L>120||v.W>120||v.H>120, fee:{type:'fixed', value:200}}],
-    manual: [{id:'wooden', label:{zh:'木箱/木架/托盘包装（+2元/KG）', en:'Wooden crate/rack/pallet (+2 CNY/KG)'}, calc:{type:'perkg', rate:2, divisor:6000, foam:'half'}}]
+    auto: [],
+    manual: [{id:'wooden', label:{zh:'木箱/木架/托盘包装（+2元/KG）', en:'Wooden crate/rack/pallet (+2 CNY/KG)'}, calc:{type:'perkg', rate:2, divisor:6000}}]
   },
-  "新加坡海运专线": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: []
-  },
+  "新加坡海运专线": { auto: [], manual: [] },
   "新加坡海运小包（包税到门）": { auto: [], manual: [] },
-  "菲律宾空运包税专线": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize'}, check:v=>v.unitWeight>68||v.L>150||v.W>80||v.H>80, fee:{type:'fixed', value:150}}],
-    manual: [{id:'outside_manila', label:{zh:'马尼拉以外转运派送（首35元/KG + 续15元/KG，体积÷3500）', en:'Outside Manila'}, calc:{type:'firstadd', first:35, add:15, unit:1, divisor:3500}}]
-  },
+  "菲律宾空运包税专线": { auto: [], manual: [] },
   "菲律宾海运包税专线": {
-    auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}},
-      {id:'lowcbm', label:{zh:'马尼拉不足1方操作费（+100元/票）', en:'Manila <1 CBM (+100/ticket)'}, check:v=>v.totalVol>0 && v.totalVol<1, fee:{type:'fixed', value:100}}
-    ],
+    auto: [],
     manual: [{id:'wooden', label:{zh:'木箱/木架/托盘普货（+50元/方）', en:'Wooden crate/rack/pallet (+50 CNY/CBM)'}, calc:{type:'percbm', rate:50}}]
   },
-  "泰国陆运双清包税": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: [
-      {id:'bkk_low', label:{zh:'曼谷低于1CBM操作费（+100元/票）', en:'Bangkok <1 CBM (+100/ticket)'}, calc:{type:'fixed', value:100}},
-      {id:'outside_remote', label:{zh:'曼谷以外偏远（84000+）：+3元/KG', en:'Outside Bangkok remote'}, calc:{type:'perkg', rate:3}}
-    ]
-  },
-  "泰国海运大货专线 DDP": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: [{id:'bkk_low', label:{zh:'曼谷低于1CBM操作费（+100元/票）', en:'Bangkok <1 CBM (+100)'}, calc:{type:'fixed', value:100}}]
-  },
-  "泰国陆运大货专线 DDP": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: [{id:'bkk_low', label:{zh:'曼谷低于1CBM操作费（+100元/票）', en:'Bangkok <1 CBM (+100)'}, calc:{type:'fixed', value:100}}]
-  },
-  "越南陆运大货双清包税": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: []
-  },
-  "越南陆运小货双清包税": {
-    auto: [{id:'forklift', label:{zh:'叉车费（单件>150cm或>100KG）+150元/票', en:'Forklift +150/ticket'}, check:v=>v.unitWeight>100||v.L>150||v.W>150||v.H>150, fee:{type:'fixed', value:150}}],
-    manual: []
-  },
-  "印度尼西亚空运包税": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>68KG或>150×80×80cm）', en:'Oversize'}, check:v=>v.unitWeight>68||v.L>150||v.W>80||v.H>80, fee:{type:'fixed', value:150}}],
-    manual: [{id:'jkt_small', label:{zh:'雅加达<20KG派送费（+50元/票）', en:'Jakarta <20KG (+50/ticket)'}, calc:{type:'fixed', value:50}}]
-  },
-  "印度尼西亚海运包税": {
-    auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}},
-      {id:'lowcbm', label:{zh:'不足1方末端派送费（+200元/次）', en:'<1 CBM (+200/trip)'}, check:v=>v.totalVol>0 && v.totalVol<1, fee:{type:'fixed', value:200}}
-    ],
-    manual: []
-  },
-  "柬埔寨陆运小包专线": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: []
-  },
-  "柬埔寨陆运大货包税": {
-    auto: [
-      {id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}},
-      {id:'lowcbm', label:{zh:'不足1方操作费（+100元）', en:'<1 CBM (+100)'}, check:v=>v.totalVol>0 && v.totalVol<1, fee:{type:'fixed', value:100}}
-    ],
-    manual: []
-  },
-  "老挝陆运包税": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单件>200KG或单边>200cm）', en:'Oversize'}, check:v=>v.unitWeight>200||v.L>200||v.W>200||v.H>200, fee:{type:'fixed', value:150}}],
-    manual: [{id:'vte', label:{zh:'万象市派送（普货+200元/票，超大件+400元/票）', en:'Vientiane (+200/400 CNY/ticket)'}, calc:{type:'fixed', value:200}}]
-  },
-  "阿联酋空运包税": {
-    auto: [{id:'oversize', label:{zh:'超尺寸附加费（单边>120cm或单件>40KG）', en:'Oversize'}, check:v=>v.unitWeight>40||v.L>120||v.W>120||v.H>120, fee:{type:'fixed', value:150}}],
-    manual: [{id:'ae_remote', label:{zh:'阿联酋偏远地区派送费（单询）', en:'UAE remote delivery (on request)'}, calc:{type:'none'}}]
-  }
+  "泰国陆运双清包税": { auto: [], manual: [] },
+  "泰国海运大货专线 DDP": { auto: [], manual: [] },
+  "泰国陆运大货专线 DDP": { auto: [], manual: [] },
+  "越南陆运大货双清包税": { auto: [], manual: [] },
+  "越南陆运小货双清包税": { auto: [], manual: [] },
+  "印度尼西亚空运包税": { auto: [], manual: [] },
+  "印度尼西亚海运包税": { auto: [], manual: [] },
+  "柬埔寨陆运小包专线": { auto: [], manual: [] },
+  "柬埔寨陆运大货包税": { auto: [], manual: [] },
+  "老挝陆运包税": { auto: [], manual: [] },
+  "阿联酋空运包税": { auto: [], manual: [] }
 };
 
 const REPORT_KEYWORDS = [
@@ -1214,6 +1292,7 @@ async function loadPolicies(){
   }catch(e){
     POLICY_SOURCE = 'error';
     POLICY_ERROR  = e.message || String(e);
+    console.warn('[JCYT] policies.json 同步失败：', POLICY_ERROR);
   }
   updatePolicyStatusUI();
   if(typeof checkReportRequirement === 'function') checkReportRequirement();
@@ -1225,11 +1304,8 @@ function updatePolicyStatusUI(){
   if(POLICY_SOURCE === 'synced'){
     el.textContent = t('政策版本：已同步 · 更新日 ' + (POLICY_UPDATED||'—'), 'Policy: synced · updated ' + (POLICY_UPDATED||'—'));
     el.style.color = '#B5B0B8';
-  } else if(POLICY_SOURCE === 'error'){
-    el.textContent = t('政策版本：内置默认（外部同步失败：' + POLICY_ERROR + '）', 'Policy: built-in (sync failed: ' + POLICY_ERROR + ')');
-    el.style.color = '#C97B7B';
   } else {
-    el.textContent = t('政策版本：内置默认', 'Policy: built-in');
+    el.textContent = t('政策版本：内置默认', 'Policy: built-in default');
     el.style.color = '#B5B0B8';
   }
 }
@@ -1268,6 +1344,7 @@ function zoneOf(channel){
   if(n.indexOf('阿联酋') === 0) return 'ae';
   return null;
 }
+
 const COMP_STD = {
   zh:"1. 物品遗失或者扣关按运费两倍且退回已支付运费或者申报货值，取低者规则理赔。如因客户的资料与实际货物不符或货物本身质量问题，以及涉及具体认证问题等均不受理赔偿；如遇战争、自然灾害等不可抗力因素导致货物破坏或丢失不受理赔偿；运输过程中如遇航班延误/清关延误等引起的总体时效延误均不受理赔偿；货物部分破损不赔偿，只对货件遗失进行赔偿。一旦交付货物即默认本条款规则。\n2. 经香港的货物，如在出口口岸经我司确认被海关查扣，按40RMB/Kg赔偿，不作其它任何连带责任或价值赔偿。\n3. 在运输过程中如遇到航班延误、清关延误等引起的总体时效延误均不受理赔偿。\n4. 如有查获烟酒、银行卡4件套等违禁品，罚款5000RMB/票，并且报警处理。\n5. 如发现冲货行为，没收货物并罚款1000RMB-10000RMB，其他后果自负。敏感货冲普货，一经发现没收货物，并罚款5000/票，如海关查验由此产生的所有费用均由发货方全部承担。\n6. 客户虚报、瞒报、漏报货物信息以及敏感货充当普货的情况下，若出现丢件、少件情况，我司概不赔偿。",
   en:"1. Loss or customs seizure: compensation = the lower of (2× freight + refund of paid freight) or declared value. No compensation for document mismatch, product quality issues, certification issues, force majeure, or transit/customs delays. Partial damage is not compensated — only total loss. Handing over the goods means acceptance of these terms.\n2. Goods via Hong Kong seized at export: 40 CNY/kg, no other liability.\n3. No compensation for flight or customs delays.\n4. Tobacco/alcohol or bank-card sets found: 5,000 CNY/ticket fine + police report.\n5. False declaration: goods confiscated + 1,000–10,000 CNY fine; sensitive goods declared as general: confiscated + 5,000 CNY/ticket.\n6. No compensation for loss/shortage if the shipper mis-declared or shipped sensitive goods as general cargo."
@@ -1298,10 +1375,10 @@ const KH_COMMON = {
 };
 
 const TH_LAND_DETAIL = {
-  billing:{zh:"1. 以CBM为单位进位，超重货1立方=500KG，如超出方数按实际重量/500KG计费。",en:"1. Billed per CBM; overweight 1 CBM = 500KG."},
+  billing:{zh:"1. 以Kg为单位进位，不足1Kg按1Kg计，体积重÷6000。\n2. 曼谷市区（邮编白名单）派送满1CBM免费；低于1CBM +100/票操作费。\n3. 曼谷以外邮编84000+偏远，+3元/Kg（体积÷6000 vs 实重取大）。",en:"1. Billed per KG, ÷6000.\n2. Bangkok downtown (whitelist) free ≥1 CBM; <1 CBM +100/ticket.\n3. Outside Bangkok 84000+: remote +3 CNY/kg."},
   size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。",en:"1. Single piece >200KG or >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet."},
   customs:{zh:"泰国陆运不接收报关件。因报关单证资料错误与实际货物不符导致未能及时放行，或因查验产生的查验费、改船费、仓柜租及其它一切费用由客户自行承担。",en:"Thailand land line does not accept formal declaration. All costs from incorrect declaration documents borne by the customer."},
-  endService:{zh:"1. 曼谷市区满1CBM免费派送；低于1CBM +100/票操作费；曼谷市区邮编 10900-10100。\n2. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n3. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算。\n4. 退回重派：按重派标准收费，我司末端免费保存7天，到期销毁，运费正常收取。\n5. 派送只到楼下，不上楼。",en:"1. Bangkok free ≥1 CBM; <1 CBM +100/ticket; postcodes 10900-10100.\n2. Single side >2m or single piece >1t: to be confirmed.\n3. Free storage 3 days; beyond 50 THB/CBM/day.\n4. Re-delivery charged at standard; free storage 7 days.\n5. Delivery to ground floor only."},
+  endService:{zh:"1. 曼谷市区（邮编白名单）满1CBM免费派送；低于1CBM +100/票操作费。\n2. 曼谷以外地址邮编 84000 以上为偏远邮编，单独附加 3 元/Kg 派送费用。\n3. 单边超过2米或者单件超过1吨，目的港派送费需另外确认！\n4. 泰国仓库免仓储时间3天，超过按照泰铢50/天/方计算。\n5. 退回重派：按重派标准收费，我司末端免费保存7天，到期销毁，运费正常收取。\n6. 派送只到楼下，不上楼。",en:"1. Bangkok downtown (whitelist) free ≥1 CBM; <1 CBM +100/ticket.\n2. Outside Bangkok 84000+: remote +3 CNY/kg.\n3. Single side >2m or single piece >1t: to be confirmed.\n4. Free storage 3 days; beyond 50 THB/CBM/day.\n5. Re-delivery charged at standard; free storage 7 days.\n6. Delivery to ground floor only."},
   prohibited:{zh:"我司拒绝接收的物品为：玩具枪、香烟、毒品、鲜活动植物、药品、易燃易爆、腐蚀品、光碟、军火武器等 IATA 限制物品。",en:"Rejected: toy guns, cigarettes, drugs, live plants/animals, medicines, flammable/explosive/corrosive goods, discs, weapons and other IATA-restricted items."},
   compensation: COMP_STD
 };
@@ -1341,7 +1418,7 @@ const VN_BULK_DETAIL = {
 };
 
 const VN_PARCEL_DETAIL = {
-  billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。体积重=长(cm)×宽(cm)×高(cm)÷5000。",en:"Billed per KG, rounded up. Chargeable = max(actual, L×W×H÷5000)."},
+  billing:{zh:"45KG以下普货与敏感同价，按首重+续重计费；45KG及以上按重量段单价计费。体积重=长(cm)×宽(cm)×高(cm)÷5000，不足1KG按1KG进位。",en:"Below 45KG general & sensitive same rate (first+add); 45KG+ tiered. Volumetric = L×W×H÷5000, round up to 1KG."},
   size:{zh:"1. 单件尺寸超过150CM或实重超过100KG需加收叉车费150元/票；单件超过1吨单独咨询。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚（11-15CM之间）。\n3. 液体/膏状类货物要求用封闭型木箱包装。",en:"1. Oversize/overweight single piece (>150cm or >100KG): +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet.\n3. Liquid/paste goods must be packed in sealed wooden crates."},
   customs:{zh:"1. 转关渠道不提供越南本地通关单证，贵重物品请自行购买保险；如需出口报关普货+800元/票报关费，最低3立方计费，内置电池+200/立方。\n2. 因报关单证资料错误与实际货物不符导致未能及时放行，费用由客户自行承担。",en:"1. Transit channel does not provide local Vietnam clearance documents. Export formal declaration: +800 CNY/ticket, min 3 CBM; built-in battery +200/CBM.\n2. All costs from incorrect declaration documents borne by the customer."},
   prohibited:{zh:"1. 可接一线仿牌、药品、性用品、酒水、电子烟等，请单询；此类货物没收或丢失，只退运费无任何赔偿。\n2. 不能转运物品：粉末类/液体/手机/照相机/MP3/U盘/手提电脑/无线网卡等高价物品及越南海关禁止进口的各类物品。",en:"1. First-line replicas, medicines, adult products, alcohol, e-cigarettes: consult first; if confiscated or lost, only freight is refunded.\n2. Cannot ship: powders, liquids, phones, cameras, MP3s, USB drives, laptops, wireless cards."},
@@ -1381,7 +1458,6 @@ const AE_DETAIL = {
   compensation: COMP_STD
 };
 
-/* ★ 菲律宾地区分布（按邮编归类） */
 const PH_REGIONS = [
   {r:[[1000,1812]],                          zh:'大马尼拉',                     en:'Metro Manila' },
   {r:[[2000,2399]],                          zh:'中央吕宋',                     en:'Central Luzon' },
@@ -1418,15 +1494,19 @@ function phRegionOf(n){
   return null;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   ★★★ 核心价格数据（已按 10.16 最新价格表更新） ★★★
+   ═══════════════════════════════════════════════════════════ */
 const PRICE_CHANNELS = [
+  /* ────────── 马来西亚空运包税专线 ────────── */
   {type:"air", country:"my",
    billing:{mode:'weight', divisor:6000, foam:'half', remoteSurcharge:3.5},
    name:{zh:"马来西亚空运包税专线", en:"Malaysia Air DDP Line"},
    wh:{zh:"入佛山仓 · 义乌+1元/KG", en:"Foshan warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"除6000半泡（西马）/不分泡（东马）；不足1KG按1KG；计费重取实重与体积重大者", en:"÷6000 half-volumetric (West MY) / no-volumetric (East MY)."},
    etaRows:{
-     zh:["起飞后预估需要 3-5 个工作日左右","起飞后预估需要 3-5 个工作日左右","起飞后预估需要 3-5 个工作日左右","起飞后预估需要 5-8 个工作日左右","起飞后预估需要 5-8 个工作日左右"],
-     en:["Est. 3-5 working days after departure","Est. 3-5 working days after departure","Est. 3-5 working days after departure","Est. 5-8 working days after departure","Est. 5-8 working days after departure"]
+     zh:["起飞后预估需要 4-5 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 8-10 个工作日左右","起飞后预估需要 8-10 个工作日左右"],
+     en:["Est. 4-5 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 8-10 working days after departure","Est. 8-10 working days after departure"]
    },
    detail:{
      billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。计费重取实重与体积重较大值：\nA. 除6000不分泡（东马）：体积重 = 长(cm)×宽(cm)×高(cm) ÷ 6000\nB. 除6000半泡（西马）：体积重 = 【实重 + 长×宽×高÷6000】÷ 2",en:"Billed per KG, rounded up. Chargeable = max(actual, volumetric).\nA. No-foam (East MY): Vol = L×W×H ÷ 6000\nB. Half-foam (West MY): Vol = (Actual + L×W×H ÷ 6000) ÷ 2"},
@@ -1437,17 +1517,37 @@ const PRICE_CHANNELS = [
      remarks:{zh:"· 吉隆坡/雪兰莪 456 开头邮编由自营车队派送。\n· 西马普货使用木箱、木架、托盘包装的，单价 +1/Kg。\n· 邮编 87*** 至 999** 属于东马，其他属于西马。",en:"· KL / Selangor 456-prefix uses own fleet.\n· West MY general cargo in wooden crate/rack/pallet: +1 CNY/kg.\n· Postcodes 87***–999** = East MY."}
    },
    endService:{zh:"1. 西马偏远：CAMERON HIGHLANDS（39000-39200）、GENTING（69000）、LANGKAWI（07000-07100），加收 RMB 3.5/Kg。\n2. 东马偏远：纳闽岛 LABUAN（87000-87033）/ 老越 Lawas（98700-98859），加收：首1Kg RMB20 / 续1Kg RMB15。\n3. 中转仓库免仓3天。\n4. 派送只到楼下，不上楼。",en:"1. West MY remote: Cameron/Genting/Langkawi +3.5 CNY/kg.\n2. East MY remote: Labuan/Lawas first 1kg 20, add 15 CNY.\n3. Free storage 3 days.\n4. Delivery to ground floor only."},
-   head:{zh:["货类","1-3KG","4-10KG","11KG+","21KG+","51KG+","101KG+","301KG+","501KG+"], en:["Category","1-3KG","4-10KG","11KG+","21KG+","51KG+","101KG+","301KG+","501KG+"]},
+   head:{zh:["货类","地区","1-3KG","4-10KG","11KG+","21KG+","51KG+","101KG+","301KG+","501KG+","1000KG+"], en:["Category","Region","1-3KG","4-10KG","11KG+","21KG+","51KG+","101KG+","301KG+","501KG+","1000KG+"]},
    rows:{
-     zh:[["西马普货","31","25","18","18","17","17","16.5","15.5"],["西马敏感","35","30","26","26","26","25","25","25"],["西马特货","40","32","28","28","28","27","27","27"],["东马普货","50","50","50","50","45","43","42","41"],["东马敏感","58","55","55","55","55","51","50","49"]],
-     en:[["West MY General","31","25","18","18","17","17","16.5","15.5"],["West MY Sensitive","35","30","26","26","26","25","25","25"],["West MY Special","40","32","28","28","28","27","27","27"],["East MY General","50","50","50","50","45","43","42","41"],["East MY Sensitive","58","55","55","55","55","51","50","49"]]}},
+     zh:[
+       ["普货","西马","31","25","18","18","17","17","16.5","15.5","15.5"],
+       ["敏感","西马","35","30","26","26","26","25","25","25","25"],
+       ["特货","西马","40","32","28","28","28","27","27","27","27"],
+       ["电子烟(GDEX-#0)","西马","75","55","55","38","38","38","38","38","38"],
+       ["电子烟(GDEX-#Q)","西马","80","58","58","43","43","43","43","43","43"],
+       ["普货","东马","50","50","50","50","45","43","42","41","41"],
+       ["敏感","东马","58","55","55","55","55","51","50","49","49"]
+     ],
+     en:[
+       ["General","West MY","31","25","18","18","17","17","16.5","15.5","15.5"],
+       ["Sensitive","West MY","35","30","26","26","26","25","25","25","25"],
+       ["Special","West MY","40","32","28","28","28","27","27","27","27"],
+       ["E-cigarette (GDEX-#0)","West MY","75","55","55","38","38","38","38","38","38"],
+       ["E-cigarette (GDEX-#Q)","West MY","80","58","58","43","43","43","43","43","43"],
+       ["General","East MY","50","50","50","50","45","43","42","41","41"],
+       ["Sensitive","East MY","58","55","55","55","55","51","50","49","49"]
+     ]}},
 
+  /* ────────── 马来西亚西马海运 ────────── */
   {type:"sea", country:"my",
-   billing:{mode:'volume', minCbm:0.3, overweightRatio:500, remoteSurcharge:2, remoteRatio:6000},
+   billing:{mode:'volume', minCbm:0.3, overweightRatio:500},
    name:{zh:"马来西亚西马海运", en:"Malaysia West Sea"},
    wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"双清包税到门；最低0.3方起收；不足0.1方按0.1方；超重1方=500KG；木箱木架托盘加50元/方。", en:"DDP door-to-door; min 0.3 CBM; wooden crate +50 CNY/CBM."},
-   eta: {zh:"开船后预估需要 12-18 个工作日左右", en:"Est. 12-18 working days after sailing"},
+   etaRows:{
+     zh:["开船后预估需要 15-18 个工作日左右（坡内）","开船后预估需要 18-22 个工作日左右（坡外）","开船后预估需要 15-18 个工作日左右（坡内）","开船后预估需要 18-22 个工作日左右（坡外）","开船后预估需要 坡内15-18 / 坡外18-22 个工作日左右","开船后预估需要 坡内15-18 / 坡外18-22 个工作日左右"],
+     en:["Est. 15-18 working days after sailing (in-state)","Est. 18-22 working days after sailing (out-state)","Est. 15-18 working days after sailing (in-state)","Est. 18-22 working days after sailing (out-state)","Est. 15-18 in-state / 18-22 out-state","Est. 15-18 in-state / 18-22 out-state"]
+   },
    detail:{
      billing:{zh:"1. 以CBM为单位进位，不足0.1CBM的按0.1CBM计算。\n2. 超重货1立方=500KG。\n3. 最低0.3个方起收费。",en:"1. Billed per CBM; under 0.1 CBM rounds up.\n2. Overweight 1 CBM = 500KG.\n3. Minimum 0.3 CBM."},
      size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票。\n2. 单件重量超过68Kg或尺寸超过150×80×80cm的木箱、木架包装货物需要打卡脚。",en:"1. Single piece >200KG or >200cm: +150 CNY/ticket.\n2. Wooden crate/rack pieces >68KG or >150×80×80cm need forklift feet."},
@@ -1462,6 +1562,27 @@ const PRICE_CHANNELS = [
      zh:[["坡内普货","580","580","550"],["坡外普货","600","600","580"],["坡内敏感","600","600","580"],["坡外敏感","630","630","610"],["仿牌","750","750","750"],["特敏","1300","1300","1300"]],
      en:[["In-state General","580","580","550"],["Out-state General","600","600","580"],["In-state Sensitive","600","600","580"],["Out-state Sensitive","630","630","610"],["Replica","750","750","750"],["Special Sensitive","1300","1300","1300"]]}},
 
+  /* ────────── 马来西亚西马海运小包 ────────── */
+  {type:"sea", country:"my",
+   billing:{mode:'weight', divisor:6000, foam:'none'},
+   name:{zh:"马来西亚西马海运小包", en:"Malaysia West Sea Parcel"},
+   wh:{zh:"入佛山仓 · 义乌+100元/方", en:"Foshan warehouse"},
+   note:{zh:"海运小包；体积/6000不分泡；普货敏感同价；电池渠道需打木箱，最低消费50KG起收。", en:"Sea parcel; ÷6000 no-foam; general/sensitive same rate; battery needs wooden crate, min 50KG."},
+   eta: {zh:"开船后预估需要 15-18 个工作日左右", en:"Est. 15-18 working days after sailing"},
+   detail:{
+     billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。体积重=长(cm)×宽(cm)×高(cm)÷6000（不分泡）。",en:"Billed per KG, rounded up. Volumetric = L×W×H÷6000 (no-foam)."},
+     size:{zh:"1. 单件重量超过200Kg或单边超过200cm的，加收附加费150RMB/票。\n2. 电池渠道需要打木箱；最低消费50公斤起收。",en:"1. Single piece >200KG or >200cm: +150 CNY/ticket.\n2. Battery channel requires wooden crate; min 50KG."},
+     customs:{zh:"报关件单独咨询。",en:"Formal declaration: consult separately."},
+     prohibited:{zh:"不接 纯电、无人机、玩具枪、烟酒等易燃易爆。",en:"Rejected: pure batteries, drones, toy guns, tobacco/alcohol."},
+     compensation: COMP_STD
+   },
+   endService:{zh:"1. 派送只到楼下，不上楼。\n2. 西马偏远区域，偏远派送费另加 RMB 2/KG。",en:"1. Delivery to ground floor only.\n2. West MY remote +2 CNY/KG."},
+   head:{zh:["类型","首重1KG","续重1KG","50KG+"], en:["Type","First 1KG","Add 1KG","50KG+"]},
+   rows:{
+     zh:[["普货/敏感","15","7","7"],["电池","—","—","12"]],
+     en:[["General/Sensitive","15","7","7"],["Battery","—","—","12"]]}},
+
+  /* ────────── 马来西亚东马海运 ────────── */
   {type:"sea", country:"my",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
    name:{zh:"马来西亚东马海运", en:"Malaysia East Sea"},
@@ -1476,18 +1597,19 @@ const PRICE_CHANNELS = [
      compensation: COMP_STD,
      remarks:{zh:"· 东马海运入佛山仓库（最低消费0.5立方）；入义乌加100元一个方。\n· 敏感货类加收RMB100/CBM。\n· 加帛KAPIT、荷万ROBAN、甲望KABONG、巴拉河KUALA BARAM、ROM RAMA 需自提或单独包车派送。",en:"· East MY sea enters Foshan warehouse (min 0.5 CBM); Yiwu +100 CNY/CBM.\n· Sensitive +100 CNY/CBM.\n· Kapit, Roban, Kabong, Kuala Baram, Rom Rama require self-pickup or dedicated truck delivery."}
    },
-   endService:{zh:"1. 加帛 KAPIT（码头自提）、荷万 ROBAN、甲望 KABONG、巴拉河 KUALA BARAM、ROM RAMA（到美里自提）——以上区域货物只到目的地码头/美里，需自提，不派送上门。\n2. 诗巫市区 JULAU、OYA ROAD 9 哩以上、DURIN、STABAU 均需在诗巫自提。\n3. 单边超过2米或者单件超过1.5吨，目的港派送费需另外确认！\n4. 仓库免仓7天。\n5. 派送只到楼下，不上楼。",en:"1. Kapit, Roban, Kabong, Kuala Baram, Rom Rama — self-pickup required.\n2. Sibu: Julau, Oya Road 9th mile+, Durin, Stabau — self-pickup only.\n3. Single side >2m or >1.5t: to be confirmed.\n4. Free storage 7 days.\n5. Delivery to ground floor only."},
+   endService:{zh:"1. 加帛 KAPIT（码头自提）、荷万 ROBAN、甲望 KABONG、巴拉河 KUALA BARAM、ROM RAMA（到美里自提）——以上区域货物只到目的地码头/美里，需自提，不派送上门。\n2. 诗巫市区 JULAU、OYA ROAD 9 哩以上、DURIN、STABAU 均需在诗巫自提。\n3. 单边超过2米或者单件超过1.5吨，目的港派送费需另外确认！\n4. 仓库免仓7天。\n5. 派送只到楼下，不上楼。",en:"1. Kapit, Roban, Kabong, Kuala Baram, Rom Rama — self-pickup required.\n2. Sibu: Julau, Oya Road 9th mile+, Durin, Stabau — self-pickup only.\n3. Single side >2m or single piece >1.5t: to be confirmed.\n4. Free storage 7 days.\n5. Delivery to ground floor only."},
    head:{zh:["城市/区域","元/CBM"], en:["City/Area","CNY/CBM"]},
    rows:{
-     zh:[["亚庇 KK(首府)","845"],["山打根/拿笃/斗湖","1030"],["古晋市区","1000"],["民都鲁市区","1000"],["美里市区","1030"],["诗巫市区","895"],["古晋乡区","1090"],["诗巫-古晋中间区","1090"],["加帛(码头自提)","1060"],["沐胶/达佬/达拉/马卢地","1030"],["尼亚石山","1060"],["仙本那/古纳(偏远)","1105"],["林梦(归亚庇)","1180"],["沙巴小镇(根地咬/纳闽等)","1030"]],
-     en:[["Kota Kinabalu (Capital)","845"],["Sandakan / Lahad Datu / Tawau","1030"],["Kuching City","1000"],["Bintulu City","1000"],["Miri City","1030"],["Sibu City","895"],["Kuching Rural","1090"],["Sibu-Kuching Mid","1090"],["Kapit (port pickup)","1060"],["Mukah / Dalat / Daro / Maludam","1030"],["Bekenu","1060"],["Semporna / Kunak (remote)","1105"],["Limbang (via KK)","1180"],["Sabah Towns","1030"]]}},
+     zh:[["亚庇 KK(首府)","845"],["山打根/拿笃/斗湖","1030"],["古晋市区","1000"],["民都鲁市区","1000"],["美里市区","1030"],["诗巫市区","895"],["泗里街/民丹莪","1000"],["古晋乡区","1090"],["诗巫-古晋中间区","1090"],["加帛(码头自提)","1060"],["沐胶/达佬/达拉/马卢地","1030"],["尼亚石山","1060"],["仙本那/古纳(偏远)","1105"],["林梦(归亚庇)","1180"],["沙巴小镇(根地咬/纳闽等)","1030"]],
+     en:[["Kota Kinabalu (Capital)","845"],["Sandakan / Lahad Datu / Tawau","1030"],["Kuching City","1000"],["Bintulu City","1000"],["Miri City","1030"],["Sibu City","895"],["Sarikei / Bintangor","1000"],["Kuching Rural","1090"],["Sibu-Kuching Mid","1090"],["Kapit (port pickup)","1060"],["Mukah / Dalat / Daro / Maludam","1030"],["Batu Niah","1060"],["Semporna / Kunak (remote)","1105"],["Limbang (via KK)","1180"],["Sabah Towns","1030"]]}},
 
+  /* ────────── 新加坡空运专线（不包税） ────────── */
   {type:"air", country:"sg",
    billing:{mode:'weight', divisor:6000, foam:'half'},
    name:{zh:"新加坡空运专线（不包税）", en:"Singapore Air Line (excl. tax)"},
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"到门不包税；除6000半泡；不足1KG按1KG；计费重取实重与体积重大者。", en:"Door delivery excl. tax; ÷6000 half-volumetric."},
-   eta: {zh:"起飞后预估需要 3-5 个工作日左右", en:"Est. 3-5 working days after departure"},
+   eta: {zh:"起飞后预估需要 4-5 个工作日左右", en:"Est. 4-5 working days after departure"},
    detail:Object.assign({}, SG_AIR_DETAIL, {
      remarks:{zh:"· 入深圳仓库；入义乌仓库加1元/Kg。\n· 木箱、木架、托盘包装的货物单价 +2/Kg。\n· 高货值产品需包税单独咨询。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack/pallet: +2 CNY/kg.\n· High-value products need separate DDP quotation."}
    }),
@@ -1497,12 +1619,13 @@ const PRICE_CHANNELS = [
      zh:[["不包税·普货","38","20","20","20","20","18.5","17.5","16.5","16"],["不包税·内电/磁性","45","30","25","24.5","24","23","23","22.5","22.5"],["不包税·特货","55","35","28","27","27","26","26","25","25"]],
      en:[["Excl. tax · General","38","20","20","20","20","18.5","17.5","16.5","16"],["Excl. tax · Battery/Magnetic","45","30","25","24.5","24","23","23","22.5","22.5"],["Excl. tax · Special","55","35","28","27","27","26","26","25","25"]]}},
 
+  /* ────────── 新加坡空运专线（包税） ────────── */
   {type:"air", country:"sg",
    billing:{mode:'weight', divisor:6000, foam:'half'},
    name:{zh:"新加坡空运专线（包税）", en:"Singapore Air Line (DDP)"},
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"双清包税；除6000半泡；不足1KG按1KG；药品/食品需单独咨询。", en:"DDP; ÷6000 half-volumetric."},
-   eta: {zh:"起飞后预估需要 3-5 个工作日左右", en:"Est. 3-5 working days after departure"},
+   eta: {zh:"起飞后预估需要 4-5 个工作日左右", en:"Est. 4-5 working days after departure"},
    detail:Object.assign({}, SG_AIR_DETAIL, {
      remarks:{zh:"· 入深圳仓库；入义乌仓库加1元/Kg。\n· 木箱、木架、托盘包装的货物单价 +2/Kg。\n· 药品：首重150元/Kg、续重45元/Kg，单票不能超过5Kg。\n· 食品不能含肉类、海鲜类成分；食品单票超过10公斤，会产生借证费60新币/票。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack/pallet: +2 CNY/kg.\n· Medicine: first 150 CNY/kg, add 45 CNY/kg, max 5KG/ticket.\n· Food must not contain meat or seafood; over 10kg/ticket incurs SGD 60 fee."}
    }),
@@ -1512,12 +1635,13 @@ const PRICE_CHANNELS = [
      zh:[["包税·普货","48","23","23","23","23","23","23","23","23"],["包税·内电/磁性","70","35","30","30","30","30","30","30","29"],["包税·特货","85","38","32","32","32","32","32","31","30"]],
      en:[["DDP · General","48","23","23","23","23","23","23","23","23"],["DDP · Battery/Magnetic","70","35","30","30","30","30","30","30","29"],["DDP · Special","85","38","32","32","32","32","32","31","30"]]}},
 
+  /* ────────── 新加坡海运专线 ────────── */
   {type:"sea", country:"sg",
    billing:{mode:'volume', overweightRatio:500},
    name:{zh:"新加坡海运专线", en:"Singapore Sea Line"},
    wh:{zh:"入深圳仓 · 义乌+100元/方", en:"Shenzhen warehouse · Yiwu +100 CNY/CBM"},
    note:{zh:"大货双清不包税；小包包税到门；超重1方=500KG；0.4CBM以上按1CBM计。", en:"Bulk DDP excl. tax; parcel DDP door-to-door; overweight 1 CBM = 500KG."},
-   eta: {zh:"开船后预估需要 12-18 个工作日左右", en:"Est. 12-18 working days after sailing"},
+   eta: {zh:"开船后预估需要 10-12 个工作日左右", en:"Est. 10-12 working days after sailing"},
    detail:Object.assign({}, SG_SEA_DETAIL, {
      remarks:{zh:"· 入深圳仓库；入义乌仓 +100元/方。\n· 0.4个CBM以上，或者不足1CBM的部分按1CBM计算。\n· 免仓期3天，超出3天后仓租是每周每方15新币（低消60新币，取整计费）。\n· 单独清关费35新币/票；单独报关费用500元/票，最低消费1CBM。",en:"· Shenzhen warehouse; Yiwu +100 CNY/CBM.\n· Above 0.4 CBM, under 1 CBM rounds up to 1 CBM.\n· Free storage 3 days; beyond SGD 15/CBM/week (min SGD 60).\n· Independent clearance SGD 35/ticket; formal declaration 500 CNY/ticket, min 1 CBM."}
    }),
@@ -1527,12 +1651,13 @@ const PRICE_CHANNELS = [
      zh:[["普货/敏感","150","50","350"],["单独清关","400","400","400"],["单独报关","400","400","400"]],
      en:[["General/Sensitive","150","50","350"],["Customs only","400","400","400"],["Declaration only","400","400","400"]]}},
 
+  /* ────────── 新加坡海运小包（包税到门） ────────── */
   {type:"sea", country:"sg",
    billing:{mode:'weight', divisor:6000, foam:'none'},
    name:{zh:"新加坡海运小包（包税到门）", en:"Singapore Sea Parcel (DDP)"},
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"海运小包双清包税到门；除6000；电池/特敏最低消费50KG起收，电池需打木箱。", en:"Sea parcel DDP door-to-door; ÷6000; battery/special min 50KG."},
-   eta: {zh:"开船后预估需要 15-20 个工作日左右", en:"Est. 15-20 working days after sailing"},
+   eta: {zh:"开船后预估需要 15 个工作日左右", en:"Est. 15 working days after sailing"},
    detail:Object.assign({}, SG_SEA_DETAIL, {
      remarks:{zh:"· 入深圳仓库；入义乌仓库 +1元/Kg。\n· 电池渠道需要打木箱，最低消费50公斤起收，单件重量不能超过800公斤。\n· 免仓期3天，超出3天后仓租是每周每方15新币。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Battery channel requires wooden crate, min 50KG, single piece under 800KG.\n· Free storage 3 days; beyond SGD 15/CBM/week."}
    }),
@@ -1542,12 +1667,13 @@ const PRICE_CHANNELS = [
      zh:[["普货/敏感","30","8","8","8"],["电池/特敏","—","—","—","15"]],
      en:[["General/Sensitive","30","8","8","8"],["Battery/Special","—","—","—","15"]]}},
 
+  /* ────────── 菲律宾空运包税专线 ────────── */
   {type:"air", country:"ph",
    billing:{mode:'weight', divisor:6000, foam:'none'},
    name:{zh:"菲律宾空运包税专线", en:"Philippines Air DDP Line"},
    wh:{zh:"入深圳仓 · 义乌+1元/KG", en:"Shenzhen warehouse · Yiwu +1 CNY/kg"},
    note:{zh:"双清包税，马尼拉为主；除6000；不足1KG按1KG；计费重取实重与体积重大者。", en:"DDP, Manila-focused; ÷6000."},
-   eta: {zh:"起飞后预估需要 3-5 个工作日左右（偏远地区 +2-4 天）", en:"Est. 3-5 working days after departure (remote +2-4 days)"},
+   eta: {zh:"起飞后预估需要 3-4 个工作日左右（偏远地区 +2-4 天）", en:"Est. 3-4 working days after departure (remote +2-4 days)"},
    detail:Object.assign({}, PH_AIR_DETAIL, {
      remarks:{zh:"· 入深圳仓；入义乌仓 +1元/Kg。\n· 木箱、木架包装的价格单询。\n· 以上时效不含收货当天、节假日及清关延误的时间；偏远地区，在正常时效上增加2-4个工作日。\n· 包派邮编：Metro Manila（1000-1812）、Laguna（4023-4027）、Bulacan（3005/3019/3020/3023）、Cavite（4100/4102/4103/4104/4107/4108/4109/4114/4118）。",en:"· Shenzhen warehouse; Yiwu +1 CNY/kg.\n· Wooden crate/rack: quote on request.\n· Transit excludes pickup day, holidays and customs delays.\n· Covered: Metro Manila (1000-1812), Laguna (4023-4027), Bulacan (3005/3019/3020/3023), Cavite (4100/4102/4103/4104/4107/4108/4109/4114/4118)."}
    }),
@@ -1557,6 +1683,7 @@ const PRICE_CHANNELS = [
      zh:[["普货","35","30","26","26","25","24","23","23"],["带电/带磁","45","40","36","35","34","33","32","32"],["敏感(仿牌/食品/粉末等)","50","45","44","43","42","41","40","39"],["纯电池/充电宝/电脑/药品","77","62","60","59","58","57","55","55"]],
      en:[["General","35","30","26","26","25","24","23","23"],["Battery/Magnetic","45","40","36","35","34","33","32","32"],["Sensitive","50","45","44","43","42","41","40","39"],["Pure battery/power bank/laptop/medicine","77","62","60","59","58","57","55","55"]]}},
 
+  /* ────────── 菲律宾海运包税专线（价格已修正为 Excel 最新：普货 700 / A类 800） ────────── */
   {type:"sea", country:"ph",
    billing:{mode:'volume', minCbm:1, cbmRatio:0},
    name:{zh:"菲律宾海运包税专线", en:"Philippines Sea DDP Line"},
@@ -1572,20 +1699,21 @@ const PRICE_CHANNELS = [
    endService:{zh:"1. 未含的城市请咨询派送费。\n2. 单边超过2米或者单件超过1.5吨的，目的港派送费需另外确认！\n3. 单件货物尺寸宽和高超过2米、长度超过5m为超大尺寸，请安排自提。\n4. 免租期5天；寄仓6-10天 200p/CBM/天；11-15天 400p/CBM/天；16天以上 600p/CBM/天。\n5. 马尼拉最低消费500元，不足1个方要另外加收100元的费用；宿务/达沃/卡加延最低消费1个方。\n6. 木箱、木架、托盘的普货货物单价 +50RMB/CBM。",en:"1. Cities not listed: consult delivery fee.\n2. Single side >2m or single piece >1.5t: to be confirmed.\n3. Width & height >2m, length >5m: oversize, self-pickup required.\n4. Free 5 days; 6-10 days 200p/CBM/day; 11-15 days 400p/CBM/day; 16+ days 600p/CBM/day.\n5. Manila min 500 CNY; <1 CBM +100 CNY.\n6. Wooden crate/pallet general cargo +50 CNY/CBM."},
    head:{zh:["货类","马尼拉","达沃","宿务","卡加延"], en:["Category","Manila","Davao","Cebu","Cagayan"]},
    rows:{
-     zh:[["普货","750","1100","1100","1100"],["A类(内电/小家电)","850","1150","1150","1150"],["B类(二手/食品/仿牌)","900","1250","1250","1250"],["特殊货(药品/化工/电池)","1800","单询","单询","单询"]],
-     en:[["General","750","1100","1100","1100"],["Class A (battery/small appliances)","850","1150","1150","1150"],["Class B (used/food/replica)","900","1250","1250","1250"],["Special (medicine/chemical/battery)","1800","On request","On request","On request"]]}},
+     zh:[["普货","700","1100","1100","1100"],["A类(内电/小家电)","800","1150","1150","1150"],["B类(二手/食品/仿牌)","900","1250","1250","1250"],["特殊货(药品/化工/电池)","1800","单询","单询","单询"]],
+     en:[["General","700","1100","1100","1100"],["Class A (battery/small appliances)","800","1150","1150","1150"],["Class B (used/food/replica)","900","1250","1250","1250"],["Special (medicine/chemical/battery)","1800","On request","On request","On request"]]}},
 
+  /* ────────── 泰国陆运双清包税 ────────── */
   {type:"land", country:"th",
    billing:{mode:'weight', divisor:6000, foam:'none'},
    name:{zh:"泰国陆运双清包税", en:"Thailand Land DDP"},
    wh:{zh:"入佛山仓", en:"Foshan warehouse"},
-   note:{zh:"/6000；曼谷市内/外分价；不足1KG按1KG；曼谷市区满1CBM免费派送、低于1CBM+100/票操作费；曼谷以外邮编84000+偏远加3元/kg。", en:"÷6000; Bangkok inner/outer priced separately; Bangkok free ≥1 CBM."},
+   note:{zh:"/6000；曼谷市区/曼谷以外分价；不足1KG按1KG；曼谷市区（邮编白名单）满1CBM免费派送、低于1CBM+100/票操作费；曼谷以外邮编84000+偏远加3元/kg。", en:"÷6000; Bangkok downtown / outside priced separately; Bangkok whitelist free ≥1 CBM; outside 84000+ remote +3 CNY/kg."},
    etaRows: {
-     zh:["开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 7-10 个工作日左右","开车后预估需要 7-10 个工作日左右","开车后预估需要 7-10 个工作日左右","开车后预估需要 7-10 个工作日左右"],
-     en:["Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 7-10 working days after departure","Est. 7-10 working days after departure","Est. 7-10 working days after departure","Est. 7-10 working days after departure"]
+     zh:["开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 5-7 个工作日左右","开车后预估需要 7-10 个工作日左右","开车后预估需要 7-10 个工作日左右","开车后预估需要 7-10 个工作日左右","开车后预估需要 7-10 个工作日左右"],
+     en:["Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 5-7 working days after departure","Est. 7-10 working days after departure","Est. 7-10 working days after departure","Est. 7-10 working days after departure","Est. 7-10 working days after departure"]
    },
    detail:Object.assign({}, TH_LAND_DETAIL, {
-     remarks:{zh:"· 曼谷市内（TH1）与曼谷市外（TH2）分价，入佛山仓库。\n· 曼谷市区派送区域邮编：10900-10100。\n· 曼谷以外地址（TH2）邮编 84000 以上为偏远邮编，单独附加 3 元/Kg 派送费用。\n· 参考时效：曼谷市内 5-7 工作日；曼谷市外 7-10 工作日。",en:"· Bangkok (TH1) vs outside Bangkok (TH2) priced separately; enters Foshan warehouse.\n· Bangkok delivery postcodes: 10900–10100.\n· Outside Bangkok (TH2) postcode 84000+: remote surcharge +3 CNY/kg.\n· Transit: Bangkok 5-7 working days; outside 7-10 working days."}
+     remarks:{zh:"· 曼谷市区（邮编白名单）与曼谷以外分价，入佛山仓库。\n· 曼谷市区派送区域邮编：10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100。\n· 曼谷以外地址邮编 84000 以上为偏远邮编，单独附加 3 元/Kg 派送费用。\n· 参考时效：曼谷市内 5-7 工作日；曼谷市外 7-10 工作日。",en:"· Bangkok downtown (whitelist) vs outside priced separately; enters Foshan warehouse.\n· Bangkok downtown postcodes: 10900 10800 10700 10600 10530 10520 10510 10500 10400 10330 10310 10300 10260 10250 10240 10230 10220 10210 10200 10170 10160 10150 10140 10120 10110 10100.\n· Outside Bangkok postcode 84000+: remote surcharge +3 CNY/kg.\n· Transit: Bangkok 5-7 working days; outside 7-10 working days."}
    }),
    endService:TH_LAND_DETAIL.endService,
    head:{zh:["类型","首重","续重","25+","51+","71+","101+","201+","301+","501+"], en:["Category","First","Add","25+","51+","71+","101+","201+","301+","501+"]},
@@ -1593,24 +1721,29 @@ const PRICE_CHANNELS = [
      zh:[
        ["曼谷·普货/带电池","30","13","12","9","8.5","8","7.5","7.5","7.5"],
        ["曼谷·化妆品/食品/液体/医疗器械","50","25","15","13","13","12","12","11","11"],
+       ["曼谷·电池（暂停）","55","25","23","21","20","18","18","16","15"],
        ["曼谷·化工/仿牌","55","25","23","21","20","18","18","16","15"],
        ["曼谷·香水/药品/性用品","85","35","34","34","34","29","29","29","27"],
-       ["曼谷外·普货","35","14","13","11.5","11.5","11","10.5","10.5","10.5"],
+       ["曼谷外·普货/带电池","35","14","13","11.5","11.5","11","10.5","10.5","10.5"],
        ["曼谷外·化妆品/食品/液体","55","28","18","16","16","15","14","14","13"],
+       ["曼谷外·电池（暂停）","65","28","25","24","23","19","18","16","15"],
        ["曼谷外·化工/仿牌","65","28","25","24","23","19","18","16","15"],
        ["曼谷外·香水/药品/性用品","90","35","35","35","35","30","30","30","30"]
      ],
      en:[
        ["Bangkok · General/Battery","30","13","12","9","8.5","8","7.5","7.5","7.5"],
        ["Bangkok · Cosmetics/Food/Liquid/Medical","50","25","15","13","13","12","12","11","11"],
+       ["Bangkok · Battery (suspended)","55","25","23","21","20","18","18","16","15"],
        ["Bangkok · Chemical/Replica","55","25","23","21","20","18","18","16","15"],
        ["Bangkok · Perfume/Medicine/Adult","85","35","34","34","34","29","29","29","27"],
-       ["Outside Bangkok · General","35","14","13","11.5","11.5","11","10.5","10.5","10.5"],
+       ["Outside Bangkok · General/Battery","35","14","13","11.5","11.5","11","10.5","10.5","10.5"],
        ["Outside Bangkok · Cosmetics/Food/Liquid","55","28","18","16","16","15","14","14","13"],
+       ["Outside Bangkok · Battery (suspended)","65","28","25","24","23","19","18","16","15"],
        ["Outside Bangkok · Chemical/Replica","65","28","25","24","23","19","18","16","15"],
        ["Outside Bangkok · Perfume/Medicine/Adult","90","35","35","35","35","30","30","30","30"]
      ]}},
 
+  /* ────────── 泰国海运大货专线 DDP ────────── */
   {type:"sea", country:"th",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
    name:{zh:"泰国海运大货专线 DDP", en:"Thailand Sea Bulk DDP"},
@@ -1636,6 +1769,7 @@ const PRICE_CHANNELS = [
        ["Battery/Chemical (1:300)","1500","1CBM","15-18 days"]
      ]}},
 
+  /* ────────── 泰国陆运大货专线 DDP ────────── */
   {type:"land", country:"th",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
    name:{zh:"泰国陆运大货专线 DDP", en:"Thailand Land Bulk DDP"},
@@ -1659,6 +1793,7 @@ const PRICE_CHANNELS = [
        ["Sensitive (food/cosmetics)","1400","0.5CBM","7-10 days"]
      ]}},
 
+  /* ────────── 越南陆运大货双清包税 ────────── */
   {type:"land", country:"vn",
    billing:{mode:'volume', cbmRatio:230, minCbm:1},
    name:{zh:"越南陆运大货双清包税", en:"Vietnam Land Bulk DDP"},
@@ -1673,20 +1808,34 @@ const PRICE_CHANNELS = [
      zh:[["A类(电商/五金/服装)","550","750"],["B类(5品名/内电/卡板)","750","880"],["C类(10方+大型/食品/带品牌)","1100","1300"],["D类(电池/化工/高价值)","2300","2760"]],
      en:[["Class A (e-com/hardware/apparel)","550","750"],["Class B (5 SKUs/battery/pallet)","750","880"],["Class C (10+ CBM/bulky/food/branded)","1100","1300"],["Class D (battery/chemical/high value)","2300","2760"]]}},
 
+  /* ────────── 越南陆运小货双清包税 ────────── */
   {type:"land", country:"vn",
    billing:{mode:'weight', divisor:5000, foam:'none'},
    name:{zh:"越南陆运小货双清包税", en:"Vietnam Land Small Parcel DDP"},
    wh:{zh:"入深圳仓", en:"Shenzhen warehouse"},
-   note:{zh:"按省份分价；/5000；不足1KG按1KG；计费重取实重与体积重大者。", en:"Priced by province; ÷5000."},
+   note:{zh:"45KG以下普货/敏感同价，按首重+续重计费；45KG及以上按重量段单价；/5000；不足1KG按1KG；计费重取实重与体积重大者。", en:"Below 45KG general/sensitive same rate, first+add; 45KG+ tiered; ÷5000."},
    eta: {zh:"开车后预估需要 7-10 个工作日左右", en:"Est. 7-10 working days after departure"},
    detail:Object.assign({}, VN_PARCEL_DETAIL, {
-     remarks:{zh:"· 越南专线陆运到门（包税）报价，入深圳仓库。\n· 敏感货范围包含：常规液体、食品、化妆品、电子产品、机器，不包含仿牌。\n· 参考时效 7-10 工作日。",en:"· Vietnam land door-to-door DDP, enters Shenzhen warehouse.\n· Sensitive scope: regular liquids, food, cosmetics, electronics, machinery — replicas excluded.\n· Transit 7-10 working days."}
+     remarks:{zh:"· 越南专线陆运到门（包税）报价，入深圳仓库。\n· 45KG以下普货与敏感同价，按首重+续重计费；45KG及以上按重量段单价。\n· 敏感货范围包含：常规液体、食品、化妆品、电子产品、机器，不包含仿牌。\n· 参考时效 7-10 工作日。",en:"· Vietnam land door-to-door DDP, enters Shenzhen warehouse.\n· Below 45KG general & sensitive same rate (first+add); 45KG+ tiered.\n· Sensitive: regular liquids, food, cosmetics, electronics, machinery — replicas excluded.\n· Transit 7-10 working days."}
    }),
-   head:{zh:["目的地/货类","首重","续重","45+","75+","101+","301+","501+"], en:["Dest/Category","First","Add","45+","75+","101+","301+","501+"]},
+   head:{zh:["目的地","首重","续重","45+","75+","101+","301+","501+"], en:["Dest","First","Add","45+","75+","101+","301+","501+"]},
    rows:{
-     zh:[["河内·普货","45","15","11","11","8.5","6.5","5.5"],["河内·敏感","12","12","10.5","7.5","6.5","/","/"],["北部其它·普货","55","16","12","12","9.5","7.5","6.5"],["北部其它·敏感","13","13","11.5","8.5","7.5","/","/"],["胡志明·普货","45","15","13","13","9.5","8.5","7.5"],["胡志明·敏感","14","14","11.5","9.5","8.5","/","/"],["南部中部·普货","55","18","14","14","11","9.5","8.5"],["南部中部·敏感","15","15","13","11","10","/","/"],["全境·电池(大货单询)","85","30","25","25","23","22","20"]],
-     en:[["Hanoi · General","45","15","11","11","8.5","6.5","5.5"],["Hanoi · Sensitive","12","12","10.5","7.5","6.5","/","/"],["North Other · General","55","16","12","12","9.5","7.5","6.5"],["North Other · Sensitive","13","13","11.5","8.5","7.5","/","/"],["HCMC · General","45","15","13","13","9.5","8.5","7.5"],["HCMC · Sensitive","14","14","11.5","9.5","8.5","/","/"],["South Central · General","55","18","14","14","11","9.5","8.5"],["South Central · Sensitive","15","15","13","11","10","/","/"],["All · Battery (bulk, on request)","85","30","25","25","23","22","20"]]}},
+     zh:[
+       ["河内","45","15","11","11","8.5","6.5","5.5"],
+       ["北部其它","55","16","12","12","9.5","7.5","6.5"],
+       ["胡志明","45","15","13","13","9.5","8.5","7.5"],
+       ["南部中部","55","18","14","14","11","9.5","8.5"],
+       ["全境·电池(大货单询)","85","30","25","25","23","22","20"]
+     ],
+     en:[
+       ["Hanoi","45","15","11","11","8.5","6.5","5.5"],
+       ["North Other","55","16","12","12","9.5","7.5","6.5"],
+       ["HCMC","45","15","13","13","9.5","8.5","7.5"],
+       ["South Central","55","18","14","14","11","9.5","8.5"],
+       ["All · Battery (bulk, on request)","85","30","25","25","23","22","20"]
+     ]}},
 
+  /* ────────── 印度尼西亚空运包税 ────────── */
   {type:"air", country:"id",
    billing:{mode:'weight', divisor:6000, foam:'none'},
    name:{zh:"印度尼西亚空运包税", en:"Indonesia Air DDP"},
@@ -1702,6 +1851,7 @@ const PRICE_CHANNELS = [
      zh:[["普货","83","77","77","77","77","76"],["敏感1(带电/木架/纺织品)","85","85","84","84","83","83"],["敏感2(化妆品/液粉/食品/品牌)","95","90","89","88","87","86"]],
      en:[["General","83","77","77","77","77","76"],["Sensitive 1 (battery/wood rack/textile)","85","85","84","84","83","83"],["Sensitive 2 (cosmetics/liquid-powder/food/branded)","95","90","89","88","87","86"]]}},
 
+  /* ────────── 印度尼西亚海运包税 ────────── */
   {type:"sea", country:"id",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
    name:{zh:"印度尼西亚海运包税", en:"Indonesia Sea DDP"},
@@ -1717,6 +1867,7 @@ const PRICE_CHANNELS = [
      zh:[["普货","1950","1050"],["商检货(玩具/家电/五金)","2250","1150"],["食品","2650","1150"],["敏感1(对讲机/二手设备)","3250","1250"],["敏感2(药品/化工/香水)","3500","1250"],["日化类(化妆品/洗涤)","3800","1250"],["服装(仅全新)","5800","1500"]],
      en:[["General","1950","1050"],["Inspected (toys/appliances/hardware)","2250","1150"],["Food","2650","1150"],["Sensitive 1 (walkie-talkie/used equipment)","3250","1250"],["Sensitive 2 (medicine/chemical/perfume)","3500","1250"],["Daily chemical (cosmetics/detergent)","3800","1250"],["Apparel (brand new only)","5800","1500"]]}},
 
+  /* ────────── 柬埔寨陆运小包专线 ────────── */
   {type:"land", country:"kh",
    billing:{mode:'weight', divisor:5000, foam:'none'},
    name:{zh:"柬埔寨陆运小包专线", en:"Cambodia Land Small Parcel DDP"},
@@ -1735,6 +1886,7 @@ const PRICE_CHANNELS = [
      zh:[["金边·普货(小包)","45","15","15","10","8"],["金边·敏感(小包)","75","18","18","16","15"],["其它城市·普货","50","20","20","18","16"],["其它城市·敏感","65","23","23","20","18"]],
      en:[["Phnom Penh · General (parcel)","45","15","15","10","8"],["Phnom Penh · Sensitive (parcel)","75","18","18","16","15"],["Other Cities · General","50","20","20","18","16"],["Other Cities · Sensitive","65","23","23","20","18"]]}},
 
+  /* ────────── 柬埔寨陆运大货包税 ────────── */
   {type:"land", country:"kh",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:500},
    name:{zh:"柬埔寨陆运大货包税", en:"Cambodia Land Bulk DDP"},
@@ -1750,6 +1902,7 @@ const PRICE_CHANNELS = [
      zh:[["普货","1550"],["敏感货一类(品牌/食品/化妆品/保健品)","1650"],["敏感货二类(化工/农药/化肥/香水/带电产品/酒类)","1780"],["敏感货三类(游戏机/发电机/药品)","2000"]],
      en:[["General","1550"],["Sensitive 1 (brand/food/cosmetics/health)","1650"],["Sensitive 2 (chemical/pesticide/perfume/battery/alcohol)","1780"],["Sensitive 3 (game console/generator/medicine)","2000"]]}},
 
+  /* ────────── 老挝陆运包税 ────────── */
   {type:"land", country:"la",
    billing:{mode:'volume', minCbm:0.5, overweightRatio:350},
    name:{zh:"老挝陆运包税", en:"Laos Land DDP"},
@@ -1765,23 +1918,25 @@ const PRICE_CHANNELS = [
      zh:[["万象","900","1200"],["孟赛","1200","/"],["琅勃拉邦","1200","/"],["沙湾拿吉","1200","1500"],["塔克","1200","1500"],["巴色","1300","1600"]],
      en:[["Vientiane","900","1200"],["Muang Xay","1200","/"],["Luang Prabang","1200","/"],["Savannakhet","1200","1500"],["Thakhek","1200","1500"],["Pakse","1300","1600"]]}},
 
+  /* ────────── 阿联酋空运包税 ────────── */
   {type:"air", country:"ae",
    billing:{mode:'weight', divisor:6000, foam:'none'},
    name:{zh:"阿联酋空运包税", en:"UAE Air DDP"},
    wh:{zh:"入深圳仓", en:"Shenzhen warehouse"},
    note:{zh:"双清包税到门，迪拜/其它城市分价；16KG以下不足0.5按0.5、16KG以上按1KG；除6000；迪拜8天，其他城市10-12天。", en:"DDP door-to-door, Dubai / other cities priced separately; <16KG rounds to 0.5, ≥16KG rounds to 1; ÷6000."},
-   eta: {zh:"起飞后预估需要 8-12 个工作日左右（迪拜约 8、其他城市 10-12）", en:"Est. 8-12 working days after departure (Dubai ~8, others 10-12)"},
+   etaRows: {
+     zh:["起飞后预估需要 8 个工作日左右（迪拜）","起飞后预估需要 10-12 个工作日左右（其他城市）","起飞后预估需要 8 个工作日左右（迪拜）","起飞后预估需要 10-12 个工作日左右（其他城市）","起飞后预估需要 8 个工作日左右（迪拜）","起飞后预估需要 10-12 个工作日左右（其他城市）"],
+     en:["Est. 8 working days after departure (Dubai)","Est. 10-12 working days after departure (other cities)","Est. 8 working days after departure (Dubai)","Est. 10-12 working days after departure (other cities)","Est. 8 working days after departure (Dubai)","Est. 10-12 working days after departure (other cities)"]
+   },
    detail:Object.assign({}, AE_DETAIL, {
      remarks:{zh:"· 报价包含阿联酋关税和VAT，但不提供关税单及增值税发票。\n· 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马）/ Umm Alquain（乌姆盖万）。\n· 迪拜 8 个工作日，其他城市 10-12 个工作日。\n· Fujairah 全区无派送服务。",en:"· Quote includes UAE customs duty and VAT, but no duty/VAT invoice.\n· Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n· Dubai 8 working days; other cities 10-12 working days.\n· Fujairah: no delivery service at all."}
    }),
-   endService:{zh:"1. 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马）/ Umm Alquain（乌姆盖万）。\n2. 其他偏远地区派送需单独询，具体请参考下列地址：\n   · Dubai（偏远地址）：Dxb Pearl Jumeirah Nikki beach area / Silicon Oasis Phase 2 / Al Ain Rd aft Academic city / FREE ZONE\n   · Abu Dhabi（偏远地址）：TAWEELA / SADIYATH ISLAND / AL RAHBAH / SHAHAMA / BANIYAS / MIRFA / SILA / AUH UNIVERSITY / Al Falah / SHAMKA / MOHD BIN ZYD CITY / LIWA / WESTERN REAGON / KHALIFA CITY B / BEDA ZAYED / GANTHOOTH / RUWAIS / FREE ZONE\n   · Sharjah（偏远地址）：SHJ indl 18 / American university area / Shj shooting club / Madam / RAK nr Oman border / Rak Al jeer area / RAK maritime City / FREE ZONE / UMQ aft dreamland park / Hatta / RAK port area\n   · Jebel Ali（偏远地址）：Truck Road / Jande nul Dredging / FREE ZONE\n   · Fujairah：全区无派送服务。\n3. 派送只到楼下，不上楼。\n4. 16KG以下不足0.5按0.5、16KG以上按1KG计费；除6000。",en:"1. Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n2. Remote areas consult separately.\n3. Delivery to ground floor only.\n4. <16KG rounds to 0.5; ≥16KG rounds to 1; ÷6000."},
+   endService:{zh:"1. 阿联酋其他城市包括：Sharjah（沙迦）/ Abu Dhabi（阿布扎比）/ Al Ain（阿莱茵）/ Ajman（阿基曼）/ Ras Al Khaimah（拉斯海马）/ Umm Alquain（乌姆盖万）。\n2. 其他偏远地区派送需单独询。\n3. 派送只到楼下，不上楼。\n4. 16KG以下不足0.5按0.5、16KG以上按1KG计费；除6000。",en:"1. Other cities: Sharjah / Abu Dhabi / Al Ain / Ajman / Ras Al Khaimah / Umm Alquain.\n2. Remote areas consult separately.\n3. Delivery to ground floor only.\n4. <16KG rounds to 0.5; ≥16KG rounds to 1; ÷6000."},
    head:{zh:["货类","迪拜·首0.5","迪拜·续0.5","16-49","50-99","100-299","300-499","500+"], en:["Category","Dubai First 0.5","Dubai Add 0.5","16-49","50-99","100-299","300-499","500+"]},
    rows:{
      zh:[["普货(含电/配套电池)","90","34","48","48","45","45","43"],["敏感(A类/CCTV/医疗)","95","38","51","51","49","49","46"],["特货(纯电池/部分食品液体)","125","48","56","56","54","54","51"]],
      en:[["General (battery/with battery)","90","34","48","48","45","45","43"],["Sensitive (Class A/CCTV/medical)","95","38","51","51","49","49","46"],["Special (pure battery/some food & liquid)","125","48","56","56","54","54","51"]]}}
-];
-
-const typeIconMap = {air:"✈️", sea:"🚢", land:"🚚"};
+];const typeIconMap = {air:"✈️", sea:"🚢", land:"🚚"};
 const typeName = (tp) => LANG === "zh" ? ({air:"空运",sea:"海运",land:"陆运"}[tp]) : ({air:"Air",sea:"Sea",land:"Land"}[tp]);
 const COUNTRY_ZH = {my:"马来西亚",sg:"新加坡",th:"泰国",vn:"越南",ph:"菲律宾",id:"印尼",kh:"柬埔寨",la:"老挝",ae:"阿联酋"};
 const COUNTRY_EN = {my:"Malaysia",sg:"Singapore",th:"Thailand",vn:"Vietnam",ph:"Philippines",id:"Indonesia",kh:"Cambodia",la:"Laos",ae:"UAE"};
@@ -1800,7 +1955,6 @@ const DETAIL_LABELS = {
 const DETAIL_ORDER = ['billing','size','customs','endService','prohibited','compensation','remarks'];
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
 function buildDetailHTML(detail, openFirst){
   if(!detail) return '';
   let html = '', first = true, count = 0;
@@ -1818,45 +1972,15 @@ function buildDetailHTML(detail, openFirst){
   });
   return count ? '<div class="dt-accordion">'+html+'</div>' : '';
 }
-
 function channelDetailObj(c){
   const d = Object.assign({}, c.detail || {});
   if(c.endService) d.endService = c.endService;
   return d;
 }
-
-function buildEtaHTML(c){
-  if(!c) return '';
-  const tipAttr = ' data-eta-tip="' + esc(c.type || 'all') + '"';
-  if(c.etaRows){
-    const zhArr = c.etaRows.zh || [];
-    const enArr = c.etaRows.en || [];
-    const seen = new Set();
-    const uniq = [];
-    zhArr.forEach((v, i) => {
-      const key = v + '||' + (enArr[i]||'');
-      if(!seen.has(key)){ seen.add(key); uniq.push({ zh:v, en: enArr[i]||v }); }
-    });
-    if(!uniq.length) return '';
-    if(uniq.length === 1){
-      const it = uniq[0];
-      return '<div class="eta-line"'+tipAttr+'>⏱ '+ (LANG==='zh'?it.zh:it.en) +'</div>';
-    }
-    return '<div class="eta-line multi"'+tipAttr+'><span class="eta-lb">⏱ '+ t('时效','ETA') +'：</span>' +
-      uniq.map(it => '<span class="eta-chip">'+(LANG==='zh'?it.zh:it.en)+'</span>').join('') +
-      '</div>';
-  }
-  if(c.eta){
-    return '<div class="eta-line"'+tipAttr+'>⏱ '+ (LANG==='zh'?c.eta.zh:c.eta.en) +'</div>';
-  }
-  return '';
-}
-
 function etaByZip(channel, etaText, zip, country){
   if(!channel || !zip) return etaText;
   const nameZh = channel.name.zh || '';
   const raw = String(zip).trim();
-
   if(nameZh.indexOf('菲律宾空运') === 0){
     const digits = raw.replace(/\D/g,'');
     const n = parseInt(digits, 10);
@@ -1867,13 +1991,12 @@ function etaByZip(channel, etaText, zip, country){
         const rz = region ? region.zh : '马尼拉以外';
         const re = region ? region.en : 'outside Manila';
         if((n>=6000 && n<=6399) || (n>=8000 && n<=8299) || (n>=9000 && n<=9299)){
-          return { zh: '起飞后预估需要 6-10 个工作日左右（' + rz + '需转运）', en: 'Est. 6-10 working days after departure (' + re + ' transit)' };
+          return { zh: '起飞后预估需要 5-8 个工作日左右（' + rz + '需转运）', en: 'Est. 5-8 working days after departure (' + re + ' transit)' };
         }
-        return { zh: '起飞后预估需要 5-9 个工作日左右（' + rz + '需转运）', en: 'Est. 5-9 working days after departure (transit to ' + re + ')' };
+        return { zh: '起飞后预估需要 5-7 个工作日左右（' + rz + '需转运）', en: 'Est. 5-7 working days after departure (transit to ' + re + ')' };
       }
     }
   }
-
   if(nameZh.indexOf('阿联酋空运') === 0){
     const s = raw.toLowerCase();
     if(/dubai|迪拜/.test(s)){ return { zh:'起飞后预估需要 8 个工作日左右（迪拜市区）', en:'Est. 8 working days after departure (Dubai downtown)' }; }
@@ -1882,7 +2005,6 @@ function etaByZip(channel, etaText, zip, country){
       return { zh:'起飞后预估需要 10-12 个工作日左右（非迪拜城市）', en:'Est. 10-12 working days after departure (non-Dubai)' };
     }
   }
-
   return etaText;
 }
 
@@ -1897,16 +2019,14 @@ function renderPrice(filter){
     const noteText = tObj(c.note);
     const detailHTML = buildDetailHTML(channelDetailObj(c), false);
     const detailBlock = detailHTML
-      ? '<div class="detail-section-title"><span>📋 '+t('渠道细则','Channel Details')+'</span>'+
-        (priceUnlocked ? '' : '<span class="lock-hint">🔒 '+t('点击需密码','Password required')+'</span>')+
-        '</div>'+detailHTML
+      ? '<div class="detail-section-title"><span>📋 '+t('渠道细则','Channel Details')+'</span></div>'+detailHTML
       : '';
     const tailNote = t("⚠️ 仅参考，最终运费以仓库实测、Emily确认为准", "⚠️ Reference only. Final freight subject to warehouse measurement and Emily's confirmation.");
     return '<div class="price-card" id="pc-'+i+'">'+
       '<div class="price-head">'+
         '<div class="pt">'+
           '<div class="picon '+c.type+'">'+typeIconMap[c.type]+'</div>'+
-          '<div><div class="pn">'+tObj(c.name)+'</div><div class="pd">'+typeName(c.type)+' · '+tObj(c.wh)+'</div>'+buildEtaHTML(c)+'</div>'+
+          '<div><div class="pn">'+tObj(c.name)+'</div><div class="pd">'+typeName(c.type)+' · '+tObj(c.wh)+'</div></div>'+
         '</div>'+
         '<div class="arrow">▼</div>'+
       '</div>'+
@@ -1932,7 +2052,6 @@ document.getElementById('priceList').addEventListener('click', function(e){
   }
   const dtHead = e.target.closest('.dt-head');
   if(dtHead){
-    if(!priceUnlocked){ openPwdModal('detail', dtHead); return; }
     dtHead.parentElement.classList.toggle('open');
     return;
   }
@@ -1970,11 +2089,239 @@ function buildCountryOptions(){
     COUNTRY_ORDER.map(c=>'<option value="'+c+'">'+countryName(c)+'</option>').join('');
   if(cur) countrySelect.value = cur;
 }
-function fillChannelOptions(countryCode){
+
+/* ═══════════════════════════════════════════════════════════
+   ★ 邮编 → 城市/区域 识别
+   ═══════════════════════════════════════════════════════════ */
+function detectMyRegion(zip){
+  const n = parseInt(String(zip).replace(/\D/g,''), 10);
+  if(isNaN(n)) return null;
+  const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
+  if(isEast){
+    const map = [
+      {r:[[88000,89999]], city:'亚庇 KK'},
+      {r:[[90000,91999]], city:'山打根/拿笃/斗湖'},
+      {r:[[93000,93999]], city:'古晋'},
+      {r:[[96000,96999]], city:'诗巫'},
+      {r:[[97000,97999]], city:'民都鲁'},
+      {r:[[98000,98999]], city:'美里'}
+    ];
+    for(const m of map){
+      if(m.r.some(([a,b])=>n>=a && n<=b)) return {region:'east', city:'东马 · ' + m.city};
+    }
+    return {region:'east', city:'东马'};
+  }
+  const inState = String(zip).startsWith('456');
+  const seaRemote = matchArea(n, MY_SEA_REMOTE);
+  const airRemote = matchArea(n, MY_AIR_REMOTE);
+  let city = '西马';
+  if(inState) city += '（坡内）';
+  if(seaRemote) city += ' · 偏远：' + seaRemote.zh;
+  return {region:'west', city, inState, seaRemote: seaRemote?seaRemote.zh:null, airRemote: airRemote?airRemote.zh:null};
+}
+function detectSgRegion(zip){
+  const n = parseInt(String(zip).replace(/\D/g,''), 10);
+  if(isNaN(n)) return null;
+  const isRemote = (n>=810000&&n<=819999)||(n>=490000&&n<=499999)||
+    (n>=18955&&n<=18974)||n===99447||n===99453||n===619346||n===619110;
+  return {region: isRemote ? 'remote' : 'standard', city: isRemote ? '新加坡 · 偏远区' : '新加坡市区'};
+}
+function detectThRegion(zip){
+  const n = parseInt(String(zip).replace(/\D/g,''), 10);
+  if(isNaN(n)) return null;
+  if(isThBangkokZip(n)) return {region:'bkk', city:'曼谷市区'};
+  if(n>=84000) return {region:'remote', city:'曼谷以外偏远'};
+  return {region:'outside', city:'曼谷以外'};
+}
+function detectPhRegion(zip){
+  const n = parseInt(String(zip).replace(/\D/g,''), 10);
+  if(isNaN(n)) return null;
+  if(n>=1000 && n<=1812) return {region:'manila', city:'大马尼拉', covered:true};
+  if(n>=4023 && n<=4027) return {region:'laguna', city:'拉古纳', covered:true};
+  if(n>=4100 && n<=4118) return {region:'cavite', city:'甲米地', covered:true};
+  if([3005,3019,3020,3023].includes(n)) return {region:'bulacan', city:'武六干(布拉干)', covered:true};
+  const p = phRegionOf(n);
+  if(p) return {region:'outside', city:p.zh + '（需转运）', covered:false};
+  return {region:'unknown', city:'菲律宾其它地区', covered:false};
+}
+function detectIdRegion(zip){
+  const n = parseInt(String(zip).replace(/\D/g,''), 10);
+  if(isNaN(n)) return null;
+  if(n>=10000 && n<=15999) return {region:'jakarta', city:'雅加达/唐格朗'};
+  return {region:'outside', city:'雅加达以外（需转运）'};
+}
+function detectVnRegion(zip){
+  const digits = String(zip).replace(/\D/g,'');
+  const prefix = vnPostalPrefix(digits);
+  const prov = VN_POSTAL_MAP[prefix];
+  const region = (prefix >= '10' && prefix <= '41') ? 'north'
+               : (prefix >= '42' && prefix <= '61') ? 'central'
+               : 'south';
+  return {
+    region, regionZh: VN_REGION_ZH[region],
+    province: prov || null,
+    hanoi: prov === '河内'
+  };
+}
+function detectKhRegion(zip){
+  const digits = String(zip).replace(/\D/g,'');
+  const prefix = khPostalPrefix(digits);
+  const city = KH_POSTAL_MAP[prefix] || '其它城市';
+  return { city, isPhnomPenh: city === '金边' };
+}
+function detectLaRegion(zip){
+  const digits = String(zip).replace(/\D/g,'');
+  const prefix = laPostalPrefix(digits);
+  const city = LA_POSTAL_MAP[prefix] || '其它城市';
+  return { city, isVientiane: city === '万象' };
+}
+function detectAeRegion(cityText){
+  const s = String(cityText||'').trim().toLowerCase();
+  if(!s) return {city:'', type:'pending'};
+  if(/fujairah|富查伊拉|富吉拉/.test(s)) return {city:'富查伊拉（无派送）', type:'noDelivery'};
+  if(/dubai|迪拜|jebel ?ali|杰贝阿里/.test(s)) return {city:'迪拜', type:'standard'};
+  if(/abu ?dhabi|阿布扎比|al ?ain|阿莱茵/.test(s)) return {city:'阿布扎比/阿莱茵（偏远）', type:'remote'};
+  if(/sharjah|沙迦|ajman|阿基曼|ras ?al|哈伊马角|拉斯海马|umm ?al|乌姆盖万/.test(s))
+    return {city:'沙迦/北部酋长国（偏远）', type:'remote'};
+  return {city:cityText, type:'unknown'};
+}
+
+function getRegionRecommendation(country, zip){
+  if(!country || !zip) return null;
+  try{
+    if(country === 'my'){
+      const info = detectMyRegion(zip);
+      if(!info) return null;
+      if(info.region === 'east'){
+        return {city: info.city, channelHint: t('推荐：马来西亚东马海运 / 空运','Suggested: East MY Sea / Air')};
+      }
+      return {city: info.city,
+              channelHint: t('推荐：马来西亚西马海运 / 空运','Suggested: West MY Sea / Air')};
+    }
+    if(country === 'sg'){
+      const info = detectSgRegion(zip);
+      if(!info) return null;
+      return {city:info.city, channelHint: t('推荐：新加坡空运 / 海运专线','Suggested: SG Air / Sea')};
+    }
+    if(country === 'th'){
+      const info = detectThRegion(zip);
+      if(!info) return null;
+      const hint = info.region === 'bkk' ? t('推荐：泰国陆运双清包税','Suggested: TH Land DDP')
+                : info.region === 'remote' ? t('推荐：泰国陆运/海运（曼谷以外偏远）','Suggested: TH Land/Sea (remote)')
+                : t('推荐：泰国陆运（曼谷以外）','Suggested: TH Land (outside Bangkok)');
+      return {city:info.city, channelHint: hint};
+    }
+    if(country === 'ph'){
+      const info = detectPhRegion(zip);
+      if(!info) return null;
+      const hint = info.covered ? t('推荐：菲律宾空运（包派区）','Suggested: PH Air (covered)')
+                                : t('推荐：菲律宾空运/海运（马尼拉以外）','Suggested: PH Air/Sea (outside MNL)');
+      return {city:info.city, channelHint: hint};
+    }
+    if(country === 'id'){
+      const info = detectIdRegion(zip);
+      if(!info) return null;
+      const hint = info.region === 'jakarta' ? t('推荐：印尼空运/海运（雅加达）','Suggested: ID Air/Sea (Jakarta)')
+                                            : t('推荐：印尼空运/海运（雅加达以外转运）','Suggested: ID Air/Sea (transit)');
+      return {city:info.city, channelHint: hint};
+    }
+    if(country === 'vn'){
+      const info = detectVnRegion(zip);
+      if(!info) return null;
+      const hint = info.hanoi ? t('推荐：越南陆运小货/大货（河内免费派送）','Suggested: VN Land (Hanoi free)')
+                             : t('推荐：越南陆运小货/大货','Suggested: VN Land parcel/bulk');
+      return {city: info.regionZh + (info.province ? ' · ' + info.province : ''),
+              channelHint: hint};
+    }
+    if(country === 'kh'){
+      const info = detectKhRegion(zip);
+      if(!info) return null;
+      const hint = info.isPhnomPenh ? t('推荐：柬埔寨陆运小包/大货（金边）','Suggested: KH Land parcel/bulk (Phnom Penh)')
+                                    : t('推荐：柬埔寨陆运小包/大货（其它城市分价）','Suggested: KH Land (other cities)');
+      return {city:info.city, channelHint: hint};
+    }
+    if(country === 'la'){
+      const info = detectLaRegion(zip);
+      if(!info) return null;
+      const hint = info.isVientiane ? t('推荐：老挝陆运（万象可派送）','Suggested: LA Land (Vientiane)')
+                                    : t('推荐：老挝陆运（其它城市自提）','Suggested: LA Land (self-pickup)');
+      return {city:info.city, channelHint: hint};
+    }
+    if(country === 'ae'){
+      const info = detectAeRegion(zip);
+      if(!info || !info.city) return null;
+      const hint = info.type === 'noDelivery' ? t('该区无派送','No delivery service')
+                : info.type === 'remote' ? t('推荐：阿联酋空运（偏远）','Suggested: UAE Air (remote)')
+                : t('推荐：阿联酋空运','Suggested: UAE Air');
+      return {city:info.city, channelHint: hint};
+    }
+  }catch(e){}
+  return null;
+}
+
+function channelMatchScore(c, countryCode, zip){
+  const nameZh = c.name.zh || '';
+  if(countryCode === 'my' && zip){
+    const info = detectMyRegion(zip);
+    if(!info) return 0;
+    if(info.region === 'east' && nameZh.indexOf('东马') >= 0) return 100;
+    if(info.region === 'west' && nameZh.indexOf('西马') >= 0) return 100;
+  }
+  if(countryCode === 'ph' && zip){
+    const info = detectPhRegion(zip);
+    if(!info) return 0;
+    if(info.covered && nameZh.indexOf('空运') >= 0) return 90;
+    if(!info.covered && nameZh.indexOf('空运') >= 0) return 60;
+  }
+  if(countryCode === 'th' && zip){
+    const info = detectThRegion(zip);
+    if(!info) return 0;
+    if(info.region === 'bkk' && nameZh.indexOf('陆运') >= 0) return 90;
+    if(info.region !== 'bkk' && nameZh.indexOf('陆运') >= 0) return 60;
+  }
+  if(countryCode === 'vn' && zip){
+    const info = detectVnRegion(zip);
+    if(!info) return 0;
+    if(info.hanoi && nameZh.indexOf('越南陆运大货') >= 0) return 90;
+    if(info.province && nameZh.indexOf('越南陆运') >= 0) return 80;
+  }
+  if(countryCode === 'id' && zip){
+    const info = detectIdRegion(zip);
+    if(!info) return 0;
+    if(info.region === 'jakarta' && nameZh.indexOf('空运') >= 0) return 90;
+  }
+  if(countryCode === 'kh' && zip){
+    const info = detectKhRegion(zip);
+    if(!info) return 0;
+    if(info.isPhnomPenh && nameZh.indexOf('小包') >= 0) return 90;
+    if(!info.isPhnomPenh && nameZh.indexOf('大货') >= 0) return 90;
+  }
+  if(countryCode === 'la' && zip){
+    const info = detectLaRegion(zip);
+    if(!info) return 0;
+    if(info.isVientiane && nameZh.indexOf('老挝') >= 0) return 100;
+  }
+  if(countryCode === 'ae' && zip){
+    const info = detectAeRegion(zip);
+    if(!info) return 0;
+    if(info.type === 'standard') return 100;
+    if(info.type === 'remote') return 80;
+  }
+  if(countryCode === 'sg' && zip){
+    const info = detectSgRegion(zip);
+    if(!info) return 0;
+    if(info.region === 'standard') return 100;
+  }
+  return 10;
+}
+
+function fillChannelOptions(countryCode, zip){
   const cur = channelSelect.value;
   let html = '<option value="">'+t("请选择渠道","Select channel")+'</option>';
-  PRICE_CHANNELS.forEach((c, ci) => {
-    if(countryCode && c.country !== countryCode) return;
+  const list = PRICE_CHANNELS.map((c, ci) => ({ c, ci }))
+    .filter(({c}) => !countryCode || c.country === countryCode);
+  list.sort((a,b) => channelMatchScore(b.c, countryCode, zip) - channelMatchScore(a.c, countryCode, zip));
+  list.forEach(({c, ci}) => {
     const zhRows = c.rows.zh, enRows = c.rows.en;
     if(zhRows.length <= 1){
       html += '<option value="'+ci+'_0">'+tObj(c.name)+'</option>';
@@ -1992,21 +2339,9 @@ function fillChannelOptions(countryCode){
   else { channelSelect.value = ''; }
 }
 function autoSelectFirstChannel(countryCode){
-  fillChannelOptions(countryCode);
-  if(!countryCode){
-    updateChannelUI();
-    updateZipUI(null);
-    updateDimSummary();
-    return;
-  }
-  const firstOpt = Array.from(channelSelect.options).find(o => o.value);
-  if(firstOpt){
-    channelSelect.value = firstOpt.value;
-    const info = parseChannelVal(firstOpt.value);
-    if(info) countrySelect.value = info.channel.country;
-  }
+  fillChannelOptions(countryCode, (zipEl.value||'').trim());
   updateChannelUI();
-  updateZipUI(getCurrentChannel());
+  updateZipUI(null);
   updateDimSummary();
 }
 function billingDesc(c){
@@ -2059,6 +2394,7 @@ function buildCalcFormula(channel){
     }
   }
 }
+
 function updateChannelUI(){
   const info = parseChannelVal(channelSelect.value);
   const tip = document.getElementById('channelBrief');
@@ -2066,8 +2402,11 @@ function updateChannelUI(){
   if(!info){
     tip.textContent = '';
     badge.textContent = t("点击选择渠道","Tap to select");
-    updateBillingUI(null); updateZipUI(null); updateQuoteOpt();
-    updateVnProvince(); updateDeliveryFee(); updateSurchargeUI(); renderLclQuote();
+    updateBillingUI(null);
+    updateVnProvince();
+    updateZipUI(null);
+    updateQuoteOpt();
+    updateSurchargeUI(); renderLclQuote();
     return;
   }
   const c = info.channel;
@@ -2079,9 +2418,12 @@ function updateChannelUI(){
   tipHtml += '<br>' + t('计费：','Billing: ') + billingDesc(c);
   tipHtml += '<br>' + t('说明：','Note: ') + tObj(c.note);
   tip.innerHTML = tipHtml;
-  updateBillingUI(c); updateZipUI(c); updateQuoteOpt();
+  updateBillingUI(c);
+  updateVnProvince();
+  updateZipUI(c);
+  updateQuoteOpt();
   autoSelectPriceTypeByZip(c, (zipEl.value||'').trim());
-  updateVnProvince(); updateDeliveryFee(); updateSurchargeUI(); renderLclQuote();
+  updateSurchargeUI(); renderLclQuote();
 }
 function updateBillingUI(channel){
   const dimLabel = document.getElementById('dimLabel');
@@ -2123,43 +2465,28 @@ function makeR(level, tagZh, tagEn, titleZh, titleEn, descZh, descEn, feeZh, fee
 function evaluateZip(zone, raw, countryCode){
   const country = countryCode || zoneToCountry(zone);
   const meta = POSTAL_META[country];
-
   if(country === 'ae'){
     const s = String(raw||'').trim().toLowerCase();
-    if(!s) return makeR('warn','待填','Pending',
-      '阿联酋无邮政编码，请填写城市名（迪拜 / 沙迦 / 阿布扎比 等）','UAE has no postcode — enter city name');
-    if(/fujairah|富查伊拉|富吉拉/.test(s)) return makeR('remote','无派送','No delivery',
-      '富查伊拉（Fujairah）全区无派送服务','Fujairah: no delivery',
-      '请改用其他渠道或改自提','Use another channel or self-pickup');
+    if(!s) return makeR('warn','待填','Pending','阿联酋无邮政编码，请填写城市名（迪拜 / 沙迦 / 阿布扎比 等）','UAE has no postcode — enter city name');
+    if(/fujairah|富查伊拉|富吉拉/.test(s)) return makeR('remote','无派送','No delivery','富查伊拉（Fujairah）全区无派送服务','Fujairah: no delivery','请改用其他渠道或改自提','Use another channel or self-pickup');
     if(/abu ?dhabi|阿布扎比|al ?ain|阿莱茵|ras ?al ?khaimah|哈伊马角|拉斯海马|sharjah|沙迦/.test(s))
-      return makeR('remote','偏远','Remote',
-        '已识别为偏远城市：' + raw,'Remote city: ' + raw,
-        '偏远派送费请与 Emily 单独确认','Confirm remote fee with Emily');
+      return makeR('remote','偏远','Remote','已识别为偏远城市：' + raw,'Remote city: ' + raw,'偏远派送费请与 Emily 单独确认','Confirm remote fee with Emily');
     if(/dubai|迪拜|jebel ?ali|杰贝阿里|ajman|阿基曼|umm ?al|乌姆盖万/.test(s))
-      return makeR('ok','正常派送','Standard',
-        '迪拜及周边正常派送区','Dubai & nearby standard',
-        '部分自贸区/港口需额外确认','Some free zones need confirmation');
-    return makeR('ok','已识别','Detected','城市：' + raw,'City: ' + raw,
-      '具体派送费请与 Emily 确认','Confirm with Emily');
+      return makeR('ok','正常派送','Standard','迪拜及周边正常派送区','Dubai & nearby standard','部分自贸区/港口需额外确认','Some free zones need confirmation');
+    return makeR('ok','已识别','Detected','城市：' + raw,'City: ' + raw,'具体派送费请与 Emily 确认','Confirm with Emily');
   }
-
   const digits = String(raw).replace(/\D/g,'');
   if(!digits) return makeR('warn','待填','Pending','请输入邮编数字','Please enter postcode digits');
   const expected = meta ? meta.len : 0;
   if(country === 'vn'){
     if(digits.length !== 5 && digits.length !== 6)
-      return makeR('warn','位数','Digits',
-        '邮编应为 5 位或 6 位数字（当前 ' + digits.length + ' 位）',
-        'Postcode should be 5 or 6 digits (currently ' + digits.length + ')');
+      return makeR('warn','位数','Digits','邮编应为 5 位或 6 位数字（当前 ' + digits.length + ' 位）','Postcode should be 5 or 6 digits (currently ' + digits.length + ')');
   } else if(expected && digits.length !== expected){
     const diff = digits.length - expected;
     return makeR('warn','位数','Digits',
-      diff < 0 ? '邮编应为 ' + expected + ' 位数字（当前 ' + digits.length + ' 位）'
-               : '邮编应为 ' + expected + ' 位数字（当前 ' + digits.length + ' 位，多 ' + diff + ' 位）',
-      diff < 0 ? 'Postcode should be ' + expected + ' digits'
-               : 'Postcode should be ' + expected + ' digits (over by ' + diff + ')');
+      diff < 0 ? '邮编应为 ' + expected + ' 位数字（当前 ' + digits.length + ' 位）' : '邮编应为 ' + expected + ' 位数字（当前 ' + digits.length + ' 位，多 ' + diff + ' 位）',
+      diff < 0 ? 'Postcode should be ' + expected + ' digits' : 'Postcode should be ' + expected + ' digits (over by ' + diff + ')');
   }
-
   const n = parseInt(digits, 10);
   if(country === 'my') return evalMyZip(zone, digits, n);
   if(country === 'sg') return evalSgZip(digits, n);
@@ -2167,12 +2494,8 @@ function evaluateZip(zone, raw, countryCode){
   if(country === 'ph') return evalPhZip(digits, n);
   if(country === 'id') return evalIdZip(digits, n);
   if(country === 'vn') return evalVnZip(digits);
-  if(country === 'kh') return makeR('ok','已填','Filled',
-    '邮编已填写：' + digits,'Postcode: ' + digits,
-    '金边以外城市派送费按城市分价','Outside Phnom Penh: priced by city');
-  if(country === 'la') return makeR('ok','已填','Filled',
-    '邮编已填写：' + digits,'Postcode: ' + digits,
-    '万象以外地址需到站点自提','Outside Vientiane: self-pickup');
+  if(country === 'kh') return evalKhZip(digits, raw);
+  if(country === 'la') return evalLaZip(digits);
   return makeR('ok','已识别','Detected','邮编格式正确','Valid postcode');
 }
 function evalMyZip(zone, digits, n){
@@ -2181,163 +2504,150 @@ function evalMyZip(zone, digits, n){
   if(zone === 'my_air'){
     if(!isEast){
       const hit = matchArea(n, MY_AIR_REMOTE);
-      if(hit) return makeR('remote','偏远','Remote',
-        '已识别：' + hit.zh,'Detected: ' + hit.en,
-        '西马偏远区，将加收偏远派送费','West MY remote — surcharge applies',
-        '+3.5 元/KG（÷6000 取大）','+3.5 CNY/KG (÷6000, max)');
+      if(hit) return makeR('remote','偏远','Remote','已识别：' + hit.zh,'Detected: ' + hit.en,'西马偏远区，将加收偏远派送费','West MY remote — surcharge applies','+3.5 元/KG（实重 vs 体积重÷6000 取大）','+3.5 CNY/KG');
     }
     return makeR('ok', rz, re, '已识别为' + rz + '地区','Detected: ' + re,
       isEast ? '东马不计偏远费' : '西马普货区，无偏远费',
       isEast ? 'East MY — no remote fee' : 'West MY standard area');
   }
   if(zone === 'my_west_sea'){
-    if(isEast) return makeR('remote','区域不符','Wrong zone',
-      '该邮编属于东马（' + digits + '）','This is an East MY postcode',
-      '东马邮编区间：87000-91999、93000-98999','East MY range: 87000-91999, 93000-98999',
-      null,null,
+    if(isEast) return makeR('remote','区域不符','Wrong zone','该邮编属于东马（' + digits + '）','This is an East MY postcode','东马邮编区间：87000-91999、93000-98999','East MY range: 87000-91999, 93000-98999', null,null,
       { channelKey:'马来西亚东马海运', reason:{zh:'邮编属于东马',en:'Postcode is East MY'} });
     const hit = matchArea(n, MY_SEA_REMOTE);
-    if(hit) return makeR('remote','偏远','Remote',
-      '已识别：' + hit.zh,'Detected: ' + hit.en,
-      '西马偏远区，将加收偏远派送费','West MY remote — surcharge applies',
-      '+2 元/KG（体积÷6000 取大）','+2 CNY/KG (÷6000, max)');
-    return makeR('ok','西马','West MY',
-      '已识别为西马普货区','West MY standard area',
-      '无偏远派送费','No remote fee');
+    if(hit) return makeR('remote','偏远','Remote','已识别：' + hit.zh,'Detected: ' + hit.en,'西马偏远区，将加收偏远派送费','West MY remote — surcharge applies','+2 元/KG（实重 vs 体积重÷6000 取大）','+2 CNY/KG');
+    return makeR('ok','西马','West MY','已识别为西马普货区','West MY standard area','无偏远派送费','No remote fee');
   }
   if(zone === 'my_east_sea'){
-    if(!isEast) return makeR('remote','区域不符','Wrong zone',
-      '该邮编属于西马（' + digits + '）','This is a West MY postcode',
-      '东马邮编区间：87000-91999、93000-98999','East MY range: 87000-91999, 93000-98999',
-      null,null,
+    if(!isEast) return makeR('remote','区域不符','Wrong zone','该邮编属于西马（' + digits + '）','This is a West MY postcode','东马邮编区间：87000-91999、93000-98999','East MY range: 87000-91999, 93000-98999', null,null,
       { channelKey:'马来西亚西马海运', reason:{zh:'邮编属于西马',en:'Postcode is West MY'} });
     const hit = matchArea(n, MY_EAST_REMOTE);
-    if(hit) return makeR('remote','偏远','Remote',
-      '已识别：' + hit.zh,'Detected: ' + hit.en,
-      '东马偏远区，将加收派送费','East MY remote — surcharge applies',
-      '首 1KG 20元 + 续 1KG 15元','First 1KG 20 + add 1KG 15');
-    return makeR('ok','东马','East MY',
-      '已识别为东马可派区','East MY deliverable',
-      '无偏远派送费','No remote fee');
+    if(hit) return makeR('remote','偏远','Remote','已识别：' + hit.zh,'Detected: ' + hit.en,'东马偏远区，将加收派送费','East MY remote — surcharge applies','首 1KG 20元 + 续 1KG 15元','First 1KG 20 + add 1KG 15');
+    return makeR('ok','东马','East MY','已识别为东马可派区','East MY deliverable','无偏远派送费','No remote fee');
   }
   return makeR('ok','已识别','Detected','邮编格式正确','Valid postcode');
 }
 function evalSgZip(digits, n){
-  if(n < 10000 || n > 829999) return makeR('warn','格式','Format',
-    '新加坡邮编有效区间为 010000-829999','SG valid range: 010000-829999');
+  if(n < 10000 || n > 829999) return makeR('warn','格式','Format','新加坡邮编有效区间为 010000-829999','SG valid range: 010000-829999');
   const isRemote = (n>=810000&&n<=819999)||(n>=490000&&n<=499999)||
     (n>=18955&&n<=18974)||n===99447||n===99453||n===619346||n===619110;
-  if(isRemote) return makeR('remote','偏远','Remote',
-    '该邮编属于偏远/特殊派送区','Remote / special delivery area',
-    '将加收偏远派送费','Remote surcharge applies',
-    'SGD 40/地址（约 RMB 200）','SGD 40/address (~RMB 200)');
-  return makeR('ok','可达','Covered',
-    '新加坡派送覆盖区','Singapore delivery covered',
-    '按标准价格计费','Standard rate');
+  if(isRemote) return makeR('remote','偏远','Remote','该邮编属于偏远/特殊派送区','Remote / special delivery area','将加收偏远派送费','Remote surcharge applies','SGD 40/地址（约 RMB 200）','SGD 40/address (~RMB 200)');
+  return makeR('ok','可达','Covered','新加坡派送覆盖区','Singapore delivery covered','按标准价格计费','Standard rate');
 }
+function isThBangkokZip(n){ return TH_BANGKOK_ZIP_WHITELIST.indexOf(n) >= 0; }
 function evalThZip(digits, n){
-  if(n>=10000 && n<=10999) return makeR('ok','曼谷','Bangkok',
-    '曼谷市区（' + digits + '）','Bangkok downtown (' + digits + ')',
-    '满 1 CBM 免派送费；低于 1 CBM 加收 100 元/票操作费',
-    'Free delivery ≥1 CBM; <1 CBM +100 CNY/ticket');
-  if(n>=84000) return makeR('remote','偏远','Remote',
-    '曼谷以外偏远区（' + digits + '）','Outside Bangkok remote (' + digits + ')',
-    '将加收偏远派送费','Remote surcharge applies',
-    '+3 元/KG','+3 CNY/KG');
-  return makeR('ok','曼谷外','Outside BKK',
-    '曼谷以外地区（' + digits + '）','Outside Bangkok (' + digits + ')',
-    '派送费按邮编单独确认','Delivery fee to be confirmed');
+  if(isThBangkokZip(n)) return makeR('ok','曼谷市区','Bangkok downtown','曼谷市区（' + digits + '）','Bangkok downtown (' + digits + ')','满 1 CBM 免派送费；低于 1 CBM 加收 100 元/票操作费','Free delivery ≥1 CBM; <1 CBM +100 CNY/ticket');
+  if(n>=84000) return makeR('remote','曼谷外偏远','Outside BKK remote','曼谷以外偏远区（' + digits + '）','Outside Bangkok remote (' + digits + ')','将加收偏远派送费','Remote surcharge applies','+3 元/KG（实重 vs 体积重÷6000 取大）','+3 CNY/KG');
+  return makeR('ok','曼谷外','Outside BKK','曼谷以外地区（' + digits + '）','Outside Bangkok (' + digits + ')','派送费按邮编单独确认','Delivery fee to be confirmed');
 }
 function evalPhZip(digits, n){
   const region = phRegionOf(n);
   const regionZh = region ? region.zh : null;
   const regionEn = region ? region.en : null;
-
   const covered = (n>=1000 && n<=1812) || (n>=4023 && n<=4027) || PH_COVERED_LIST.indexOf(n) >= 0;
   if(covered){
     let covNoteZh = '免派送费，按马尼拉价格计费';
     let covNoteEn = 'Free delivery at Manila rate';
     let titleZh = '马尼拉包派区（' + digits + '）';
     let titleEn = 'Manila covered area (' + digits + ')';
-    if(n>=4023 && n<=4027){
-      titleZh = '拉古纳（' + digits + '）'; titleEn = 'Laguna (' + digits + ')';
-      covNoteZh = '拉古纳（4023-4027）包派，免派送费';
-      covNoteEn = 'Laguna (4023-4027) covered — free';
-    } else if(n>=4100 && n<=4118){
-      titleZh = '甲米地（' + digits + '）'; titleEn = 'Cavite (' + digits + ')';
-      covNoteZh = '甲米地（4100-4118）包派，免派送费';
-      covNoteEn = 'Cavite (4100-4118) covered — free';
-    } else if([3005,3019,3020,3023].indexOf(n) >= 0){
-      titleZh = '武六干（布拉干）（' + digits + '）'; titleEn = 'Bulacan (' + digits + ')';
-      covNoteZh = '武六干（3005/3019/3020/3023）包派，免派送费';
-      covNoteEn = 'Bulacan covered — free';
-    } else if(n>=1000 && n<=1812){
-      titleZh = '大马尼拉（' + digits + '）'; titleEn = 'Metro Manila (' + digits + ')';
-      covNoteZh = '大马尼拉（1000-1812）包派，免派送费';
-      covNoteEn = 'Metro Manila (1000-1812) covered — free';
-    }
+    if(n>=4023 && n<=4027){ titleZh = '拉古纳（' + digits + '）'; titleEn = 'Laguna (' + digits + ')'; covNoteZh = '拉古纳（4023-4027）包派，免派送费'; covNoteEn = 'Laguna (4023-4027) covered — free'; }
+    else if(n>=4100 && n<=4118){ titleZh = '甲米地（' + digits + '）'; titleEn = 'Cavite (' + digits + ')'; covNoteZh = '甲米地（4100-4118）包派，免派送费'; covNoteEn = 'Cavite (4100-4118) covered — free'; }
+    else if([3005,3019,3020,3023].indexOf(n) >= 0){ titleZh = '武六干（布拉干）（' + digits + '）'; titleEn = 'Bulacan (' + digits + ')'; covNoteZh = '武六干（3005/3019/3020/3023）包派，免派送费'; covNoteEn = 'Bulacan covered — free'; }
+    else if(n>=1000 && n<=1812){ titleZh = '大马尼拉（' + digits + '）'; titleEn = 'Metro Manila (' + digits + ')'; covNoteZh = '大马尼拉（1000-1812）包派，免派送费'; covNoteEn = 'Metro Manila (1000-1812) covered — free'; }
     return makeR('ok','包派','Covered', titleZh, titleEn, covNoteZh, covNoteEn);
   }
-
   const titleZh2 = regionZh ? regionZh + '（' + digits + '）' : '马尼拉以外地区（' + digits + '）';
   const titleEn2 = regionEn ? regionEn + ' (' + digits + ')' : 'Outside Manila (' + digits + ')';
-  const descZh2 = regionZh
-    ? '属于' + regionZh + '，需转运派送，派送费另计'
-    : '该邮编暂未匹配到具体地区，派送费单询';
-  const descEn2 = regionEn
-    ? 'In ' + regionEn + ' — transit delivery required'
-    : 'Region not matched — delivery fee on request';
-
+  const descZh2 = regionZh ? '属于' + regionZh + '，需转运派送，派送费另计' : '该邮编暂未匹配到具体地区，派送费单询';
+  const descEn2 = regionEn ? 'In ' + regionEn + ' — transit delivery required' : 'Region not matched — delivery fee on request';
   let tipZh = '', tipEn = '';
-  if(n>=6000 && n<=6399){
-    tipZh = '；⚠️ 宿务一带，特殊货 / 纯电池需单独核实';
-    tipEn = '; Cebu area — special goods / pure battery need confirmation';
-  } else if(n>=8000 && n<=8299){
-    tipZh = '；⚠️ 达沃一带，特殊货需单独核实';
-    tipEn = '; Davao area — special goods need confirmation';
-  } else if(n>=9000 && n<=9299){
-    tipZh = '；⚠️ 卡加延德奥罗一带，特殊货需单独核实';
-    tipEn = '; Cagayan de Oro area — special goods need confirmation';
-  }
-
-  return makeR('remote','马尼拉外','Outside MNL',
-    titleZh2, titleEn2,
-    descZh2 + tipZh, descEn2 + tipEn,
-    '首 35元/KG + 续 15元/KG（体积÷3500）',
-    'First 35 + add 15 CNY/KG (÷3500)');
+  if(n>=6000 && n<=6399){ tipZh = '；⚠️ 宿务一带，特殊货 / 纯电池需单独核实'; tipEn = '; Cebu area — special goods / pure battery need confirmation'; }
+  else if(n>=8000 && n<=8299){ tipZh = '；⚠️ 达沃一带，特殊货需单独核实'; tipEn = '; Davao area — special goods need confirmation'; }
+  else if(n>=9000 && n<=9299){ tipZh = '；⚠️ 卡加延德奥罗一带，特殊货需单独核实'; tipEn = '; Cagayan de Oro area — special goods need confirmation'; }
+  return makeR('remote','马尼拉外','Outside MNL', titleZh2, titleEn2, descZh2 + tipZh, descEn2 + tipEn, '首 35元/KG + 续 15元/KG（体积÷3500 vs 实重取大）','First 35 + add 15 CNY/KG (÷3500)');
 }
 function evalIdZip(digits, n){
-  if(n>=10000 && n<=15999) return makeR('ok','雅加达','Jakarta',
-    '雅加达 / 唐格朗地区（' + digits + '）','Jakarta / Tangerang (' + digits + ')',
-    '空运 ≥20KG 免派送费；海运满 1 方免派送费','Air ≥20KG free; sea ≥1 CBM free');
-  return makeR('remote','雅加达外','Outside JKT',
-    '雅加达 / 唐格朗以外地区（' + digits + '）','Outside Jakarta / Tangerang (' + digits + ')',
-    '派送费实报实销，请提前与 Emily 确认','Actual cost — confirm with Emily');
+  if(n>=10000 && n<=15999) return makeR('ok','雅加达','Jakarta','雅加达 / 唐格朗地区（' + digits + '）','Jakarta / Tangerang (' + digits + ')','空运 ≥20KG 免派送费；海运满 1 方免派送费','Air ≥20KG free; sea ≥1 CBM free');
+  return makeR('remote','雅加达外','Outside JKT','雅加达 / 唐格朗以外地区（' + digits + '）','Outside Jakarta / Tangerang (' + digits + ')','派送费实报实销，请提前与 Emily 确认','Actual cost — confirm with Emily');
+}
+function getVnQuoteLines(region){
+  const c = PRICE_CHANNELS.find(x => x.name.zh === '越南陆运大货双清包税');
+  if(!c) return [];
+  const colIdx = (region === 'north') ? 1 : 2;
+  return c.rows.zh.map(r => ({ name:r[0], price:r[colIdx] })).filter(r => r.price && r.price !== '/').map(r => r.name + '：' + r.price + ' 元/方');
+}
+function getKhQuoteLines(){
+  const c = PRICE_CHANNELS.find(x => x.name.zh === '柬埔寨陆运大货包税');
+  if(!c) return [];
+  return c.rows.zh.map(r => r[0] + '：' + r[1] + ' 元/方');
+}
+function getLaQuoteLines(city){
+  const c = PRICE_CHANNELS.find(x => x.name.zh === '老挝陆运包税');
+  if(!c) return [];
+  const row = c.rows.zh.find(r => r[0] === city);
+  if(!row) return [];
+  const gen = row[1] && row[1] !== '/' ? row[1] : '—';
+  const sen = row[2] && row[2] !== '/' ? row[2] : '—';
+  return [ city + '：普货 ' + gen + ' / 敏感 ' + sen + ' 元/方' ];
 }
 function evalVnZip(digits){
-  return makeR('ok','已填','Filled',
-    '邮编 ' + digits + '，请在下方选择目的省份','Postcode ' + digits + ' — select province below',
-    '越南派送费按省份计算，北/中/南价格不同','Delivery fee is province-based (N/C/S)');
+  const prefix = vnPostalPrefix(digits);
+  const prov = VN_POSTAL_MAP[prefix];
+  const region = (prefix >= '10' && prefix <= '41') ? 'north' : (prefix >= '42' && prefix <= '61') ? 'central' : 'south';
+  const regionZh = VN_REGION_ZH[region];
+  const regionEn = VN_REGION_EN[region];
+  if(prov){
+    const isHanoi = (prov === '河内');
+    const quoteLines = getVnQuoteLines(region);
+    return makeR('ok', prov, prov,
+      '已识别为「' + prov + '」（' + regionZh + '）','Detected: ' + prov + ' (' + regionEn + ')',
+      isHanoi ? '河内免费派送；报价按「' + regionZh + '」列' : '系统已自动选中该省份，并按报价表计算派送费',
+      isHanoi ? 'Hanoi — free delivery; priced by "' + regionEn + '" column' : 'Province auto-selected; delivery fee applied per rate table',
+      isHanoi ? '免费' : null, isHanoi ? 'Free' : null,
+      { autoSelectProvince: prov,
+        quoteHint: quoteLines.length ? { title: t('📋 大货报价参考（' + regionZh + '列）','📋 Bulk Rate Reference (' + regionEn + ')'), lines: quoteLines } : null });
+  }
+  const quoteLines = getVnQuoteLines(region);
+  return makeR('warn', regionZh, regionEn,
+    '未精确匹配到省份（' + digits + '），已按「' + regionZh + '」预估','Province not matched (' + digits + '), estimated as ' + regionEn,
+    '请在下方选择具体省份；大货报价按「' + regionZh + '」列参考','Please pick the exact province; bulk rate by ' + regionEn + ' column', null, null,
+    { suggestRegion: region,
+      quoteHint: quoteLines.length ? { title: t('📋 大货报价参考（' + regionZh + '列）','📋 Bulk Rate Reference (' + regionEn + ')'), lines: quoteLines } : null });
+}
+function evalKhZip(digits, raw){
+  const prefix = khPostalPrefix(digits);
+  const city = KH_POSTAL_MAP[prefix];
+  const quoteLines = getKhQuoteLines();
+  const quoteHint = quoteLines.length ? { title: t('📋 大货报价参考（金边列）','📋 Bulk Rate Reference (Phnom Penh)'), lines: quoteLines } : null;
+  if(city === '金边') return makeR('ok','金边','Phnom Penh','已识别：金边市区（' + digits + '）','Detected: Phnom Penh (' + digits + ')','金边按报价表统一价计费','Phnom Penh priced by rate table','包含派送','Delivery included',{ quoteHint });
+  if(city === '暹粒') return makeR('remote','暹粒','Siem Reap','已识别：暹粒省（' + digits + '）','Detected: Siem Reap (' + digits + ')','暹粒属「其它城市」，派送费按城市分价','Siem Reap — priced as "Other Cities"','请参考「其它城市」栏价目','See "Other Cities" column',{ quoteHint });
+  if(city === '西港') return makeR('remote','西港','Sihanoukville','已识别：西哈努克港（' + digits + '）','Detected: Sihanoukville (' + digits + ')','西港属「其它城市」，派送费按城市分价','Sihanoukville — priced as "Other Cities"','请参考「其它城市」栏价目','See "Other Cities" column',{ quoteHint });
+  return makeR('remote','其它城市','Other Cities','非金边市区（' + digits + '）','Outside Phnom Penh (' + digits + ')','金边以外城市，派送费按城市分价，请参考「其它城市」栏或单询','Outside Phnom Penh — priced by city, see "Other Cities" column or consult','金边以外需按城市分价','Outside Phnom Penh — priced by city',{ quoteHint });
+}
+function evalLaZip(digits){
+  const prefix = laPostalPrefix(digits);
+  const city = LA_POSTAL_MAP[prefix];
+  const mk = (level, tagZh, tagEn, titleZh, titleEn, descZh, descEn, feeZh, feeEn) => {
+    const lines = getLaQuoteLines(city === '其它城市' ? '万象' : city);
+    return makeR(level, tagZh, tagEn, titleZh, titleEn, descZh, descEn, feeZh, feeEn,
+      lines.length ? { quoteHint: { title: t('📋 报价参考','📋 Rate Reference'), lines } } : null);
+  };
+  if(city === '万象') return mk('ok','万象','Vientiane','已识别：万象市（' + digits + '）','Detected: Vientiane (' + digits + ')','万象可派送，普货 200 元/票，超大件 400 元/票','Vientiane delivery: general 200, oversize 400 CNY/ticket','派送费按件型另计', 'Delivery fee by size class');
+  if(city === '孟赛') return mk('remote','孟赛','Muang Xay','已识别：孟赛（乌多姆赛省，'+digits+'）','Detected: Muang Xay (Oudomxay, '+digits+')','孟赛无派送，需到站点自提或单独包车','Muang Xay — self-pickup or dedicated truck only');
+  if(city === '琅勃拉邦') return mk('remote','琅勃拉邦','Luang Prabang','已识别：琅勃拉邦（'+digits+'）','Detected: Luang Prabang ('+digits+')','琅勃拉邦无派送，需到站点自提或单独包车','Luang Prabang — self-pickup only');
+  if(city === '沙湾拿吉') return mk('remote','沙湾拿吉','Savannakhet','已识别：沙湾拿吉（'+digits+'）','Detected: Savannakhet ('+digits+')','沙湾拿吉无派送，需到站点自提或单独包车','Savannakhet — self-pickup only');
+  if(city === '塔克') return mk('remote','塔克','Thakhek','已识别：塔克（甘蒙省，'+digits+'）','Detected: Thakhek (Khammouane, '+digits+')','塔克无派送，需到站点自提或单独包车','Thakhek — self-pickup only');
+  if(city === '巴色') return mk('remote','巴色','Pakse','已识别：巴色（占巴塞省，'+digits+'）','Detected: Pakse (Champasak, '+digits+')','巴色无派送，需到站点自提或单独包车','Pakse — self-pickup only');
+  return makeR('warn','待确认','Pending','邮编 ' + digits + ' 未匹配到已知城市','Postcode ' + digits + ' not matched','老挝仅万象可派送，其它城市需自提或包车，请与 Emily 确认','Only Vientiane delivery available; others self-pickup / dedicated truck', null, null, { suggestRegion: 'other' });
 }
 
 function updateZipUI(channel){
   const code = channel ? channel.country : (countrySelect.value || '');
   const meta = POSTAL_META[code];
   const zone = zoneOf(channel);
-  if(meta && meta.len > 0){
-    zipEl.maxLength = meta.len;
-    zipEl.setAttribute('placeholder', t(meta.ph.zh, meta.ph.en));
-  } else if(meta){
-    zipEl.removeAttribute('maxlength');
-    zipEl.setAttribute('placeholder', t(meta.ph.zh, meta.ph.en));
-  } else {
-    zipEl.removeAttribute('maxlength');
-    zipEl.setAttribute('placeholder', t('邮编 / 城市','Postcode / City'));
-  }
-  if(code === 'vn'){
-    zipEl.removeAttribute('maxlength');
-    zipEl.setAttribute('placeholder', t('5位或6位邮编，如 10000 / 100000','5 or 6-digit postcode, e.g. 10000 / 100000'));
-  }
+  if(meta && meta.len > 0){ zipEl.maxLength = meta.len; zipEl.setAttribute('placeholder', t(meta.ph.zh, meta.ph.en)); }
+  else if(meta){ zipEl.removeAttribute('maxlength'); zipEl.setAttribute('placeholder', t(meta.ph.zh, meta.ph.en)); }
+  else { zipEl.removeAttribute('maxlength'); zipEl.setAttribute('placeholder', t('邮编 / 城市','Postcode / City')); }
+  if(code === 'vn'){ zipEl.removeAttribute('maxlength'); zipEl.setAttribute('placeholder', t('5位或6位邮编，如 10000 / 100000','5 or 6-digit postcode, e.g. 10000 / 100000')); }
   zipEl.classList.remove('remote','ok');
   remoteNoteEl.className = 'remote-note';
   remoteNoteEl.innerHTML = '';
@@ -2351,9 +2661,11 @@ function updateZipUI(channel){
     zipStatusEl.className = 'zip-status unknown';
     let tipText;
     if(code === 'ae'){ tipText = t('💡 阿联酋无邮政编码，请填写城市名（迪拜 / 沙迦 等）','💡 UAE has no postcode — enter city name'); }
-    else if(zone === 'vn'){ tipText = t('💡 填入 5 位或 6 位邮编，自动判断派送区域与附加费','💡 Enter 5 or 6-digit postcode'); }
-    else if(meta && meta.len){ tipText = t('💡 填入 '+meta.len+' 位邮编，自动判断派送区域与附加费','💡 Enter '+meta.len+'-digit postcode'); }
-    else { tipText = t('💡 填入邮编，自动判断派送区域与附加费','💡 Enter postcode to auto-check'); }
+    else if(zone === 'vn'){ tipText = t('💡 填入 5 位或 6 位邮编，自动识别省份与派送费（如河内 10000）','💡 Enter 5/6-digit postcode to auto-detect province (e.g. Hanoi 10000)'); }
+    else if(zone === 'kh'){ tipText = t('💡 填入 5 位邮编，自动识别城市（金边 12000）','💡 Enter 5-digit postcode (Phnom Penh 12000)'); }
+    else if(zone === 'la'){ tipText = t('💡 填入 5 位邮编，自动识别城市（万象 01000）','💡 Enter 5-digit postcode (Vientiane 01000)'); }
+    else if(meta && meta.len){ tipText = t('💡 填入 '+meta.len+' 位邮编，自动判断派送区域与转运费','💡 Enter '+meta.len+'-digit postcode to auto-detect transit fee'); }
+    else { tipText = t('💡 填入邮编，自动判断派送区域与转运费','💡 Enter postcode to auto-detect transit fee'); }
     zipStatusEl.innerHTML = tipText;
     return;
   }
@@ -2363,25 +2675,46 @@ function updateZipUI(channel){
   const title = tObj(r.title);
   const desc = tObj(r.desc);
   const isGood = (r.level === 'ok' || r.level === 'info');
-  if(isGood){
-    zipEl.classList.add('ok');
-    zipStatusEl.className = 'zip-status ok';
-    remoteNoteEl.className = 'remote-note show safe';
-  } else {
-    zipEl.classList.add('remote');
-    zipStatusEl.className = 'zip-status remote';
-    remoteNoteEl.className = 'remote-note show hit';
-  }
+  if(isGood){ zipEl.classList.add('ok'); zipStatusEl.className = 'zip-status ok'; remoteNoteEl.className = 'remote-note show safe'; }
+  else { zipEl.classList.add('remote'); zipStatusEl.className = 'zip-status remote'; remoteNoteEl.className = 'remote-note show hit'; }
   zipStatusEl.innerHTML = '<span class="tag">'+tag+'</span> '+title;
   let html = '<div>'+(isGood ? '✅ ' : '📍 ')+'<strong>'+tag+'</strong>：'+title+'</div>';
   if(desc) html += '<div class="sub">'+desc+'</div>';
   if(r.fee) html += '<div class="sub">💰 '+t('附加费','Surcharge')+'：<strong>'+tObj(r.fee)+'</strong></div>';
+
+  const rec = getRegionRecommendation(code, raw);
+  if(rec && rec.city){
+    html += '<div class="sub" style="margin-top:6px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.10);">'
+          + '<strong>🏙 ' + t('识别城市/区域','Detected city/region') + '：</strong>' + esc(rec.city)
+          + (rec.channelHint ? ' <span style="color:#8A5A5A;">→ ' + esc(rec.channelHint) + '</span>' : '')
+          + '</div>';
+  }
+
+  if(r.quoteHint && r.quoteHint.lines && r.quoteHint.lines.length){
+    html += '<div class="sub" style="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.10);">'
+          + '<strong>' + r.quoteHint.title + '</strong>';
+    r.quoteHint.lines.forEach(line => { html += '<div style="padding:2px 0;font-size:11px;">· ' + line + '</div>'; });
+    html += '</div>';
+  }
   if(r.suggest && r.suggest.channelKey){
     const reasonTxt = tObj(r.suggest.reason);
     html += '<button type="button" class="zip-switch-btn" data-switch-channel="'+esc(r.suggest.channelKey)+'">➡️ '+t('切换到 ','Switch to ')+esc(r.suggest.channelKey)+'</button>';
     if(reasonTxt) html += '<div class="sub" style="margin-top:4px;opacity:.8;">'+reasonTxt+'</div>';
+
   }
   remoteNoteEl.innerHTML = html;
+
+  if(r.suggest && r.suggest.autoSelectProvince){
+    const vnSel = document.getElementById('vnProvinceSelect');
+    if(vnSel && vnSel.options && vnSel.options.length){
+      const hit = Array.from(vnSel.options).find(o => o.value === r.suggest.autoSelectProvince);
+      if(hit && vnSel.value !== hit.value){
+        vnSel.value = hit.value;
+        if(typeof updateVnProvinceTip === 'function') updateVnProvinceTip();
+        if(typeof renderLclQuote === 'function') renderLclQuote();
+      }
+    }
+  }
 }
 
 let dimRows = [{L:'', W:'', H:'', qty:1, weight:''}];
@@ -2390,13 +2723,7 @@ const dimSummaryEl = document.getElementById('dimSummary');
 function unitFactor(u){ return u==='mm' ? 0.1 : u==='m' ? 100 : 1; }
 function getDimRowsCm(){
   const f = unitFactor(currentUnit);
-  return dimRows.map(r => ({
-    L: (parseFloat(r.L) || 0) * f,
-    W: (parseFloat(r.W) || 0) * f,
-    H: (parseFloat(r.H) || 0) * f,
-    qty: Math.max(1, parseInt(r.qty) || 1),
-    weight: parseFloat(r.weight) || 0
-  }));
+  return dimRows.map(r => ({ L:(parseFloat(r.L)||0)*f, W:(parseFloat(r.W)||0)*f, H:(parseFloat(r.H)||0)*f, qty:Math.max(1,parseInt(r.qty)||1), weight:parseFloat(r.weight)||0 }));
 }
 function getTotalCbm(){ return getDimRowsCm().reduce((s,r)=> s + (r.L*r.W*r.H/1000000)*r.qty, 0); }
 function getTotalWeight(){ return getDimRowsCm().reduce((s,r)=> s + r.weight*r.qty, 0); }
@@ -2446,9 +2773,7 @@ function updateDimItemCbm(){
       const total = unit * r.qty;
       const tw = (r.weight||0) * r.qty;
       el.innerHTML = `单件 <b>${unit.toFixed(4)}</b> CBM · 小计 <b>${total.toFixed(4)}</b> CBM / <b>${tw.toFixed(2)}</b> kg`;
-    } else {
-      el.innerHTML = '—';
-    }
+    } else { el.innerHTML = '—'; }
   });
 }
 document.getElementById('unitSwitch').addEventListener('click', function(e){
@@ -2461,8 +2786,7 @@ document.getElementById('unitSwitch').addEventListener('click', function(e){
     L: r.L===''? '' : +(parseFloat(r.L) * oldF / newF).toFixed(4).replace(/\.?0+$/,''),
     W: r.W===''? '' : +(parseFloat(r.W) * oldF / newF).toFixed(4).replace(/\.?0+$/,''),
     H: r.H===''? '' : +(parseFloat(r.H) * oldF / newF).toFixed(4).replace(/\.?0+$/,''),
-    qty: r.qty,
-    weight: r.weight
+    qty: r.qty, weight: r.weight
   }));
   currentUnit = newU;
   document.querySelectorAll('.unit-btn').forEach(b=>b.classList.toggle('active', b.dataset.unit===newU));
@@ -2511,19 +2835,6 @@ function getCurrentChannel(){
   const info = parseChannelVal(channelSelect.value);
   return info ? info.channel : null;
 }
-function isRemoteNow(channel){
-  if(!channel || !channel.billing || !channel.billing.remoteSurcharge) return false;
-  const zone = zoneOf(channel);
-  const zip = (zipEl.value || '').trim();
-  if(!zone || !/^\d+$/.test(zip)) return false;
-  const n = parseInt(zip, 10);
-  if(zone === 'my_air') return !!matchArea(n, MY_AIR_REMOTE);
-  if(zone === 'my_west_sea'){
-    const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
-    return !isEast && !!matchArea(n, MY_SEA_REMOTE);
-  }
-  return false;
-}
 function updateDimSummary(){
   const rows = getDimRowsCm();
   const totalVol = getTotalCbm();
@@ -2536,7 +2847,6 @@ function updateDimSummary(){
     dimSummaryEl.innerHTML = '';
     return;
   }
-  const p = rows[0];
   let html = '';
   html += '<div class="kv"><span>'+t('共 '+totalQty+' 件 · '+rows.length+' 种规格',''+totalQty+' pcs · '+rows.length+' spec(s)')+'</span><b>'+totalVol.toFixed(4)+' CBM</b></div>';
   html += '<div class="kv"><span>'+t('总实重','Total actual weight')+'</span><b>'+totalWeight.toFixed(2)+' KG</b></div>';
@@ -2550,44 +2860,19 @@ function updateDimSummary(){
       if(halfWeight > chargeWeight) chargeWeight = halfWeight;
     }
     html += '<div class="kv"><span>'+t('体积重（÷'+divisor+'）','Volumetric (÷'+divisor+')')+'</span><b>'+volWeight.toFixed(2)+' KG</b></div>';
-    if(halfWeight !== null && totalWeight > 0){
-      html += '<div class="kv"><span>'+t('半泡','Half-volumetric')+'</span><b>'+halfWeight.toFixed(2)+' KG</b></div>';
-    }
-    if(totalWeight > 0){
-      html += '<div class="kv highlight"><span>'+t('计费重（取大）','Chargeable (max)')+'</span><b>'+chargeWeight.toFixed(2)+' KG</b></div>';
-    } else {
-      html += '<div class="hint">💡 '+t('请填写实重，即可算出计费重','Enter actual weight to get chargeable weight')+'</div>';
-    }
-    if(b.remoteSurcharge && isRemoteNow(channel) && totalWeight > 0){
-      const remoteDiv = b.remoteRatio || divisor;
-      const rVol = (totalVol*1000000/remoteDiv);
-      let cw = Math.max(rVol, totalWeight);
-      if(b.foam === 'half') cw = Math.max(cw, (rVol + totalWeight)/2);
-      const surcharge = cw * b.remoteSurcharge;
-      html += '<div class="kv highlight-red"><span>'+t('偏远附加费（+'+b.remoteSurcharge+'元/KG）','Remote surcharge (+'+b.remoteSurcharge+' CNY/KG)')+'</span><b>+ '+surcharge.toFixed(2)+' 元</b></div>';
-    }
+    if(halfWeight !== null && totalWeight > 0) html += '<div class="kv"><span>'+t('半泡','Half-volumetric')+'</span><b>'+halfWeight.toFixed(2)+' KG</b></div>';
+    if(totalWeight > 0) html += '<div class="kv highlight"><span>'+t('计费重（实重/体积重'+(halfWeight!==null?'/半泡':'')+' 取大）','Chargeable (max)')+'</span><b>'+chargeWeight.toFixed(2)+' KG</b></div>';
+    else html += '<div class="hint">💡 '+t('请填写实重，即可算出计费重','Enter actual weight to get chargeable weight')+'</div>';
   } else {
     const minCbm = b.minCbm || 0;
-    if(minCbm && totalVol < minCbm){
-      html += '<div class="kv warn"><span>'+t('低于最低计费方数','Below min billable')+'</span><b>'+t('按 '+minCbm+' CBM 起','Min '+minCbm+' CBM')+'</b></div>';
-    }
-    if(b.remoteSurcharge && isRemoteNow(channel) && totalWeight > 0){
-      const remoteDiv = b.remoteRatio || 6000;
-      const volWeight = (totalVol*1000000/remoteDiv);
-      const chargeWeight = Math.max(volWeight, totalWeight);
-      const surcharge = chargeWeight * b.remoteSurcharge;
-      html += '<div class="kv highlight-red"><span>'+t('偏远附加费（+'+b.remoteSurcharge+'元/KG）','Remote surcharge (+'+b.remoteSurcharge+' CNY/KG)')+'</span><b>+ '+surcharge.toFixed(2)+' 元</b></div>';
-    }
+    if(minCbm && totalVol < minCbm) html += '<div class="kv warn"><span>'+t('低于最低计费方数','Below min billable')+'</span><b>'+t('按 '+minCbm+' CBM 起','Min '+minCbm+' CBM')+'</b></div>';
     if(b.overweightRatio && totalWeight > 0){
       const maxWeight = totalVol * b.overweightRatio;
-      if(totalWeight > maxWeight){
-        html += '<div class="kv warn"><span>'+t('⚠️ 超重','⚠️ Overweight')+'</span><b>'+totalWeight.toFixed(1)+' &gt; '+maxWeight.toFixed(1)+' KG</b></div>';
-      }
+      if(totalWeight > maxWeight) html += '<div class="kv warn"><span>'+t('⚠️ 超重','⚠️ Overweight')+'</span><b>'+totalWeight.toFixed(1)+' &gt; '+maxWeight.toFixed(1)+' KG</b></div>';
     }
     let hint = t('海运/陆运大货按体积（方数）计费', 'Sea/Bulk land bills by volume (CBM)');
     if(b.cbmRatio) hint += '；' + t('1方='+b.cbmRatio+'KG', '1 CBM = '+b.cbmRatio+'KG');
     if(b.overweightRatio) hint += '；' + t('超重标准 1方='+b.overweightRatio+'KG', ' overweight 1 CBM = '+b.overweightRatio+'KG');
-    if(b.remoteSurcharge) hint += '；' + t('偏远派送费另加'+b.remoteSurcharge+'元/KG', ' remote +'+b.remoteSurcharge+' CNY/KG');
     html += '<div class="hint">💡 '+hint+'</div>';
   }
   dimSummaryEl.innerHTML = html;
@@ -2634,11 +2919,8 @@ function checkReportRequirement(){
   }
   if(policyLines.length){
     let updatedTag;
-    if(POLICY_SOURCE === 'synced' && POLICY_UPDATED){
-      updatedTag = ' <span style="font-weight:400;opacity:.7;font-size:10px;">(' + t('更新','Updated') + ' ' + POLICY_UPDATED + ')</span>';
-    } else {
-      updatedTag = ' <span style="font-weight:400;opacity:.55;font-size:10px;">(' + t('内置','Built-in') + ')</span>';
-    }
+    if(POLICY_SOURCE === 'synced' && POLICY_UPDATED) updatedTag = ' <span style="font-weight:400;opacity:.7;font-size:10px;">(' + t('更新','Updated') + ' ' + POLICY_UPDATED + ')</span>';
+    else updatedTag = ' <span style="font-weight:400;opacity:.55;font-size:10px;">(' + t('内置','Built-in') + ')</span>';
     html += '<span class="rt-title' + (reasons.length ? ' mt' : '') + '">' + policy.flag + ' ' + t('目的国政策提示','Destination policy') + updatedTag + '</span>';
     policyLines.forEach(r => { html += '<div class="rt-line">' + r + '</div>'; });
   }
@@ -2660,36 +2942,31 @@ function autoSelectPriceTypeByZip(channel, zip){
   let target = null;
   if(nameZh.indexOf('马来西亚空运') === 0){
     const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
-    const prefix = isEast ? '东马' : '西马';
-    target = opts.find(o => o.text.indexOf(prefix) === 0);
+    target = opts.find(o => o.text.indexOf(isEast?'东马':'西马') === 0);
   }
   else if(nameZh.indexOf('马来西亚西马海运') === 0){
-    const isInState = zip.startsWith('456');
-    const kw = isInState ? '坡内' : '坡外';
+    const kw = zip.startsWith('456') ? '坡内' : '坡外';
     target = opts.find(o => o.text.indexOf(kw) >= 0);
   }
   else if(nameZh.indexOf('泰国陆运双清包税') === 0){
-    const isBkk = zip.startsWith('10');
-    if(isBkk){ target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') < 0); }
-    else { target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') >= 0); }
+    const isBkk = isThBangkokZip(n);
+    if(isBkk) target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') < 0);
+    else target = opts.find(o => o.text.indexOf('曼谷') >= 0 && o.text.indexOf('外') >= 0);
   }
   else if(nameZh.indexOf('菲律宾海运') === 0 || nameZh.indexOf('菲律宾空运') === 0){
     const covered = (n >= 1000 && n <= 1812) || (n >= 4023 && n <= 4027) ||
                     [3005,3019,3020,3023].includes(n) ||
                     [4100,4102,4103,4104,4107,4108,4109,4114,4118].includes(n);
-    if(covered){ target = opts.find(o => o.text.indexOf('马尼拉') >= 0); }
+    if(covered) target = opts.find(o => o.text.indexOf('马尼拉') >= 0);
   }
   else if(nameZh.indexOf('印度尼西亚海运') === 0){
-    if(n >= 10000 && n <= 15999){ target = opts.find(o => o.text.indexOf('雅加达') >= 0); }
+    if(n >= 10000 && n <= 15999) target = opts.find(o => o.text.indexOf('雅加达') >= 0);
   }
   if(nameZh.indexOf('马来西亚东马海运') === 0){
     const map = [
-      {r:[[88000,89999]], kw:'亚庇'},
-      {r:[[90000,91999]], kw:'山打根'},
-      {r:[[93000,93999]], kw:'古晋'},
-      {r:[[96000,96999]], kw:'诗巫'},
-      {r:[[97000,97999]], kw:'民都鲁'},
-      {r:[[98000,98999]], kw:'美里'}
+      {r:[[88000,89999]], kw:'亚庇'},{r:[[90000,91999]], kw:'山打根'},
+      {r:[[93000,93999]], kw:'古晋'},{r:[[96000,96999]], kw:'诗巫'},
+      {r:[[97000,97999]], kw:'民都鲁'},{r:[[98000,98999]], kw:'美里'}
     ];
     for(const m of map){
       if(m.r.some(([a,b])=>n>=a && n<=b)){
@@ -2703,16 +2980,12 @@ function autoSelectPriceTypeByZip(channel, zip){
     const hit = opts.find(o=>o.text.indexOf(isJkt?'普货':'敏感')>=0);
     if(hit){ optSel.value = hit.value; return true; }
   }
-  if(target && optSel.value !== target.value){
-    optSel.value = target.value;
-    return true;
-  }
+  if(target && optSel.value !== target.value){ optSel.value = target.value; return true; }
   return false;
 }
 
 zipEl.addEventListener('input', ()=>{
-  const info = parseChannelVal(channelSelect.value);
-  const cc = info ? info.channel.country : (countrySelect.value || '');
+  const cc = countrySelect.value || '';
   if(cc === 'ae'){
     zipEl.setAttribute('inputmode','text');
     zipEl.removeAttribute('maxlength');
@@ -2727,10 +3000,42 @@ zipEl.addEventListener('input', ()=>{
       try{ zipEl.setSelectionRange(Math.min(pos, v.length), Math.min(pos, v.length)); }catch(e){}
     }
   }
+  const zip = (zipEl.value||'').trim();
+  const cur = channelSelect.value;
+  fillChannelOptions(cc, zip);
+  if(Array.from(channelSelect.options).some(o => o.value === cur)){
+    channelSelect.value = cur;
+  } else {
+    const firstOpt = Array.from(channelSelect.options).find(o => o.value);
+    if(firstOpt) channelSelect.value = firstOpt.value;
+  }
+  const info = parseChannelVal(channelSelect.value);
+  if(info) countrySelect.value = info.channel.country;
+  updateChannelUI();
   updateZipUI(getCurrentChannel());
   updateDimSummary();
-  autoSelectPriceTypeByZip(getCurrentChannel(), (zipEl.value||'').trim());
-  updateDeliveryFeeTip();
+  autoSelectPriceTypeByZip(getCurrentChannel(), zip);
+  refreshSurchargeDisplay();
+  renderLclQuote();
+  checkReportRequirement();
+});
+zipEl.addEventListener('blur', ()=>{
+  const cc = countrySelect.value || '';
+  const zip = (zipEl.value||'').trim();
+  const cur = channelSelect.value;
+  fillChannelOptions(cc, zip);
+  if(Array.from(channelSelect.options).some(o => o.value === cur)){
+    channelSelect.value = cur;
+  } else {
+    const firstOpt = Array.from(channelSelect.options).find(o => o.value);
+    if(firstOpt) channelSelect.value = firstOpt.value;
+  }
+  const info = parseChannelVal(channelSelect.value);
+  if(info) countrySelect.value = info.channel.country;
+  updateChannelUI();
+  updateZipUI(getCurrentChannel());
+  updateDimSummary();
+  autoSelectPriceTypeByZip(getCurrentChannel(), zip);
   refreshSurchargeDisplay();
   renderLclQuote();
   checkReportRequirement();
@@ -2763,15 +3068,6 @@ if(!window.__zipSwitchBound){
   });
 }
 
-zipEl.addEventListener('blur', ()=>{
-  updateZipUI(getCurrentChannel());
-  updateDimSummary();
-  autoSelectPriceTypeByZip(getCurrentChannel(), (zipEl.value||'').trim());
-  updateDeliveryFeeTip();
-  refreshSurchargeDisplay();
-  renderLclQuote();
-  checkReportRequirement();
-});
 channelSelect.addEventListener('change', ()=>{
   userOverridePriceType = false;
   const info = parseChannelVal(channelSelect.value);
@@ -2790,14 +3086,17 @@ countrySelect.addEventListener('change', ()=>{
 
 const QUOTE_RULES = {
   "马来西亚空运包税专线":     { basis:'weight', divisor:6000, foam:'auto', roundUnit:1 },
-  "马来西亚西马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.3, overweightRatio:500, remoteSurcharge:2, remoteDivisor:6000 },
+  "马来西亚西马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.3, overweightRatio:500 },
+  "马来西亚西马海运小包":     { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
   "马来西亚东马海运":         { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
   "新加坡空运专线（不包税）": { basis:'weight', divisor:6000, foam:'half', roundUnit:1 },
   "新加坡空运专线（包税）":   { basis:'weight', divisor:6000, foam:'half', roundUnit:1 },
-  "新加坡海运专线":           { basis:'volume', roundUnit:0.1, minCbm:0.1, minCharge:150, fixedCol:'1方' },
+  "新加坡海运专线":           { basis:'volume', roundUnit:0.1, minCbm:0.1, staircase:true,
+                                stairFirst:150, stairStep:50, stairStepUnit:0.1, bulkUnitPrice:350 },
   "新加坡海运小包（包税到门）": { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
   "菲律宾空运包税专线":       { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
-  "菲律宾海运包税专线":       { basis:'volume', roundUnit:0.1, minCbm:1 },
+  "菲律宾海运包税专线":       { basis:'volume', roundUnit:0.1, isPhSea:true,
+                                manilaMinCharge:500, otherMinCbm:1 },
   "泰国陆运双清包税":         { basis:'weight', divisor:6000, foam:'none', roundUnit:1 },
   "泰国海运大货专线 DDP":     { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
   "泰国陆运大货专线 DDP":     { basis:'volume', roundUnit:0.1, minCbm:0.5, overweightRatio:500 },
@@ -2880,60 +3179,104 @@ function getDeliveryFeeRule(){
   if(!ch) return null;
   const zone = zoneOf(ch);
   if(!zone) return null;
-  if(zone === 'vn') return null;
+  if(zone === 'vn') return (ch.billing && ch.billing.mode === 'volume') ? DELIVERY_FEE_RULES.vn_bulk : DELIVERY_FEE_RULES.vn_parcel;
   return DELIVERY_FEE_RULES[zone] || null;
 }
-function updateDeliveryFee(){
-  const row = document.getElementById('deliveryFeeRow');
-  const sel = document.getElementById('deliveryFeeSelect');
-  if(!row || !sel) return;
-  const rule = getDeliveryFeeRule();
-  if(!rule){
-    row.style.display = 'none';
-    sel.innerHTML = '';
-    const tip = document.getElementById('deliveryFeeTip');
-    if(tip) tip.textContent = '';
-    return;
+function autoDetectDeliveryOption(channel, zip){
+  if(!channel || !zip) return null;
+  const zone = zoneOf(channel);
+  if(!zone) return null;
+  const digits = String(zip).trim().replace(/\D/g,'');
+  const n = parseInt(digits, 10);
+  if(isNaN(n)) return null;
+  if(zone === 'my_air'){
+    const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
+    if(isEast){ const hit = matchArea(n, MY_EAST_REMOTE); if(hit) return 'east_remote'; return null; }
+    const hit = matchArea(n, MY_AIR_REMOTE); if(hit) return 'west_remote'; return null;
   }
-  const prev = sel.value;
-  sel.innerHTML = rule.options.map(o => '<option value="'+o.v+'">'+ (LANG==='zh' ? o.zh : o.en) +'</option>').join('');
-  if(rule.options.some(o=>o.v===prev)) sel.value = prev;
-  row.style.display = '';
-  updateDeliveryFeeTip();
-}
-function updateDeliveryFeeTip(){
-  const tip = document.getElementById('deliveryFeeTip');
-  const sel = document.getElementById('deliveryFeeSelect');
-  const rule = getDeliveryFeeRule();
-  if(!tip || !sel || !rule){ if(tip) tip.textContent=''; return; }
-  const opt = rule.options.find(o=>o.v===sel.value);
-  if(!opt){ tip.textContent=''; return; }
-  let msg = '';
-  if(opt.v === 'auto'){ msg = t('将根据收件邮编自动判断是否产生偏远/额外派送费。','Auto-detected from the postcode.'); }
-  else if(opt.calc && opt.calc.type === 'none'){ msg = t('该费用需人工确认，不计入系统预估。','This fee requires manual confirmation.'); }
-  else if(opt.calc){ msg = t('该费用将自动计入下方预估运费。','This fee will be included in the estimate below.'); }
-  else { msg = t('不产生额外派送费。','No extra delivery fee.'); }
-  tip.innerHTML = '💰 ' + (LANG==='zh' ? opt.zh : opt.en) + '<br>' + msg;
+  if(zone === 'my_west_sea'){
+    const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
+    if(isEast) return null;
+    const hit = matchArea(n, MY_SEA_REMOTE); if(hit) return 'west_remote'; return null;
+  }
+  if(zone === 'my_east_sea'){
+    const isEast = (n>=87000 && n<=91999) || (n>=93000 && n<=98999);
+    if(!isEast) return null;
+    const hit = matchArea(n, MY_EAST_REMOTE); if(hit) return 'east_remote'; return null;
+  }
+  if(zone === 'sg'){
+    const isRemote = (n>=810000&&n<=819999)||(n>=490000&&n<=499999)||
+      (n>=18955&&n<=18974)||n===99447||n===99453||n===619346||n===619110;
+    if(isRemote) return 'remote'; return null;
+  }
+  if(zone === 'ph_air'){
+    const covered = (n>=1000 && n<=1812) || (n>=4023 && n<=4027) || PH_COVERED_LIST.indexOf(n) >= 0;
+    if(!covered) return 'outside_manila'; return null;
+  }
+  if(zone === 'ph_sea'){
+    const covered = (n>=1000 && n<=1812) || (n>=4023 && n<=4027) || PH_COVERED_LIST.indexOf(n) >= 0;
+    if(covered) return 'under_cbm'; return 'other_city';
+  }
+  if(zone === 'th_land' || zone === 'th_land_bulk' || zone === 'th_sea'){
+    const isBkk = isThBangkokZip(n);
+    if(isBkk) return 'low_cbm';
+    if(n >= 84000) return 'outside_remote';
+    return null;
+  }
+  if(zone === 'id_air'){ if(n>=10000 && n<=15999) return 'jakarta_small'; return 'other_area'; }
+  if(zone === 'id_sea'){ if(n>=10000 && n<=15999) return 'low_cbm'; return 'remote'; }
+  if(zone === 'vn'){
+    const isBulk = channel.billing && channel.billing.mode === 'volume';
+    if(!isBulk) return null;
+    const prefix = vnPostalPrefix(digits);
+    const prov = VN_POSTAL_MAP[prefix];
+    if(prov){
+      const vnSel = document.getElementById('vnProvinceSelect');
+      if(vnSel && Array.from(vnSel.options).some(o=>o.value===prov)) vnSel.value = prov;
+      if(prov === '河内') return 'hanoi_free';
+      return 'by_province';
+    }
+    return null;
+  }
+  if(zone === 'kh_bulk'){ if(n >= 12000 && n <= 12999) return 'low_cbm'; return 'other_city'; }
+  if(zone === 'kh_parcel'){ if(n >= 12000 && n <= 12999) return null; return 'other_city'; }
+  return null;
 }
 function calcDeliveryFee(L, W, H, Q, totalWeight, totalVol){
   const rule = getDeliveryFeeRule();
   if(!rule) return null;
-  const sel = document.getElementById('deliveryFeeSelect');
-  const val = sel ? sel.value : 'auto';
-  if(!val || val === 'auto') return null;
-  const opt = rule.options.find(o=>o.v===val);
-  if(!opt || !opt.calc) return null;
-  const c = opt.calc;
+  const autoVal = autoDetectDeliveryOption(getCurrentChannel(), (zipEl.value||'').trim());
+  if(!autoVal) return null;
+  const opt = rule.options.find(o=>o.v===autoVal);
+  if(!opt) return null;
   const label = LANG==='zh' ? opt.zh : opt.en;
+  if(opt.calc && opt.calc.type === 'none' && opt.calc.included) return null;
+  if(opt.calc && opt.calc.type === 'none') return {label, value:0, detail:t('需人工确认','Manual confirmation required'), noCharge:true};
+  if(!opt.calc) return null;
+  const c = opt.calc;
+  if(c.onlyIfUnder1Cbm && totalVol >= 1) return null;
+  if(c.onlyIfWeightUnder && totalWeight >= c.onlyIfWeightUnder) return null;
+  if(c.type === 'vnProvince'){
+    const vnSel = document.getElementById('vnProvinceSelect');
+    const provName = vnSel ? vnSel.value : '';
+    if(!provName) return null;
+    const prov = VN_DELIVERY_PROVINCES.find(p=>p.zh===provName);
+    if(!prov) return null;
+    if(prov.kg === 0 && prov.cbm === 0) return {label: t('派送费（'+provName+'：免费）','Delivery ('+provName+': free)'), value: 0, detail: '', isTransit:true};
+    const weightFee = totalWeight * prov.kg;
+    const cbmForFee = Math.max(totalVol, 1);
+    const cbmFee = cbmForFee * prov.cbm;
+    let deliveryFee = Math.max(weightFee, cbmFee);
+    if(prov.minFee && deliveryFee < prov.minFee) deliveryFee = prov.minFee;
+    if(prov.maxFee && deliveryFee > prov.maxFee) deliveryFee = prov.maxFee;
+    const detail = t('毛重 '+totalWeight.toFixed(2)+'KG×'+prov.kg+' vs 立方 '+cbmForFee.toFixed(2)+'×'+prov.cbm+' 取大', 'max('+totalWeight.toFixed(2)+'KG×'+prov.kg+', '+cbmForFee.toFixed(2)+'CBM×'+prov.cbm+')');
+    return {label: t('派送费（'+provName+'）','Delivery ('+provName+')'), value: deliveryFee, detail, isTransit:true};
+  }
   if(c.type === 'perkg'){
     let cw = totalWeight;
-    if(c.divisor){
-      const volW = totalVol*1000000/c.divisor;
-      cw = Math.max(volW, totalWeight);
-      if(c.foam === 'half') cw = Math.max(cw, (volW + totalWeight)/2);
-    }
+    if(c.divisor){ const volW = totalVol*1000000/c.divisor; cw = Math.max(volW, totalWeight); }
     if(cw <= 0) return null;
-    return {label: label, value: cw * c.rate, detail: cw.toFixed(2)+'KG × '+c.rate+'元/KG'};
+    return {label, value: cw * c.rate, detail: cw.toFixed(2)+'KG × '+c.rate+'元/KG'};
   }
   if(c.type === 'firstadd'){
     const div = c.divisor || 6000;
@@ -2943,21 +3286,60 @@ function calcDeliveryFee(L, W, H, Q, totalWeight, totalVol){
     const unit = c.unit || 1;
     const units = Math.ceil(cw/unit);
     const value = c.first + c.add * Math.max(0, units-1);
-    return {label: label, value: value, detail: t('首重','First')+' '+c.first+' + '+t('续重','Add')+' '+c.add+'×'+Math.max(0,units-1)};
+    return {label, value, detail: t('首重','First')+' '+c.first+' + '+t('续重','Add')+' '+c.add+'×'+Math.max(0,units-1)};
   }
-  if(c.type === 'percbm'){
-    const cbm = Math.max(totalVol, 0.1);
-    return {label: label, value: cbm * c.rate, detail: cbm.toFixed(3)+'CBM × '+c.rate+'元/CBM'};
-  }
-  if(c.type === 'fixed'){ return {label: label, value: c.rate, detail: ''}; }
+  if(c.type === 'percbm'){ const cbm = Math.max(totalVol, 0.1); return {label, value: cbm * c.rate, detail: cbm.toFixed(3)+'CBM × '+c.rate+'元/CBM'}; }
+  if(c.type === 'fixed') return {label, value: c.rate, detail: ''};
   return null;
 }
-document.getElementById('deliveryFeeSelect').addEventListener('change', function(){
-  updateDeliveryFeeTip();
-  refreshSurchargeDisplay();
-  renderLclQuote();
-});
 
+function calcAutoOversizeSurcharges(){
+  const ch = getCurrentChannel();
+  if(!ch || !ch.name) return {items:[], total:0};
+  const cfg = AUTO_SURCHARGE_TABLE[ch.name.zh];
+  if(!cfg || !cfg.rules || !cfg.rules.length) return {items:[], total:0};
+  const rows = getDimRowsCm();
+  const totalWeight = getTotalWeight();
+  const totalVol = getTotalCbm();
+  const Q = getTotalQty() || 1;
+  let maxSide = 0, maxUnitWeight = 0, maxL = 0, maxW = 0, maxH = 0;
+  rows.forEach(r=>{
+    const side = Math.max(r.L||0, r.W||0, r.H||0);
+    if(side > maxSide) maxSide = side;
+    if((r.weight||0) > maxUnitWeight) maxUnitWeight = r.weight||0;
+    if((r.L||0) > maxL) maxL = r.L||0;
+    if((r.W||0) > maxW) maxW = r.W||0;
+    if((r.H||0) > maxH) maxH = r.H||0;
+  });
+  const v = { L: maxL, W: maxW, H: maxH, maxSide, unitWeight: maxUnitWeight, totalWeight,
+    unitVol: rows.length ? (rows[0].L*rows[0].W*rows[0].H/1000000) : 0, totalVol, Q };
+  const items = [];
+  let total = 0;
+  cfg.rules.forEach(rule=>{
+    let hit = false;
+    try{ hit = rule.check(v); }catch(e){}
+    if(!hit) return;
+    const calc = rule.calc || {};
+    let fee = 0, detail = '';
+    if(calc.type === 'fixed'){ fee = calc.value || 0; detail = t('固定 '+fee+' 元/票', 'Fixed '+fee+' CNY/ticket'); }
+    else if(calc.type === 'perkg'){
+      const div = calc.divisor || 6000;
+      const volW = totalVol*1000000/div;
+      const cw = Math.max(volW, totalWeight);
+      fee = cw * (calc.rate||0);
+      detail = t(cw.toFixed(2)+'KG × '+calc.rate+'元', cw.toFixed(2)+'KG × '+calc.rate);
+    } else if(calc.type === 'percbm'){
+      const cbm = Math.max(totalVol, 0.1);
+      fee = cbm * (calc.rate||0);
+      detail = t(cbm.toFixed(3)+'CBM × '+calc.rate+'元', cbm.toFixed(3)+'CBM × '+calc.rate);
+    }
+    const customDetail = rule.detail ? tObj(rule.detail) : '';
+    if(customDetail) detail = customDetail;
+    items.push({ id: rule.id, label: rule.label, value: fee, detail });
+    total += fee;
+  });
+  return {items, total};
+}
 function updateSurchargeUI(){
   const row = document.getElementById('surchargeRow');
   const box = document.getElementById('surchargeBox');
@@ -2965,9 +3347,7 @@ function updateSurchargeUI(){
   const ch = getCurrentChannel();
   if(!ch || !ch.name){ row.style.display='none'; box.innerHTML=''; return; }
   const cfg = SURCHARGE_CONFIG[ch.name.zh];
-  if(!cfg || ((!cfg.auto||!cfg.auto.length) && (!cfg.manual||!cfg.manual.length))){
-    row.style.display='none'; box.innerHTML=''; return;
-  }
+  if(!cfg || ((!cfg.auto||!cfg.auto.length) && (!cfg.manual||!cfg.manual.length))){ row.style.display='none'; box.innerHTML=''; return; }
   const prev = {};
   box.querySelectorAll('input[type=checkbox]').forEach(cb=>{ prev[cb.value]=cb.checked; });
   let html = '';
@@ -2996,60 +3376,41 @@ function updateSurchargeUI(){
     });
   }
   box.innerHTML = html;
-  box.querySelectorAll('input[type=checkbox]').forEach(cb=>{
-    cb.addEventListener('change', ()=>{ renderLclQuote(); });
-  });
+  box.querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.addEventListener('change', ()=>{ renderLclQuote(); }); });
   refreshSurchargeDisplay();
 }
 function calcChannelSurcharges(){
   const ch = getCurrentChannel();
-  if(!ch || !ch.name) return {auto:[], manual:[], total:0};
+  if(!ch || !ch.name) return {auto:[], manual:[], oversize:[], total:0};
   const cfg = SURCHARGE_CONFIG[ch.name.zh];
-  if(!cfg) return {auto:[], manual:[], total:0};
   const p0 = getPrimaryDim();
   const L = p0.L, W = p0.W, H = p0.H;
   const Q = getTotalQty() || 1;
   const uw = p0.weight;
   const tw = getTotalWeight();
-
   const uv = L*W*H/1000000;
   const tv = getTotalCbm();
   const v = {L,W,H,Q,unitWeight:uw,totalWeight:tw,unitVol:uv,totalVol:tv};
-  const res = {auto:[], manual:[], total:0};
+  const res = {auto:[], manual:[], oversize:[], total:0};
+  const os = calcAutoOversizeSurcharges();
+  os.items.forEach(it=>{ res.oversize.push(it); res.total += it.value; });
+  if(!cfg) return res;
   const calcFee = (f)=>{
     if(!f) return {value:0, detail:''};
     if(f.type === 'fixed') return {value:f.value, detail:''};
     if(f.type === 'perkg'){
       let cw = tw;
-      if(f.divisor){
-        const volW = tv*1000000/f.divisor;
-        cw = Math.max(volW, tw);
-        if(f.foam === 'half') cw = Math.max(cw, (volW+tw)/2);
-      }
+      if(f.divisor){ const volW = tv*1000000/f.divisor; cw = Math.max(volW, tw); }
       return {value: cw*f.rate, detail: cw.toFixed(2)+'KG×'+f.rate+'元'};
     }
-    if(f.type === 'percbm'){
-      const cbm = Math.max(tv, 0.1);
-      return {value: cbm*f.rate, detail: cbm.toFixed(3)+'CBM×'+f.rate+'元'};
-    }
+    if(f.type === 'percbm'){ const cbm = Math.max(tv, 0.1); return {value: cbm*f.rate, detail: cbm.toFixed(3)+'CBM×'+f.rate+'元'}; }
     return {value:0, detail:''};
   };
   const calcManual = (c)=>{
     if(!c) return {value:0, detail:''};
     if(c.type === 'fixed') return {value:c.value, detail:''};
-    if(c.type === 'perkg'){
-      let cw = tw;
-      if(c.divisor){
-        const volW = tv*1000000/c.divisor;
-        cw = Math.max(volW, tw);
-        if(c.foam === 'half') cw = Math.max(cw, (volW+tw)/2);
-      }
-      return {value: cw*c.rate, detail: cw.toFixed(2)+'KG×'+c.rate+'元'};
-    }
-    if(c.type === 'percbm'){
-      const cbm = Math.max(tv, 0.1);
-      return {value: cbm*c.rate, detail: cbm.toFixed(3)+'CBM×'+c.rate+'元'};
-    }
+    if(c.type === 'perkg'){ let cw = tw; if(c.divisor){ const volW = tv*1000000/c.divisor; cw = Math.max(volW, tw); } return {value: cw*c.rate, detail: cw.toFixed(2)+'KG×'+c.rate+'元'}; }
+    if(c.type === 'percbm'){ const cbm = Math.max(tv, 0.1); return {value: cbm*c.rate, detail: cbm.toFixed(3)+'CBM×'+c.rate+'元'}; }
     if(c.type === 'firstadd'){
       const volW = tv*1000000/c.divisor;
       const cw = Math.max(volW, tw);
@@ -3077,12 +3438,8 @@ function calcChannelSurcharges(){
       const cb = box.querySelector('input[value="'+it.id+'"]');
       if(cb && cb.checked){
         const f = calcManual(it.calc);
-        if(f.value > 0){
-          res.manual.push({id:it.id, label:it.label, value:f.value, detail:f.detail});
-          res.total += f.value;
-        } else if(f.noCharge){
-          res.manual.push({id:it.id, label:it.label, value:0, detail:f.detail, noCharge:true});
-        }
+        if(f.value > 0){ res.manual.push({id:it.id, label:it.label, value:f.value, detail:f.detail}); res.total += f.value; }
+        else if(f.noCharge){ res.manual.push({id:it.id, label:it.label, value:0, detail:f.detail, noCharge:true}); }
       }
     });
   }
@@ -3124,8 +3481,8 @@ function computeLclQuote(){
   const primary = rows[0] || {L:0,W:0,H:0,qty:1,weight:0};
   const L = primary.L, W = primary.W, H = primary.H;
   const Q = getTotalQty() || 1;
-  const totalVolFromRows = getTotalCbm();
-  const totalWeightFromRows = getTotalWeight();
+  const totalVol = getTotalCbm();
+  const totalWeight = getTotalWeight();
   if(!(L>0 && W>0 && H>0)) return {err:'nodim'};
   const rowZh = c.rows.zh[info.rowIdx];
   const rowEn = c.rows.en[info.rowIdx];
@@ -3133,9 +3490,15 @@ function computeLclQuote(){
   const optEl = document.getElementById('quoteOpt');
   const optIdx = (optEl && optEl.value) ? optEl.value : null;
   const unitVol = L*W*H/1000000;
-  const totalVol = totalVolFromRows;
-  const totalWeight = totalWeightFromRows;
+  let isPhSeaManila = false;
+  if(rule.isPhSea){
+    let cityText = '';
+    if(optEl && optEl.selectedOptions && optEl.selectedOptions[0]) cityText = optEl.selectedOptions[0].textContent || '';
+    if(!cityText && cols.length > 1){ cityText = '马尼拉'; }
+    isPhSeaManila = cityText.indexOf('马尼拉') >= 0;
+  }
   let chargeQty = 0, qtyUnit = '', qtyLines = [], chargeLabel = '';
+  let minCbmApplied = false;
   if(rule.basis === 'weight'){
     if(totalWeight <= 0) return {err:'noweight'};
     const divisor = rule.divisor || 6000;
@@ -3143,11 +3506,9 @@ function computeLclQuote(){
     let foam = rule.foam;
     if(foam === 'auto') foam = (rowZh[0].indexOf('东马') >= 0) ? 'none' : 'half';
     let charge = Math.max(volW, totalWeight);
+
     let halfVal = null;
-    if(foam === 'half'){
-      halfVal = (volW + totalWeight)/2;
-      charge = Math.max(totalWeight, halfVal);
-    }
+    if(foam === 'half'){ halfVal = (volW + totalWeight)/2; charge = Math.max(totalWeight, halfVal); }
     let rUnit = rule.roundUnit || 1;
     if(rule.bigUnit && charge >= (rule.bigFrom||16)) rUnit = rule.bigUnit;
     chargeQty = Math.ceil(charge/rUnit)*rUnit;
@@ -3156,16 +3517,13 @@ function computeLclQuote(){
     qtyLines.push({label: t('体积重（÷'+divisor+'）','Volumetric (÷'+divisor+')'), value: volW.toFixed(2)+' KG'});
     qtyLines.push({label: t('实重（'+Q+'件）','Actual ('+Q+' pcs)'), value: totalWeight.toFixed(2)+' KG'});
     if(halfVal !== null) qtyLines.push({label: t('半泡','Half-volumetric'), value: halfVal.toFixed(2)+' KG'});
-    qtyLines.push({label: chargeLabel+'（取大）', value: chargeQty.toFixed(2)+' KG', strong:true});
+    qtyLines.push({label: chargeLabel+'（实重 / 体积重'+(halfVal!==null?' / 半泡':'')+' 取大）', value: chargeQty.toFixed(2)+' KG', strong:true});
   } else {
     let billed = totalVol;
-    if(rule.overweightRatio && totalWeight > 0){
-      const wVol = totalWeight/rule.overweightRatio;
-      if(wVol > billed) billed = wVol;
-    }
-    const minCbm = rule.minCbm || 0;
-    const rawBilled = billed;
-    if(minCbm && billed < minCbm) billed = minCbm;
+    if(rule.overweightRatio && totalWeight > 0){ const wVol = totalWeight/rule.overweightRatio; if(wVol > billed) billed = wVol; }
+    let minCbm = rule.minCbm || 0;
+    if(rule.isPhSea){ minCbm = !isPhSeaManila ? (rule.otherMinCbm || 1) : 0; }
+    if(minCbm > 0 && billed < minCbm){ billed = minCbm; minCbmApplied = true; }
     const rUnit = rule.roundUnit || 0.1;
     billed = Math.ceil(billed/rUnit)*rUnit;
     chargeQty = billed;
@@ -3174,102 +3532,90 @@ function computeLclQuote(){
     qtyLines.push({label: t('单件体积','Unit volume'), value: unitVol.toFixed(4)+' CBM'});
     qtyLines.push({label: t('总体积（'+Q+'件）','Total ('+Q+' pcs)'), value: totalVol.toFixed(4)+' CBM'});
     if(totalWeight > 0) qtyLines.push({label: t('总实重','Total actual'), value: totalWeight.toFixed(2)+' KG'});
-    if(minCbm && rawBilled < minCbm){
-      qtyLines.push({label: t('最低起收','Minimum'), value: minCbm+' CBM'});
+    if(minCbmApplied){
+      if(rule.isPhSea && !isPhSeaManila) qtyLines.push({label: t('非马尼拉最低起收（不足1方按1方）','Non-Manila min (<1 CBM rounds to 1)'), value: minCbm+' CBM', warn:true});
+      else qtyLines.push({label: t('最低起收','Minimum'), value: minCbm+' CBM'});
     }
     qtyLines.push({label: chargeLabel, value: chargeQty.toFixed(3)+' CBM', strong:true});
   }
-  const rateInfo = pickRate(cols, rowZh, chargeQty, rule, optIdx);
-  if(!rateInfo) return {err:'norate'};
+  let rateInfo;
+  if(rule.staircase) rateInfo = {rate: rule.bulkUnitPrice, total: 0, label: t('阶梯计费','Staircase'), mode:'staircase'};
+  else {
+    rateInfo = pickRate(cols, rowZh, chargeQty, rule, optIdx);
+    if(!rateInfo) return {err:'norate'};
+  }
   let amount = rateInfo.total;
   let minApplied = false;
-  if(rule.minCharge && amount < rule.minCharge){
-    amount = rule.minCharge;
-    minApplied = true;
-  }
+  if(rule.staircase){
+    const n = chargeQty;
+    const steps = Math.max(0, Math.round(n/rule.stairStepUnit) - 1);
+    const stairFreight = rule.stairFirst + steps * rule.stairStep;
+    const bulkFreight = n * rule.bulkUnitPrice;
+    const useBulk = n >= 1 || bulkFreight < stairFreight;
+    amount = useBulk ? bulkFreight : stairFreight;
+    rateInfo.stairInfo = { n, stairFreight, bulkFreight, isBulk: useBulk, firstUnit: rule.stairStepUnit, firstPrice: rule.stairFirst, stepPrice: rule.stairStep, bulkPrice: rule.bulkUnitPrice };
+  } else if(rule.minCharge && amount < rule.minCharge){ amount = rule.minCharge; minApplied = true; }
+  if(rule.isPhSea && isPhSeaManila){ if(amount < rule.manilaMinCharge){ amount = rule.manilaMinCharge; minApplied = true; } }
   const extras = [];
-  if(rule.remoteSurcharge && isRemoteNow(c) && totalWeight > 0){
-    const div = rule.remoteDivisor || 6000;
-    const volW = totalVol * 1000000 / div;
-    const cw = Math.max(volW, totalWeight);
-    const sur = cw * rule.remoteSurcharge;
-    extras.push({ label: t('偏远派送费（'+rule.remoteSurcharge+'元/KG × '+cw.toFixed(2)+'KG）','Remote surcharge'), value: sur });
-  }
-  if(c.country === 'vn'){
-    const vnSel = document.getElementById('vnProvinceSelect');
-    if(vnSel && vnSel.value){
-      const prov = VN_DELIVERY_PROVINCES.find(p=>p.zh===vnSel.value);
-      if(prov && totalWeight > 0){
-        const weightFee = totalWeight * prov.kg;
-        const cbmForFee = Math.max(totalVol, 1);
-        const cbmFee = cbmForFee * prov.cbm;
-        const deliveryFee = Math.max(weightFee, cbmFee);
-        extras.push({ label: t('派送费（'+prov.zh+'：取大）','Delivery ('+prov.zh+')'), value: deliveryFee, isDelivery: true });
-      }
-    }
-  }
   const dfInfo = calcDeliveryFee(L, W, H, Q, totalWeight, totalVol);
-  if(dfInfo && dfInfo.value > 0){
-    extras.push({ label: dfInfo.label + (dfInfo.detail ? '（'+dfInfo.detail+'）' : ''), value: dfInfo.value, isDelivery: true });
+  if(dfInfo && (dfInfo.value > 0 || dfInfo.noCharge)){
+    extras.push({ label: '🚚 ' + dfInfo.label + (dfInfo.detail ? '（'+dfInfo.detail+'）' : ''), value: dfInfo.value, isTransit: true, noCharge: dfInfo.noCharge });
   }
   const sc = calcChannelSurcharges();
-  sc.auto.forEach(it=>{
-    extras.push({ label: t('【自动】','[Auto] ') + (LANG==='zh'?it.label.zh:it.label.en) + (it.detail ? '（'+it.detail+'）' : ''), value: it.value });
-  });
-  sc.manual.forEach(it=>{
-    if(it.value > 0){
-      extras.push({ label: t('【勾选】','[Selected] ') + (LANG==='zh'?it.label.zh:it.label.en) + (it.detail ? '（'+it.detail+'）' : ''), value: it.value });
-    }
-  });
+  sc.oversize.forEach(it=>{ extras.push({ label: t('【超规】','[Oversize] ') + (LANG==='zh'?it.label.zh:it.label.en) + (it.detail ? '（'+it.detail+'）' : ''), value: it.value, isOversize: true }); });
+  sc.auto.forEach(it=>{ extras.push({ label: t('【自动】','[Auto] ') + (LANG==='zh'?it.label.zh:it.label.en) + (it.detail ? '（'+it.detail+'）' : ''), value: it.value }); });
+  sc.manual.forEach(it=>{ if(it.value > 0) extras.push({ label: t('【勾选】','[Selected] ') + (LANG==='zh'?it.label.zh:it.label.en) + (it.detail ? '（'+it.detail+'）' : ''), value: it.value }); });
   let etaText = null;
   if(c.etaRows){
     const idx = info.rowIdx;
     const zhArr = c.etaRows.zh || [];
     const enArr = c.etaRows.en || [];
-    etaText = {
-      zh: zhArr[idx] || (c.eta ? c.eta.zh : ''),
-      en: enArr[idx] || (c.eta ? c.eta.en : '')
-    };
-  } else if(c.eta){
-    etaText = { zh: c.eta.zh, en: c.eta.en };
-  }
+    etaText = { zh: zhArr[idx] || (c.eta ? c.eta.zh : ''), en: enArr[idx] || (c.eta ? c.eta.en : '') };
+  } else if(c.eta){ etaText = { zh: c.eta.zh, en: c.eta.en }; }
   etaText = etaByZip(c, etaText, (zipEl && zipEl.value ? zipEl.value.trim() : ''), c.country);
-
   const total = amount + extras.reduce((s,e)=>s+e.value,0);
-  return { ok:true, channel:c, rowName: LANG==='zh' ? rowZh[0] : rowEn[0], qtyLines, chargeQty, qtyUnit, rateInfo, amount, minApplied, extras, total, etaText };
+  return { ok:true, channel:c, rowName: LANG==='zh' ? rowZh[0] : rowEn[0], qtyLines, chargeQty, qtyUnit, rateInfo, amount, minApplied, extras, total, etaText, rule };
 }
+
 function renderLclQuote(){
   const panel = document.getElementById('lclQuotePanel');
   if(!panel) return;
   const r = computeLclQuote();
-  if(!r || r.err){
-    panel.classList.remove('show');
-    panel.innerHTML = '';
-    return;
-  }
+  if(!r || r.err){ panel.classList.remove('show'); panel.innerHTML = ''; return; }
   let html = '<h3>📊 '+t('预估运费','Estimated Freight')+'</h3>';
   html += '<div class="quote-line"><span>'+t('渠道 / 货类','Channel / Category')+'</span><b>'+tObj(r.channel.name)+(LANG==='zh' ? ' · '+r.rowName : ' · '+r.rowName)+'</b></div>';
   if(r.etaText){
     const et = LANG === 'zh' ? r.etaText.zh : r.etaText.en;
-    if(et){
-      html += '<div class="quote-line eta-strong" data-eta-tip="'+(r.channel.type||'all')+'"><span>⏱ '+t('预估时效','ETA')+'</span><b>'+et+'</b></div>';
-    }
+    if(et) html += '<div class="quote-line eta-strong" data-eta-tip="'+(r.channel.type||'all')+'"><span>⏱ '+t('预估时效','ETA')+'</span><b>'+et+'</b></div>';
   }
-  r.qtyLines.forEach(l=>{
-    html += '<div class="quote-line"><span>'+l.label+'</span><b>'+l.value+'</b></div>';
-  });
+  if(r.rule && r.rule.basis === 'weight'){
+    const divTxt = r.rule.divisor ? t('÷'+r.rule.divisor, '÷'+r.rule.divisor) : '';
+    const foamTxt = r.rule.foam === 'half' ? t(' / 半泡', ' / half-foam') : '';
+    html += '<div class="quote-line rule"><span>📐 '+t('计费规则','Billing rule')+'</span><b>'+t('实重 vs 体积重'+divTxt+foamTxt+' 取较大值','max(actual, volumetric'+foamTxt+')')+'</b></div>';
+  } else if(r.rule && r.rule.basis === 'volume'){
+    const ovTxt = r.rule.overweightRatio ? t('；超重1方='+r.rule.overweightRatio+'KG','; overweight 1CBM='+r.rule.overweightRatio+'KG') : '';
+    html += '<div class="quote-line rule"><span>📐 '+t('计费规则','Billing rule')+'</span><b>'+t('按体积（方数）计费'+ovTxt,'Billed by CBM'+ovTxt)+'</b></div>';
+  }
+  r.qtyLines.forEach(l=>{ html += '<div class="quote-line'+(l.warn?' mincharge':'')+'"><span>'+l.label+'</span><b>'+l.value+'</b></div>'; });
   const rl = r.rateInfo;
-  if(rl.mode === 'firstAdd'){
+  if(rl.mode === 'staircase'){
+    const si = rl.stairInfo;
+    html += '<div class="quote-line"><span>'+t('计费方式','Billing')+'</span><b>'+(si.isBulk ? si.n.toFixed(3)+' CBM × '+si.bulkPrice+' 元/CBM' : t('首'+si.firstUnit+'方 '+si.firstPrice+'元 + 续 '+si.stepPrice+'元/'+si.firstUnit+'方（与 '+si.bulkPrice+' 元/方取低）','First '+si.firstUnit+' CBM '+si.firstPrice+' + '+si.stepPrice+'/'+si.firstUnit+' CBM (vs '+si.bulkPrice+'/CBM, lower)'))+'</b></div>';
+  } else if(rl.mode === 'firstAdd'){
     html += '<div class="quote-line"><span>'+t('计费方式','Billing')+'</span><b>'+t('首重 '+rl.first+' 元 + 续重 '+rl.add+' 元 × '+rl.steps.toFixed(1),'First '+rl.first+' + Add '+rl.add+' × '+rl.steps.toFixed(1))+'</b></div>';
   } else {
     html += '<div class="quote-line"><span>'+t('适用单价','Unit price')+'</span><b>'+rl.rate+' 元/'+r.qtyUnit+'（'+rl.label+'）</b></div>';
   }
   html += '<div class="quote-line"><span>'+t('基础运费','Base freight')+'</span><b>'+r.amount.toFixed(2)+' 元</b></div>';
   if(r.minApplied){
-    html += '<div class="quote-line"><span>'+t('最低消费已生效','Minimum charge applied')+'</span><b>—</b></div>';
+    const minNote = r.rule && r.rule.isPhSea ? t('最低消费已生效（马尼拉500元）','Minimum charge applied (Manila 500 CNY)') : t('最低消费已生效','Minimum charge applied');
+    html += '<div class="quote-line mincharge"><span>'+minNote+'</span><b>—</b></div>';
   }
   r.extras.forEach(e=>{
-    html += '<div class="quote-line accent"><span>'+e.label+'</span><b>+'+e.value.toFixed(2)+' 元</b></div>';
+    if(e.noCharge) html += '<div class="quote-line transit-info"><span>'+e.label+'</span><b>'+t('单询','On request')+'</b></div>';
+    else if(e.isOversize) html += '<div class="quote-line oversize"><span>'+e.label+'</span><b>+'+e.value.toFixed(2)+' 元</b></div>';
+    else if(e.isTransit) html += '<div class="quote-line transit"><span>'+e.label+'</span><b>+'+e.value.toFixed(2)+' 元</b></div>';
+    else html += '<div class="quote-line accent"><span>'+e.label+'</span><b>+'+e.value.toFixed(2)+' 元</b></div>';
   });
   html += '<div class="quote-total"><span>'+t('预估合计','Estimated Total')+'</span><b>'+r.total.toFixed(2)+'<small> 元</small></b></div>';
   html += '<div class="quote-note">'+t('⚠️ 以上为系统自动估算，仅供参考。最终运费以仓库实测、附加费以 Emily 确认为准。','⚠️ Auto-estimated for reference only. Final freight subject to warehouse measurement and Emily\'s confirmation.')+'</div>';
@@ -3278,6 +3624,7 @@ function renderLclQuote(){
   updateVnProvinceTip();
   refreshSurchargeDisplay();
 }
+
 function updateQuoteOpt(){
   const row = document.getElementById('quoteOptRow');
   const sel = document.getElementById('quoteOpt');
@@ -3312,7 +3659,10 @@ function buildVnProvinceOptions(){
     html += '<optgroup label="'+label+'">';
     list.forEach(p=>{
       const note = p.note ? ' ⚠️'+p.note : '';
-      html += '<option value="'+p.zh+'">'+p.zh+'（'+p.vi+'） KG:'+p.kg+' / CBM:'+p.cbm+note+'</option>';
+      let feeTxt = '';
+      if(p.kg === 0 && p.cbm === 0){ feeTxt = ' ' + t('免费','Free'); }
+      else { feeTxt = ' KG:'+p.kg+' / CBM:'+p.cbm; }
+      html += '<option value="'+p.zh+'">'+p.zh+'（'+p.vi+'）'+feeTxt+note+'</option>';
     });
     html += '</optgroup>';
   });
@@ -3321,34 +3671,81 @@ function buildVnProvinceOptions(){
 function updateVnProvince(){
   const row = document.getElementById('vnProvinceRow');
   const sel = document.getElementById('vnProvinceSelect');
+  const label = document.getElementById('vnProvinceLabel');
   if(!row || !sel) return;
   const info = parseChannelVal(channelSelect.value);
-  if(!info || info.channel.country !== 'vn'){
-    row.style.display = 'none';
-    return;
+  if(!info || info.channel.country !== 'vn'){ row.style.display = 'none'; return; }
+  const isBulk = info.channel.billing && info.channel.billing.mode === 'volume';
+  if(isBulk){
+    const prev = sel.value;
+    sel.innerHTML = buildVnProvinceOptions();
+    if(prev && Array.from(sel.options).some(o=>o.value===prev)) sel.value = prev;
+    if(label) label.textContent = t('越南目的地省份（派送费按省份计算）','Vietnam Destination Province (delivery by province)');
+    row.style.display = '';
+    sel.onchange = ()=>{ updateVnProvinceTip(); renderLclQuote(); };
+    updateVnProvinceTip();
+  } else {
+    const prev = sel.value;
+    sel.innerHTML = 
+      '<option value="">'+t('请选择区域（用于匹配价格列）','Select region (to match price column)')+'</option>' +
+      '<optgroup label="'+t('北部','North')+'">' +
+        '<option value="河内">'+t('河内（Hà Nội）','Hanoi')+'</option>' +
+        '<option value="北部其它">'+t('北部其它（海防/北宁/海阳等）','North Other')+'</option>' +
+      '</optgroup>' +
+      '<optgroup label="'+t('南部 / 中部','South / Central')+'">' +
+        '<option value="胡志明">'+t('胡志明（Hồ Chí Minh）','HCMC')+'</option>' +
+        '<option value="南部中部">'+t('南部 / 中部其它','South / Central Other')+'</option>' +
+      '</optgroup>';
+    if(prev && Array.from(sel.options).some(o=>o.value===prev)) sel.value = prev;
+    if(label) label.textContent = t('越南收货区域（报价已含派送费）','Vietnam Region (delivery included)');
+    row.style.display = '';
+    sel.onchange = ()=>{ updateVnProvinceTip(); autoSelectVnParcelRow(); renderLclQuote(); };
+    updateVnProvinceTip();
   }
-  const prev = sel.value;
-  sel.innerHTML = buildVnProvinceOptions();
-  if(prev) sel.value = prev;
-  row.style.display = '';
-  sel.onchange = ()=>{ updateVnProvinceTip(); renderLclQuote(); };
-  updateVnProvinceTip();
+}
+function autoSelectVnParcelRow(){
+  const info = parseChannelVal(channelSelect.value);
+  if(!info || info.channel.name.zh !== '越南陆运小货双清包税') return;
+  const vnSel = document.getElementById('vnProvinceSelect');
+  if(!vnSel || !vnSel.value) return;
+  const targetRowMap = { '河内':'河内', '北部其它':'北部其它', '胡志明':'胡志明', '南部中部':'南部中部' };
+  const targetName = targetRowMap[vnSel.value];
+  if(!targetName) return;
+  const c = info.channel;
+  const ri = c.rows.zh.findIndex(r => r[0] === targetName);
+  if(ri < 0) return;
+  const newVal = info.channelIdx + '_' + ri;
+  if(channelSelect.value !== newVal){
+    channelSelect.value = newVal;
+    userOverridePriceType = false;
+    updateChannelUI();
+    updateZipUI(getCurrentChannel());
+    updateDimSummary();
+    renderLclQuote();
+  }
 }
 function updateVnProvinceTip(){
   const tip = document.getElementById('vnProvinceTip');
   const sel = document.getElementById('vnProvinceSelect');
   const info = parseChannelVal(channelSelect.value);
   if(!tip || !sel) return;
-  if(!info || info.channel.country !== 'vn' || !sel.value){
-    tip.textContent = t('请选择省份，系统将自动计算派送费','Select province to auto-calculate delivery fee');
-    return;
-  }
-  const prov = VN_DELIVERY_PROVINCES.find(p=>p.zh===sel.value);
-  if(prov){
-    tip.innerHTML = '💰 ' + t('派送费：','Delivery fee: ') +
-      'max( ' + t('毛重','weight') + ' × ' + prov.kg + ' ' + t('元/KG','CNY/KG') + ', ' +
-      t('立方','CBM') + ' × ' + prov.cbm + ' ' + t('元/CBM','CNY/CBM') + ' ) ' +
-      t('取大值，最低1方起收','max, minimum 1 CBM') + (prov.note ? '；⚠️ ' + prov.note : '');
+  if(!info || info.channel.country !== 'vn'){ tip.textContent = ''; return; }
+  const isBulk = info.channel.billing && info.channel.billing.mode === 'volume';
+  if(isBulk){
+    if(!sel.value){ tip.textContent = t('请选择省份，系统将自动计算派送费（可填写邮编自动识别）','Select province to auto-calculate delivery fee (or fill postcode to auto-detect)'); return; }
+    const prov = VN_DELIVERY_PROVINCES.find(p=>p.zh===sel.value);
+    if(!prov){ tip.textContent=''; return; }
+    if(prov.kg === 0 && prov.cbm === 0){ tip.innerHTML = '💰 ' + t('河内免费派送','Hanoi: free delivery'); return; }
+    let html = '💰 ' + t('派送费：','Delivery fee: ') + 'max( ' + t('毛重','weight') + ' × ' + prov.kg + ' ' + t('元/KG','CNY/KG') + ', ' + t('立方(最低1方)','CBM (min 1)') + ' × ' + prov.cbm + ' ' + t('元/CBM','CNY/CBM') + ' )';
+    const limits = [];
+    if(prov.minFee) limits.push(t('最低 ' + prov.minFee + ' 元', 'min ' + prov.minFee + ' CNY'));
+    if(prov.maxFee) limits.push(t('封顶 ' + prov.maxFee + ' 元/票', 'cap ' + prov.maxFee + ' CNY/ticket'));
+    if(limits.length) html += '，' + limits.join('，');
+    if(prov.note) html += '；⚠️ ' + prov.note;
+    tip.innerHTML = html;
+  } else {
+    if(!sel.value){ tip.textContent = t('请选择收货区域，系统将自动匹配报价表价格列（报价已含派送费）','Select region to auto-match price column (delivery included)'); return; }
+    tip.innerHTML = '💰 ' + t('45KG以下普货/敏感同价，按首重+续重计费；45KG及以上按重量段单价。报价已含派送费。','Below 45KG general/sensitive same rate (first+add); 45KG+ tiered. Delivery included.');
   }
 }
 
@@ -3414,18 +3811,19 @@ function applyLang(lang){
   renderPrice(document.querySelector('.pbtn.active')?.dataset.pf || 'all');
   buildCountryOptions();
   const curChannel = channelSelect.value;
-  fillChannelOptions(countrySelect.value);
+  fillChannelOptions(countrySelect.value, (zipEl.value||'').trim());
   if(Array.from(channelSelect.options).some(o => o.value === curChannel)){ channelSelect.value = curChannel; }
   updateChannelUI();
   updateZipUI(getCurrentChannel());
   updateDimSummary();
   updateQuoteOpt();
   updateVnProvince();
-  updateDeliveryFee();
   updateSurchargeUI();
   renderLclQuote();
   checkReportRequirement();
   updatePolicyStatusUI();
+  refreshLclBadge();
+  refreshFclBadge();
 }
 document.querySelectorAll('.lang-btn').forEach(btn=>{
   btn.onclick=()=>{
@@ -3441,55 +3839,43 @@ function refreshLclBadge(){
   const b=document.getElementById('lclFeeBadge');
   if(!b) return;
   const arr=[];
-  const inv=document.getElementById('lclInvoice').value;
-  const svc=document.getElementById('lclService').value;
-  const pay=document.getElementById('lclPayment').value;
+  const inv=document.getElementById('lclInvoice');
+  const svc=document.getElementById('lclService');
+  const pay=document.getElementById('lclPayment');
   const rmk=document.getElementById('lclRemark').value.trim();
-  if(inv!=='不需要') arr.push(t("需要开票","Invoice"));
-  arr.push(svc,t(pay, pay==='预付'?'Prepaid':'Collect'));
-  if(rmk) arr.push(t("已备注","Note"));
+  const optText = (el) => LANG==='zh' ? el.value : (el.selectedOptions[0]?.dataset.en || el.value);
+  if(inv.value!=='不需要') arr.push(t("需要开票","Invoice needed"));
+  arr.push(optText(svc));
+  arr.push(optText(pay));
+  if(rmk) arr.push(t("已备注","Remarks added"));
   b.textContent = arr.join(' · ');
 }
 function refreshFclBadge(){
   const b=document.getElementById('fclFeeBadge');
   if(!b) return;
   const arr=[];
-  const inv=document.getElementById('fclInvoice').value;
-  const pay=document.getElementById('fclPayment').value;
+  const inv=document.getElementById('fclInvoice');
+  const pay=document.getElementById('fclPayment');
   const rmk=document.getElementById('fclRemark').value.trim();
-  if(inv!=='不需要') arr.push(t("需要开票","Invoice"));
-  arr.push(t(pay, pay==='预付'?'Prepaid':'Collect'));
-  if(rmk) arr.push(t("已备注","Note"));
+  const optText = (el) => LANG==='zh' ? el.value : (el.selectedOptions[0]?.dataset.en || el.value);
+  if(inv.value!=='不需要') arr.push(t("需要开票","Invoice needed"));
+  arr.push(optText(pay));
+  if(rmk) arr.push(t("已备注","Remarks added"));
   b.textContent = arr.join(' · ');
 }
-['lclInvoice','lclService','lclPayment'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el) el.addEventListener('change', refreshLclBadge);
-});
-['fclInvoice','fclPayment'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el) el.addEventListener('change', refreshFclBadge);
-});
-const lclRmkEl=document.getElementById('lclRemark');
-if(lclRmkEl) lclRmkEl.addEventListener('input', refreshLclBadge);
-const fclRmkEl=document.getElementById('fclRemark');
-if(fclRmkEl) fclRmkEl.addEventListener('input', refreshFclBadge);
+['lclInvoice','lclService','lclPayment'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('change', refreshLclBadge); });
+['fclInvoice','fclPayment'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('change', refreshFclBadge); });
+const lclRmkEl=document.getElementById('lclRemark'); if(lclRmkEl) lclRmkEl.addEventListener('input', refreshLclBadge);
+const fclRmkEl=document.getElementById('fclRemark'); if(fclRmkEl) fclRmkEl.addEventListener('input', refreshFclBadge);
 
 ['productName','hsCode'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el){
-    el.addEventListener('input', checkReportRequirement);
-    el.addEventListener('change', checkReportRequirement);
-  }
+  if(el){ el.addEventListener('input', checkReportRequirement); el.addEventListener('change', checkReportRequirement); }
 });
-
 document.querySelectorAll('.container-row').forEach(row => {
   row.addEventListener('click', function() {
     const val = this.getAttribute('data-val');
-    if (val) {
-      const input = document.getElementById('containerType');
-      if (input) { input.value = val; }
-    }
+    if (val) { const input = document.getElementById('containerType'); if (input) input.value = val; }
   });
 });
 
@@ -3508,48 +3894,38 @@ document.getElementById('genLcl').onclick=function(){
   if(q && q.ok){
     const etaZh = q.etaText ? (q.etaText.zh || '') : '';
     const etaEn = q.etaText ? (q.etaText.en || '') : '';
-    quoteTxtZh = '\n—— 系统预估 ——\n' +
-      (etaZh ? '预估时效：' + etaZh + '\n' : '') +
+    quoteTxtZh = '\n—— 系统预估 ——\n' + (etaZh ? '预估时效：' + etaZh + '\n' : '') +
       '计费' + (q.qtyUnit === 'KG' ? '重量' : '体积') + '：' + (q.qtyUnit === 'KG' ? q.chargeQty.toFixed(2)+' KG' : q.chargeQty.toFixed(3)+' CBM') + '\n' +
       '预估运费：' + q.total.toFixed(2) + ' 元（仅供参考）';
-    quoteTxtEn = '\n—— Auto Estimate ——\n' +
-      (etaEn ? 'ETA: ' + etaEn + '\n' : '') +
+    quoteTxtEn = '\n—— Auto Estimate ——\n' + (etaEn ? 'ETA: ' + etaEn + '\n' : '') +
       'Chargeable: ' + (q.qtyUnit === 'KG' ? q.chargeQty.toFixed(2)+' KG' : q.chargeQty.toFixed(3)+' CBM') + '\n' +
       'Estimated freight: ' + q.total.toFixed(2) + ' CNY (reference only)';
   }
   let extraTxtZh = '', extraTxtEn = '';
   if(q && q.ok && q.extras && q.extras.length){
     q.extras.forEach(e=>{
-      extraTxtZh += '\n附加：' + e.label + ' = ' + e.value.toFixed(2) + ' 元';
-      extraTxtEn += '\nSurcharge: ' + e.label + ' = ' + e.value.toFixed(2) + ' CNY';
+      if(e.noCharge){
+        extraTxtZh += '\n附加：' + e.label + ' = 需人工确认';
+        extraTxtEn += '\nSurcharge: ' + e.label + ' = Manual confirmation required';
+      } else {
+        extraTxtZh += '\n附加：' + e.label + ' = ' + e.value.toFixed(2) + ' 元';
+        extraTxtEn += '\nSurcharge: ' + e.label + ' = ' + e.value.toFixed(2) + ' CNY';
+      }
     });
   }
   let vnProvTxtZh = '', vnProvTxtEn = '';
   const info = parseChannelVal(channelSelect.value);
   if(info && info.channel.country === 'vn'){
     const vnSel = document.getElementById('vnProvinceSelect');
-    if(vnSel && vnSel.value){
-      vnProvTxtZh = '\n越南目的地省份：'+vnSel.value;
-      vnProvTxtEn = '\nVietnam Province: '+vnSel.value;
-    }
-  }
-  let dfTxtZh = '', dfTxtEn = '';
-  const dfSel = document.getElementById('deliveryFeeSelect');
-  const dfRule = getDeliveryFeeRule();
-  if(dfRule && dfSel && document.getElementById('deliveryFeeRow').style.display !== 'none'){
-    const o = dfRule.options.find(x=>x.v===dfSel.value);
-    if(o){
-      dfTxtZh = '\n目的地转运派送费：'+o.zh;
-      dfTxtEn = '\nDestination Delivery Fee: '+o.en;
-    }
+    if(vnSel && vnSel.value){ vnProvTxtZh = '\n越南目的地：'+vnSel.value; vnProvTxtEn = '\nVietnam Destination: '+vnSel.value; }
   }
   const dimBlockZh = '包装后尺寸 / 重量：\n' + (dimStr || '—') + '\n（合计 '+getTotalQty()+' 件 · '+getTotalCbm().toFixed(4)+' CBM · '+getTotalWeight().toFixed(2)+' KG）';
   const dimBlockEn = 'Packed Sizes / Weights:\n' + (dimStr || '—') + '\n(Total '+getTotalQty()+' pcs · '+getTotalCbm().toFixed(4)+' CBM · '+getTotalWeight().toFixed(2)+' KG)';
   if (LANG === 'zh') {
-    const txt = '品名：'+g('productName')+'\n'+'收件人完整地址邮编：'+fullAddrZip+'\n'+dimBlockZh+'\n'+'图片：'+g('imgUrl')+'\n'+'hs：'+g('hsCode')+'\n'+'是否带电池/磁/品牌/有报告直接提供报告出来：'+(g('otherInfo')||'未填写')+vnProvTxtZh+dfTxtZh+extraTxtZh+quoteTxtZh;
+    const txt = '品名：'+g('productName')+'\n'+'收件人完整地址邮编：'+fullAddrZip+'\n'+dimBlockZh+'\n'+'图片：'+g('imgUrl')+'\n'+'hs：'+g('hsCode')+'\n'+'是否带电池/磁/品牌/有报告直接提供报告出来：'+(g('otherInfo')||'未填写')+vnProvTxtZh+extraTxtZh+quoteTxtZh;
     document.getElementById('lclResult').value=txt;
   } else {
-    const txt = 'Product: '+g('productName')+'\n'+'Full Address + Postcode: '+fullAddrZip+'\n'+dimBlockEn+'\n'+'Image: '+g('imgUrl')+'\n'+'HS: '+g('hsCode')+'\n'+'Battery/Magnetic/Branded/Report if any: '+(g('otherInfo')||'Not filled')+vnProvTxtEn+dfTxtEn+extraTxtEn+quoteTxtEn;
+    const txt = 'Product: '+g('productName')+'\n'+'Full Address + Postcode: '+fullAddrZip+'\n'+dimBlockEn+'\n'+'Image: '+g('imgUrl')+'\n'+'HS: '+g('hsCode')+'\n'+'Battery/Magnetic/Branded/Report if any: '+(g('otherInfo')||'Not filled')+vnProvTxtEn+extraTxtEn+quoteTxtEn;
     document.getElementById('lclResult').value=txt;
   }
 };
@@ -3587,11 +3963,8 @@ document.getElementById('calcCbmBtn').onclick=()=>{
   const res=document.getElementById('cbmResult');
   if(!L||!W||!H){res.innerHTML="<span class='tip-red'>"+t("请输入长宽高","Enter length, width and height")+"</span>";return;}
   const single=L*W*H/1000000, total=single*Q;
-  if (LANG === 'zh') {
-    res.innerHTML='<p>单箱CBM：'+single.toFixed(6)+'</p><p>总CBM(方数)：<b>'+total.toFixed(4)+'</b></p><p>公式：单箱=长×宽×高÷1,000,000；总=单箱×件数</p>';
-  } else {
-    res.innerHTML='<p>Unit CBM: '+single.toFixed(6)+'</p><p>Total CBM: <b>'+total.toFixed(4)+'</b></p><p>Formula: Unit = L×W×H ÷ 1,000,000; Total = Unit × Packages</p>';
-  }
+  if (LANG === 'zh') res.innerHTML='<p>单箱CBM：'+single.toFixed(6)+'</p><p>总CBM(方数)：<b>'+total.toFixed(4)+'</b></p><p>公式：单箱=长×宽×高÷1,000,000；总=单箱×件数</p>';
+  else res.innerHTML='<p>Unit CBM: '+single.toFixed(6)+'</p><p>Total CBM: <b>'+total.toFixed(4)+'</b></p><p>Formula: Unit = L×W×H ÷ 1,000,000; Total = Unit × Packages</p>';
 };
 function bubbleCalc(div,resId){
   const p=id=>num(document.getElementById(id).value);
@@ -3599,11 +3972,8 @@ function bubbleCalc(div,resId){
   const res=document.getElementById(resId);
   if(!L||!W||!H){res.innerHTML="<span class='tip-red'>"+t("请输入长宽高","Enter length, width and height")+"</span>";return;}
   const vol=L*W*H/div*Q, half=(vol+act)/2, charge=Math.max(vol,act);
-  if (LANG === 'zh') {
-    res.innerHTML='<p>材积重(÷'+div+')：'+vol.toFixed(2)+' KG</p><p>实重：'+act.toFixed(2)+' KG</p><p>分半抛：'+half.toFixed(2)+' KG</p><p><b>计费重(取较大)：'+charge.toFixed(2)+' KG</b></p><p>公式：材积重=长×宽×高÷'+div+'×件数；分半抛=(材积+实重)/2</p>';
-  } else {
-    res.innerHTML='<p>Volumetric (÷'+div+'): '+vol.toFixed(2)+' KG</p><p>Actual: '+act.toFixed(2)+' KG</p><p>Half-volumetric: '+half.toFixed(2)+' KG</p><p><b>Chargeable (max): '+charge.toFixed(2)+' KG</b></p><p>Formula: Volumetric = L×W×H ÷ '+div+' × Packages; Half = (Vol + Actual) / 2</p>';
-  }
+  if (LANG === 'zh') res.innerHTML='<p>材积重(÷'+div+')：'+vol.toFixed(2)+' KG</p><p>实重：'+act.toFixed(2)+' KG</p><p>分半抛：'+half.toFixed(2)+' KG</p><p><b>计费重(取较大)：'+charge.toFixed(2)+' KG</b></p><p>公式：材积重=长×宽×高÷'+div+'×件数；分半抛=(材积+实重)/2</p>';
+  else res.innerHTML='<p>Volumetric (÷'+div+'): '+vol.toFixed(2)+' KG</p><p>Actual: '+act.toFixed(2)+' KG</p><p>Half-volumetric: '+half.toFixed(2)+' KG</p><p><b>Chargeable (max): '+charge.toFixed(2)+' KG</b></p><p>Formula: Volumetric = L×W×H ÷ '+div+' × Packages; Half = (Vol + Actual) / 2</p>';
 }
 document.getElementById('calc6Btn').onclick=()=>bubbleCalc(6000,'v6Result');
 document.getElementById('calc5Btn').onclick=()=>bubbleCalc(5000,'v5Result');
@@ -3613,20 +3983,10 @@ document.getElementById('calcFsBtn').onclick=()=>{
   if(!L||!W||!H||!act){res.innerHTML="<span class='tip-red'>"+t("请完整填写长宽高、实重、抛比系数","Please fill in L/W/H, actual weight and divisor")+"</span>";return;}
   const vol=L*W*H/div*Q, charge=Math.max(vol,act);
   let total,formulaZh,formulaEn;
-  if(mode==='0.5'){
-    total=(charge*2-1)*cont+first;
-    formulaZh='0.5KG模式：费用=(重量×2‑1)×续重单价+首重费';
-    formulaEn='0.5KG mode: Fee = (Weight×2−1) × Additional + First';
-  } else {
-    total=(charge-1)*cont+first;
-    formulaZh='1KG模式：费用=(重量‑1)×续重单价+首重费';
-    formulaEn='1KG mode: Fee = (Weight−1) × Additional + First';
-  }
-  if (LANG === 'zh') {
-    res.innerHTML='<p>📦 体积重：'+vol.toFixed(2)+' KG</p><p>⚖️ 实重：'+act.toFixed(2)+' KG</p><p><b>✅ 计费重(取大)：'+charge.toFixed(2)+' KG</b></p><p>🔹'+formulaZh+'</p><p>🔹首重 '+first.toFixed(0)+'元 / 续重 '+cont.toFixed(0)+'元</p><p><b>💰 预估总运费：'+total.toFixed(2)+' 元</b></p><p class="tip-orange">⚠️ 未满进位按渠道规则，最终运费以仓库实测、Emily确认为准</p>';
-  } else {
-    res.innerHTML='<p>📦 Volumetric: '+vol.toFixed(2)+' KG</p><p>⚖️ Actual: '+act.toFixed(2)+' KG</p><p><b>✅ Chargeable (max): '+charge.toFixed(2)+' KG</b></p><p>🔹'+formulaEn+'</p><p>🔹First: '+first.toFixed(0)+' / Additional: '+cont.toFixed(0)+'</p><p><b>💰 Estimated total: '+total.toFixed(2)+' CNY</b></p><p class="tip-orange">⚠️ Rounding follows channel rules. Final freight subject to warehouse measurement and Emily\'s confirmation.</p>';
-  }
+  if(mode==='0.5'){ total=(charge*2-1)*cont+first; formulaZh='0.5KG模式：费用=(重量×2‑1)×续重单价+首重费'; formulaEn='0.5KG mode: Fee = (Weight×2−1) × Additional + First'; }
+  else { total=(charge-1)*cont+first; formulaZh='1KG模式：费用=(重量‑1)×续重单价+首重费'; formulaEn='1KG mode: Fee = (Weight−1) × Additional + First'; }
+  if (LANG === 'zh') res.innerHTML='<p>📦 体积重：'+vol.toFixed(2)+' KG</p><p>⚖️ 实重：'+act.toFixed(2)+' KG</p><p><b>✅ 计费重(取大)：'+charge.toFixed(2)+' KG</b></p><p>🔹'+formulaZh+'</p><p>🔹首重 '+first.toFixed(0)+'元 / 续重 '+cont.toFixed(0)+'元</p><p><b>💰 预估总运费：'+total.toFixed(2)+' 元</b></p><p class="tip-orange">⚠️ 未满进位按渠道规则，最终运费以仓库实测、Emily确认为准</p>';
+  else res.innerHTML='<p>📦 Volumetric: '+vol.toFixed(2)+' KG</p><p>⚖️ Actual: '+act.toFixed(2)+' KG</p><p><b>✅ Chargeable (max): '+charge.toFixed(2)+' KG</b></p><p>🔹'+formulaEn+'</p><p>🔹First: '+first.toFixed(0)+' / Additional: '+cont.toFixed(0)+'</p><p><b>💰 Estimated total: '+total.toFixed(2)+' CNY</b></p><p class="tip-orange">⚠️ Rounding follows channel rules. Final freight subject to warehouse measurement and Emily\'s confirmation.</p>';
 };
 
 applyLang('zh');
@@ -3664,9 +4024,7 @@ const ETA_TIP = (function(){
   function render(type){
     const c = buildContent(type || 'all');
     if(titleEl) titleEl.textContent = c.title;
-    if(bodyEl){
-      bodyEl.innerHTML = c.lines.map(l => '<div class="tip-line'+(l.hl ? ' hl' : '')+'">'+esc(l.text)+'</div>').join('');
-    }
+    if(bodyEl) bodyEl.innerHTML = c.lines.map(l => '<div class="tip-line'+(l.hl ? ' hl' : '')+'">'+esc(l.text)+'</div>').join('');
   }
   function place(target){
     const rect = target.getBoundingClientRect();
@@ -3684,6 +4042,8 @@ const ETA_TIP = (function(){
     el.style.top  = Math.round(top)  + 'px';
     el.style.left = Math.round(left) + 'px';
     el.style.visibility = '';
+    const arrowX = Math.round(rect.left + rect.width/2 - left);
+    el.style.setProperty('--arrow-x', arrowX + 'px');
   }
   function show(target){
     anchorEl = target;
@@ -3694,25 +4054,17 @@ const ETA_TIP = (function(){
     el.setAttribute('aria-hidden','false');
   }
   function hide(){
-    visible = false;
-    anchorEl = null;
+    visible = false; anchorEl = null;
+
     el.classList.remove('show');
     el.setAttribute('aria-hidden','true');
   }
-  function toggle(target){
-    if(visible && anchorEl === target){ hide(); } else { show(target); }
-  }
+  function toggle(target){ if(visible && anchorEl === target){ hide(); } else { show(target); } }
   if(closeEl) closeEl.addEventListener('click', (e)=>{ e.stopPropagation(); hide(); });
   const canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
   if(canHover){
-    document.addEventListener('mouseover', function(e){
-      const tEl = e.target.closest('[data-eta-tip]');
-      if(tEl) show(tEl);
-    });
-    document.addEventListener('mouseout', function(e){
-      const tEl = e.target.closest('[data-eta-tip]');
-      if(tEl && !e.relatedTarget?.closest('#etaTip')) hide();
-    });
+    document.addEventListener('mouseover', function(e){ const tEl = e.target.closest('[data-eta-tip]'); if(tEl) show(tEl); });
+    document.addEventListener('mouseout', function(e){ const tEl = e.target.closest('[data-eta-tip]'); if(tEl && !e.relatedTarget?.closest('#etaTip')) hide(); });
   }
   document.addEventListener('click', function(e){
     const tEl = e.target.closest('[data-eta-tip]');
