@@ -1199,7 +1199,7 @@ const AUTO_SURCHARGE_TABLE = {
 // ================= 完善所有渠道的木箱/木架/托盘配置 =================
 const SURCHARGE_CONFIG = {
   "马来西亚空运包税专线": {
-    auto: [], // 【已修复】移除了与原超尺寸逻辑重复的配置，避免二次收费
+    auto: [], 
     manual: [
       {id:'wooden', label:{zh:'📦 木箱/木架/托盘包装（西马普货 +1元/KG，实重 vs 体积重÷6000 取大）', en:'📦 Wooden crate/rack/pallet (West MY general +1 CNY/KG)'}, calc:{type:'perkg', rate:1, divisor:6000},
        check: (info) => info && info.rowIdx === 0}
@@ -3527,7 +3527,12 @@ function updateSurchargeUI(){
   box.querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.addEventListener('change', ()=>{ renderLclQuote(); }); });
   refreshSurchargeDisplay();
 }
-function calcChannelSurcharges(){
+
+// ==============================
+// 【核心修复】新增参数 finalChargeQty, finalQtyUnit
+// 使附加费（如木箱费）基于计算后的“计费重”收费
+// ==============================
+function calcChannelSurcharges(finalChargeQty, finalQtyUnit){
   const ch = getCurrentChannel();
   if(!ch || !ch.name) return {auto:[], manual:[], oversize:[], total:0};
   const cfg = SURCHARGE_CONFIG[ch.name.zh];
@@ -3543,24 +3548,43 @@ function calcChannelSurcharges(){
   const os = calcAutoOversizeSurcharges();
   os.items.forEach(it=>{ res.oversize.push(it); res.total += it.value; });
   if(!cfg) return res;
+  
   const calcFee = (f)=>{
     if(!f) return {value:0, detail:''};
     if(f.type === 'fixed') return {value:f.value, detail:''};
     if(f.type === 'perkg'){
       let cw = tw;
-      if(f.divisor){ const volW = tv*1000000/f.divisor; cw = Math.max(volW, tw); }
+      if(finalQtyUnit === 'KG' && finalChargeQty > 0){
+        cw = finalChargeQty;
+      } else if(f.divisor){ 
+        const volW = tv*1000000/f.divisor; 
+        cw = Math.max(volW, tw); 
+      }
       return {value: cw*f.rate, detail: cw.toFixed(2)+'KG×'+f.rate+'元'};
     }
-    if(f.type === 'percbm'){ const cbm = Math.max(tv, 0.1); return {value: cbm*f.rate, detail: cbm.toFixed(3)+'CBM×'+f.rate+'元'}; }
+    if(f.type === 'percbm'){ 
+      const cbm = (finalQtyUnit === 'CBM' && finalChargeQty > 0) ? finalChargeQty : Math.max(tv, 0.1); 
+      return {value: cbm*f.rate, detail: cbm.toFixed(3)+'CBM×'+f.rate+'元'}; 
+    }
     return {value:0, detail:''};
   };
+  
   const calcManual = (c)=>{
     if(!c) return {value:0, detail:''};
     if(c.type === 'fixed') return {value:c.value, detail:''};
-    if(c.type === 'perkg'){ let cw = tw; if(c.divisor){ const volW = tv*1000000/c.divisor; cw = Math.max(volW, tw); } return {value: cw*c.rate, detail: cw.toFixed(2)+'KG×'+c.rate+'元'}; }
+    if(c.type === 'perkg'){ 
+      let cw = tw; 
+      if(finalQtyUnit === 'KG' && finalChargeQty > 0){
+        cw = finalChargeQty;
+      } else if(c.divisor){ 
+        const volW = tv*1000000/c.divisor; 
+        cw = Math.max(volW, tw); 
+      } 
+      return {value: cw*c.rate, detail: cw.toFixed(2)+'KG×'+c.rate+'元'}; 
+    }
     if(c.type === 'percbm'){
-      if(tv <= 0) return {value: 0, detail: t('请先填写尺寸','Enter dimensions first')};
-      const cbm = Math.max(tv, 0.1);
+      if(tv <= 0 && (!finalChargeQty || finalChargeQty <= 0)) return {value: 0, detail: t('请先填写尺寸','Enter dimensions first')};
+      const cbm = (finalQtyUnit === 'CBM' && finalChargeQty > 0) ? finalChargeQty : Math.max(tv, 0.1);
       return {value: cbm*c.rate, detail: cbm.toFixed(3)+'CBM×'+c.rate+'元'};
     }
     if(c.type === 'firstadd'){
@@ -3573,6 +3597,7 @@ function calcChannelSurcharges(){
     if(c.type === 'none') return {value:0, detail:t('人工确认','Manual confirm'), noCharge:true};
     return {value:0, detail:''};
   };
+  
   if(cfg.auto){
     cfg.auto.forEach(it=>{
       let hit = false;
@@ -3607,8 +3632,47 @@ function calcChannelSurcharges(){
   }
   return res;
 }
+
 function refreshSurchargeDisplay(){
-  const res = calcChannelSurcharges();
+  let cq = 0, qu = '';
+  const info = parseChannelVal(channelSelect.value);
+  if(info){
+    const rule = getQuoteRule(info.channel);
+    if(rule){
+      const rows = getDimRowsCm();
+      if(rows.length > 0 && rows[0].L > 0 && rows[0].W > 0 && rows[0].H > 0){
+        const totalVol = getTotalCbm();
+        const totalWeight = getTotalWeight();
+        if(rule.basis === 'weight' && totalWeight > 0){
+          const divisor = rule.divisor || 6000;
+          const volW = totalVol * 1000000 / divisor;
+          let foam = rule.foam;
+          const rowZh = info.channel.rows.zh[info.rowIdx];
+          if(foam === 'auto') foam = (rowZh[0].indexOf('东马') >= 0) ? 'none' : 'half';
+          let charge = Math.max(volW, totalWeight);
+          if(foam === 'half'){ const halfVal = (volW + totalWeight)/2; charge = Math.max(totalWeight, halfVal); }
+          let rUnit = rule.roundUnit || 1;
+          if(rule.bigUnit && charge >= (rule.bigFrom||16)) rUnit = rule.bigUnit;
+          cq = Math.ceil(charge/rUnit)*rUnit;
+          qu = 'KG';
+        } else if(rule.basis === 'volume') {
+          let billed = totalVol;
+          if(rule.overweightRatio && totalWeight > 0){ const wVol = totalWeight/rule.overweightRatio; if(wVol > billed) billed = wVol; }
+          let minCbm = rule.minCbm || 0;
+          if(rule.isPhSea){
+            const optEl = document.getElementById('quoteOpt');
+            let cityText = optEl && optEl.selectedOptions && optEl.selectedOptions[0] ? optEl.selectedOptions[0].textContent : '';
+            minCbm = (cityText.indexOf('马尼拉') < 0) ? (rule.otherMinCbm || 1) : 0;
+          }
+          if(minCbm > 0 && billed < minCbm) billed = minCbm;
+          const rUnit = rule.roundUnit || 0.1;
+          cq = Math.ceil(billed/rUnit)*rUnit;
+          qu = 'CBM';
+        }
+      }
+    }
+  }
+  const res = calcChannelSurcharges(cq, qu);
   const ch = getCurrentChannel();
   const cfg = ch ? SURCHARGE_CONFIG[ch.name.zh] : null;
   if(cfg && cfg.auto){
@@ -4247,7 +4311,8 @@ function computeLclQuote(){
   if(rule.isPhSea && isPhSeaManila){ if(amount < rule.manilaMinCharge){ amount = rule.manilaMinCharge; minApplied = true; } }
 
   const extras = [];
-  const sc = calcChannelSurcharges();
+  // 【修改】将计算好的计费重 chargeQty 和 单位 qtyUnit 传入
+  const sc = calcChannelSurcharges(chargeQty, qtyUnit);
 
   // ① 转运/派送费（固定显示）
   {
