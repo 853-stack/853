@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title id="pageTitle" data-zh="内测版" data-en="Beta Version">内测版</title>
+<title id="pageTitle" data-zh="内测版" data-en="Beta Version">东南亚专线询价Emily</title>
 <style>
 :root{--primary:#403F44;--primary-dark:#2A2930;--primary-light:#F5EDED;--accent:#FECBCA;--accent-dark:#F5A8A6;--accent-light:#FCF8DF;--ink:#2A2930;--text:#403F44;--muted:#8A8590;--muted-2:#B5B0B8;--border:#F0E8E8;--border-strong:#E5DADA;--bg:#FCF8DF;--card:#FFFFFF;--shadow-xs:0 1px 2px rgba(64,63,68,.04);--shadow-sm:0 1px 3px rgba(64,63,68,.05),0 1px 2px rgba(64,63,68,.03);--shadow-md:0 4px 14px rgba(64,63,68,.07),0 2px 4px rgba(64,63,68,.03);--radius:14px;--radius-lg:18px;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
@@ -320,8 +320,7 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
 .channel-conflict-tip .cct-body b{color:#B42B2F;font-weight:700;}
 .channel-conflict-tip button{padding:4px 10px;border-radius:7px;border:1px solid #F5A8A6;background:#fff;color:#B42B2F;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;flex-shrink:0;}
 .channel-conflict-tip button:hover{background:#FECBCA;color:#2A2930;}
-</style>
-</head>
+</style></head>
 <body>
 <div class="container">
 <div class="top-bar">
@@ -341,7 +340,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
     <div class="home-grid">
       <div class="home-item" data-goto="lcl"><div class="icon blue">📦</div><div><div class="name" data-zh="散货询价" data-en="LCL Inquiry">散货询价</div><div class="desc" data-zh="填写即自动报价" data-en="Instant auto-quote">填写即自动报价</div></div></div>
       <div class="home-item" data-goto="fcl"><div class="icon green">🚢</div><div><div class="name" data-zh="整柜询价" data-en="FCL Inquiry">整柜询价</div><div class="desc" data-zh="整柜出口资料登记" data-en="FCL export registration">整柜出口资料登记</div></div></div>
-      <div class="home-item" data-goto="calc"><div class="icon orange">🧮</div><div><div class="name" data-zh="计算器" data-en="Calculator">计算器</div><div class="desc" data-zh="渠道计费 / CBM" data-en="Billing / CBM">渠道计费 / CBM</div></div></div>
       <div class="home-item" data-goto="price"><div class="icon pink">📋</div><div><div class="name" data-zh="运费价格表" data-en="Freight Rates">运费价格表</div><div class="desc" data-zh="查看最新渠道价格" data-en="Latest channel rates">查看最新渠道价格</div></div></div>
     </div>
   </div>
@@ -455,55 +453,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="form-row"><button class="btn btn-primary" id="copyFcl" data-zh="复制询价文本" data-en="Copy Inquiry">复制询价文本</button><button class="btn btn-wx" id="copyWxFcl" data-zh="复制Emily微信" data-en="Copy Emily's WeChat">复制Emily微信</button><div class="tip-green" id="wxTipFcl"></div></div>
 </div>
 
-<div id="calc" class="card hidden">
-  <h2 data-zh="计算器" data-en="Calculator">计算器</h2>
-  <div class="calc-tabs">
-    <div class="calc-tab active" data-tab="tabCbm" data-zh="单箱CBM计算" data-en="Unit CBM">单箱CBM计算</div>
-    <div class="calc-tab" data-tab="tab6000" data-zh="泡货除6000" data-en="Volumetric / 6000">泡货除6000</div>
-    <div class="calc-tab" data-tab="tab5000" data-zh="泡货除5000" data-en="Volumetric / 5000">泡货除5000</div>
-    <div class="calc-tab" data-tab="tabFirst" data-zh="首续重运费计算" data-en="First/Additional">首续重运费计算</div>
-  </div>
-  <div class="calc-panel show" id="tabCbm">
-    <div class="form-row"><label data-zh="长(cm)" data-en="Length (cm)">长(cm)</label><input type="number" id="cLen"></div>
-    <div class="form-row"><label data-zh="宽(cm)" data-en="Width (cm)">宽(cm)</label><input type="number" id="cWid"></div>
-    <div class="form-row"><label data-zh="高(cm)" data-en="Height (cm)">高(cm)</label><input type="number" id="cHei"></div>
-    <div class="form-row"><label data-zh="件数" data-en="Packages">件数</label><input type="number" id="cPkg" value="1"></div>
-    <div class="form-row"><button class="btn btn-primary" id="calcCbmBtn" data-zh="计算CBM" data-en="Calculate CBM">计算CBM</button></div>
-    <div class="result-box" id="cbmResult"></div>
-  </div>
-  <div class="calc-panel" id="tab6000">
-    <div class="form-row"><label data-zh="长(cm)" data-en="Length (cm)">长(cm)</label><input type="number" id="v6Len"></div>
-    <div class="form-row"><label data-zh="宽(cm)" data-en="Width (cm)">宽(cm)</label><input type="number" id="v6Wid"></div>
-    <div class="form-row"><label data-zh="高(cm)" data-en="Height (cm)">高(cm)</label><input type="number" id="v6Hei"></div>
-    <div class="form-row"><label data-zh="件数" data-en="Packages">件数</label><input type="number" id="v6Pkg" value="1"></div>
-    <div class="form-row"><label data-zh="实重(KG)" data-en="Actual Weight (KG)">实重(KG)</label><input type="number" id="v6Act"></div>
-    <div class="form-row"><button class="btn btn-primary" id="calc6Btn" data-zh="除6000计算(空运)" data-en="÷6000 (Air)">除6000计算(空运)</button></div>
-    <div class="result-box" id="v6Result"></div>
-  </div>
-  <div class="calc-panel" id="tab5000">
-    <div class="form-row"><label data-zh="长(cm)" data-en="Length (cm)">长(cm)</label><input type="number" id="v5Len"></div>
-    <div class="form-row"><label data-zh="宽(cm)" data-en="Width (cm)">宽(cm)</label><input type="number" id="v5Wid"></div>
-    <div class="form-row"><label data-zh="高(cm)" data-en="Height (cm)">高(cm)</label><input type="number" id="v5Hei"></div>
-    <div class="form-row"><label data-zh="件数" data-en="Packages">件数</label><input type="number" id="v5Pkg" value="1"></div>
-    <div class="form-row"><label data-zh="实重(KG)" data-en="Actual Weight (KG)">实重(KG)</label><input type="number" id="v5Act"></div>
-    <div class="form-row"><button class="btn btn-primary" id="calc5Btn" data-zh="除5000计算(专线/快递)" data-en="÷5000 (Express)">除5000计算(专线/快递)</button></div>
-    <div class="result-box" id="v5Result"></div>
-  </div>
-  <div class="calc-panel" id="tabFirst">
-    <div class="form-row"><label data-zh="单件长 cm" data-en="Unit Length (cm)">单件长 cm</label><input type="number" id="fsLen"></div>
-    <div class="form-row"><label data-zh="单件宽 cm" data-en="Unit Width (cm)">单件宽 cm</label><input type="number" id="fsWid"></div>
-    <div class="form-row"><label data-zh="单件高 cm" data-en="Unit Height (cm)">单件高 cm</label><input type="number" id="fsHei"></div>
-    <div class="form-row"><label data-zh="总件数" data-en="Total Packages">总件数</label><input type="number" id="fsPkg" value="1"></div>
-    <div class="form-row"><label data-zh="实际总重量 KG" data-en="Total Actual Weight (KG)">实际总重量 KG</label><input type="number" id="fsAct"></div>
-    <div class="form-row"><label data-zh="抛比系数(6000/5000/3500)" data-en="Divisor">抛比系数</label><input type="number" id="fsDiv" value="6000"></div>
-    <div class="form-row"><label data-zh="计费单位模式" data-en="Billing Unit Mode">计费单位模式</label><select id="fsMode"><option value="0.5" data-zh="0.5KG模式" data-en="0.5KG mode">0.5KG模式：(重量×2-1)×续重单价+首重费</option><option value="1" data-zh="1KG模式" data-en="1KG mode">1KG模式：(重量-1)×续重单价+首重费</option></select></div>
-    <div class="form-row"><label data-zh="首重费用(元)" data-en="First Weight Fee">首重费用(元)</label><input type="number" id="fsFirstPrice" value="0"></div>
-    <div class="form-row"><label data-zh="续重单价(元/单位)" data-en="Additional Unit Price">续重单价(元/单位)</label><input type="number" id="fsAddPrice" value="0"></div>
-    <div class="form-row"><button class="btn btn-primary" id="calcFsBtn" data-zh="首续重运费计算" data-en="Calculate">首续重运费计算</button></div>
-    <div class="result-box" id="fsResult"></div>
-  </div>
-</div>
-
 <div class="info-tip">
   <strong data-zh="咨询&下单请联系 Emily" data-en="Contact Emily for inquiry & order">咨询&下单请联系 Emily</strong><br>
   <span data-zh="所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认" data-en="All prices refer to the current channel table. Final freight subject to warehouse measurement; surcharges confirmed by Emily.">所有价格均参考当前渠道表，最终运费以仓库实测为准，附加费以 Emily 确认</span>
@@ -516,7 +465,6 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   <div class="tab-item active" data-target="home"><div class="icon">🏠</div><span data-zh="首页" data-en="Home">首页</span></div>
   <div class="tab-item" data-target="lcl"><div class="icon">📦</div><span data-zh="散货询价" data-en="LCL">散货询价</span></div>
   <div class="tab-item" data-target="fcl"><div class="icon">🚢</div><span data-zh="整柜询价" data-en="FCL">整柜询价</span></div>
-  <div class="tab-item" data-target="calc"><div class="icon">🧮</div><span data-zh="计算器" data-en="Calculator">计算器</span></div>
 </div>
 
 <div class="eta-tip" id="etaTip" role="tooltip" aria-hidden="true"><button type="button" class="eta-tip-close" id="etaTipClose">✕</button><div class="eta-tip-title" id="etaTipTitle">时效说明</div><div class="eta-tip-body" id="etaTipBody"></div></div>
@@ -542,8 +490,7 @@ footer{text-align:center;padding:12px 8px 14px;color:var(--muted-2);font-size:12
   </div>
 </div>
 
-<!-- 第二部分 JavaScript 从这里开始 --><script>
-const WX_ACCOUNT = "GZjcyt006";
+<script>const WX_ACCOUNT = "GZjcyt006";
 let LANG = "zh";
 const t = (zh, en) => (LANG === "zh" ? zh : en);
 const tObj = (o) => (o ? (LANG === "zh" ? o.zh : o.en) : '');
@@ -554,8 +501,11 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 let __suppressChannelAutoRow = false;
 let __channelManuallySelected = false;
 let userOverridePriceType = false;
+
 let priceUnlocked = false;
-try { priceUnlocked = sessionStorage.getItem('jcyt_price_unlocked') === '1'; } catch(e){}
+try { 
+  priceUnlocked = sessionStorage.getItem('jcyt_price_unlocked') === '1'; 
+} catch(e){}
 const PRICE_PASSWORD = "Emily Wu";
 
 /* ===== 联系弹窗 ===== */
@@ -581,21 +531,33 @@ const pwdInput = document.getElementById('pwdInput');
 const pwdTip = document.getElementById('pwdTip');
 const pwdDesc = document.getElementById('pwdDesc');
 let pwdContext = 'price';
+
 function openPwdModal(context){
+  pwdContext = 'price';
   if(priceUnlocked) return;
-  pwdContext = context || 'price';
+  
   pwdModal.classList.remove('hidden');
   pwdInput.value = ''; pwdTip.textContent = ''; pwdTip.className = 'pwd-tip';
+  
+  if (pwdDesc) {
+    pwdDesc.textContent = t('请输入密码查看运费价格表', 'Enter password to access price list');
+  }
   setTimeout(()=>pwdInput.focus(), 120);
 }
 function closePwdModal(){ pwdModal.classList.add('hidden'); }
+
 function tryUnlockPrice(){
   if(pwdInput.value.trim() === PRICE_PASSWORD){
     priceUnlocked = true;
     try { sessionStorage.setItem('jcyt_price_unlocked', '1'); } catch(e){}
     pwdTip.textContent = t('✅ 验证成功','✅ Success'); pwdTip.className = 'pwd-tip ok';
-    setTimeout(()=>{ closePwdModal(); if(pwdContext === 'price') showPageRaw('price'); renderPrice('all'); }, 260);
-  } else { pwdTip.textContent = t('❌ 密码错误','❌ Wrong password'); pwdTip.className = 'pwd-tip error'; pwdInput.select(); }
+    setTimeout(()=>{ 
+      closePwdModal(); 
+      showPageRaw('price'); renderPrice('all');
+    }, 260);
+  } else { 
+    pwdTip.textContent = t('❌ 密码错误','❌ Wrong password'); pwdTip.className = 'pwd-tip error'; pwdInput.select(); 
+  }
 }
 document.getElementById('pwdConfirm').onclick = tryUnlockPrice;
 document.getElementById('pwdCancel').onclick = closePwdModal;
@@ -867,9 +829,7 @@ const VN_PARCEL_DETAIL = {billing:{zh:"45KG以下普货与敏感同价，按首�
 const ID_AIR_DETAIL = {billing:{zh:"以Kg为单位进位，不足1Kg按1Kg计。体积重=长×宽×高÷6000。",en:"Per KG, ÷6000."},size:{zh:"1. 单件>68Kg或尺寸>150×80×80cm，加收150RMB/票。\n2. 木箱、木架需打卡脚。",en:"1. >68KG: +150 CNY/ticket."},customs:{zh:"单独报关单询。",en:"Formal declaration: consult separately."},prohibited:{zh:"不接受：军火武器、易燃易爆品、医疗设备、液体、粉末。",en:"Rejected: weapons, flammable/explosive, medical, liquids, powders."},compensation:COMP_STD};
 const ID_SEA_DETAIL = {billing:{zh:"以CBM为单位进位，不足0.5CBM按0.5CBM计。超重货1立方=500KG。",en:"Per CBM, overweight 1 CBM = 500KG."},size:{zh:"1. 单件>200Kg或单边>200cm，加收150RMB/票。\n2. 易碎品必须打木架/木箱 + 保函。",en:"1. >200KG: +150 CNY/ticket."},customs:{zh:"未特别列明，具体请咨询。",en:"Consult separately."},prohibited:{zh:"杜绝：易燃易爆、毒品以及国家海关禁止类货物。",en:"Prohibited: flammable/explosive, drugs, customs-banned."},compensation:COMP_STD};
 const LA_DETAIL = {billing:{zh:"以CBM为单位进位，不足0.5CBM按0.5CBM计。超重货1立方=350KG。",en:"Per CBM, overweight 1 CBM = 350KG."},size:{zh:"1. 单件>200Kg或单边>200cm，加收150RMB/票。\n2. 塑料桶需打木架/木箱。\n3. 木箱、木架需打卡脚。",en:"1. >200KG or >200cm: +150 CNY/ticket."},customs:{zh:"1. 单证报关退税 +800元/票，商检费 +1000元/票。",en:"1. Formal declaration: +800 CNY/ticket."},prohibited:{zh:"1. 托运人不得托运违禁物品。\n2. 拒收：仿牌、液体、粉末、鲜活、易燃易爆、腐蚀品、光碟、武器等。",en:"1. Rejected: replicas, liquids, powders, fresh goods, flammables."},compensation:{zh:"1. 遗失或扣关按运费两倍或申报货值取低。\n2. 因发件人侵权问题我司不承担责任。",en:"1. Loss or seizure: lower of 2× freight or declared value."}};
-const AE_DETAIL = {billing:{zh:"16Kg以下不足0.5Kg按0.5Kg收费，16Kg以上不足1Kg按1Kg计费。体积重=长×宽×高÷6000。",en:"Below 16KG rounds to 0.5KG, from 16KG rounds to 1KG."},size:{zh:"1. 木架、木箱需打活页。\n2. 内置电池不超100WH，只接受UN3481电池标。\n3. 特货要求绝缘防震、防漏、防摔，单箱不超20Kg。",en:"1. Wooden crate needs hinges."},customs:{zh:"1. 一般贸易报关，报关费350RMB/票，续页50RMB/页。",en:"1. Formal declaration: 350 CNY/ticket."},prohibited:{zh:"不接受：赌博游戏机、军火武器、易燃易爆品等。",en:"Rejected: gambling machines, weapons, flammable/explosive."},compensation:COMP_STD};
-
-/* ===== 价格渠道（含行级时效） ===== */
+const AE_DETAIL = {billing:{zh:"16Kg以下不足0.5Kg按0.5Kg收费，16Kg以上不足1Kg按1Kg计费。体积重=长×宽×高÷6000。",en:"Below 16KG rounds to 0.5KG, from 16KG rounds to 1KG."},size:{zh:"1. 木架、木箱需打活页。\n2. 内置电池不超100WH，只接受UN3481电池标。\n3. 特货要求绝缘防震、防漏、防摔，单箱不超20Kg。",en:"1. Wooden crate needs hinges."},customs:{zh:"1. 一般贸易报关，报关费350RMB/票，续页50RMB/页。",en:"1. Formal declaration: 350 CNY/ticket."},prohibited:{zh:"不接受：赌博游戏机、军火武器、易燃易爆品等。",en:"Rejected: gambling machines, weapons, flammable/explosive."},compensation:COMP_STD};/* ===== 价格渠道（含行级时效） ===== */
 const PRICE_CHANNELS = [
   {type:"air",country:"my",billing:{mode:'weight',divisor:6000,foam:'half'},name:{zh:"马来西亚空运包税专线",en:"Malaysia Air DDP Line"},wh:{zh:"入佛山仓 · 义乌+1元/KG",en:"Foshan warehouse"},note:{zh:"除6000半泡（西马）/不分泡（东马）",en:"÷6000 half-volumetric (West) / no-foam (East)."},
    etaRows:{zh:["起飞后预估需要 4-5 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 5-7 个工作日左右","起飞后预估需要 8-10 个工作日左右","起飞后预估需要 8-10 个工作日左右"],en:["Est. 4-5 working days after departure","Est. 5-7 working days","Est. 5-7 working days","Est. 5-7 working days","Est. 5-7 working days","Est. 8-10 working days","Est. 8-10 working days"]},
@@ -1060,9 +1020,7 @@ document.getElementById('priceList').addEventListener('click', function(e){
   if(dtHead){ dtHead.parentElement.classList.toggle('open'); return; }
   const head = e.target.closest('.price-head');
   if(head){ head.parentElement.classList.toggle('open'); }
-});
-
-/* ===== 主要元素引用 ===== */
+});/* ===== 主要元素引用 ===== */
 const channelSelect = document.getElementById('channelSelect');
 const countrySelect = document.getElementById('countrySelect');
 const zipEl = document.getElementById('zipCode');
@@ -1613,7 +1571,7 @@ function updateZipUI(channel){
   if(_aUI && channel){ const _rmUI = matchChannelRowByPostal(channel, _aUI); if(_rmUI && _rmUI.reason){ const _cur = parseChannelVal(channelSelect.value); const _applied = _rmUI.rowIdx != null && _cur && _cur.rowIdx === _rmUI.rowIdx; const _bg = _applied ? 'rgba(34,194,106,.10)' : 'rgba(254,203,202,.22)'; const _bd = _applied ? '#22C26A' : '#F5A8A6'; html += '<div class="sub" style="margin-top:8px;padding:8px 10px;border-radius:9px;background:'+_bg+';border-left:3px solid '+_bd+';"><strong>' + (_applied ? '✅ ' : '🤖 ') + t('系统推荐','Auto Recommended') + '：</strong>' + esc(_rmUI.reason) + '</div>'; } }
   if(r.suggest && r.suggest.channelKey){ const reasonTxt = tObj(r.suggest.reason); html += '<button type="button" class="zip-switch-btn" data-switch-channel="'+esc(r.suggest.channelKey)+'">➡️ '+t('切换到 ','Switch to ')+esc(r.suggest.channelKey)+'</button>'; if(reasonTxt) html += '<div class="sub" style="margin-top:4px;opacity:.8;">'+reasonTxt+'</div>'; }
   remoteNoteEl.innerHTML = html;
-  if(code === 'vn' && channel && channel.billing && channel.billing.mode === 'volume'){ const _aVn = analyzePostalCode('vn', raw); if(_aVn && _aVn.province){ const _vnSel2 = document.getElementById('vnProvinceSelect'); if(_vnSel2 && Array.from(_vnSel2.options).some(o => o.value === _aVn.province)){ if(_vnSel2.value !== _aVn.province){ _vnSel2.value = _aVn.province; if(typeof updateVnProvinceTip === 'function') updateVnProvinceTip(); } } } }
+  if(code === 'vn' && channel && channel.billing && channel.billing.mode === 'volume'){ const _aVn = analyzePostalCode('vn', raw); if(_aVn && _aVn.province){ const _vnSel2 = document.getElementById('vnProvinceSelect'); if(_vnSel2 && Array.from(_vnSel2.options).some(o => o.value === _aVn.province)){ if(_vnSel2.value !== _aVn.province){ _vnSel2.value = _aVn.province; if(typeof updateVnProvinceTip === 'function') updateVnProvinceTip(); } } } } }
   if(r.suggest && r.suggest.autoSelectProvince){ const vnSel = document.getElementById('vnProvinceSelect'); if(vnSel && vnSel.options && vnSel.options.length){ const hit = Array.from(vnSel.options).find(o => o.value === r.suggest.autoSelectProvince); if(hit && vnSel.value !== hit.value){ vnSel.value = hit.value; if(typeof updateVnProvinceTip === 'function') updateVnProvinceTip(); if(typeof renderLclQuote === 'function') renderLclQuote(); } } }
 }
 
@@ -2255,8 +2213,15 @@ function updateVnProvinceTip(){
 /* ===== 页面切换 ===== */
 function showPageRaw(id){
   if(window.ETA_TIP_HIDE) window.ETA_TIP_HIDE();
-  if(id === 'price' && !priceUnlocked){ openPwdModal('price'); return; }
-  ['home','price','lcl','fcl','calc'].forEach(p=>document.getElementById(p).classList.add('hidden'));
+  
+  if(id === 'price' && !priceUnlocked){ 
+    openPwdModal('price'); 
+    document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));
+    document.querySelector('.tab-item[data-target="home"]').classList.add('active');
+    return; 
+  }
+
+  ['home','price','lcl','fcl'].forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
   if(id === 'lcl') renderLclQuote();
   window.scrollTo({top:0,behavior:'smooth'});
@@ -2264,7 +2229,6 @@ function showPageRaw(id){
 document.querySelectorAll('.tab-item').forEach(tab=>{ tab.onclick=function(){ const target = this.getAttribute('data-target'); document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active')); this.classList.add('active'); showPageRaw(target); }; });
 document.querySelectorAll('.home-item[data-goto]').forEach(item=>{ item.onclick=()=>{ const tgt=item.dataset.goto; if (tgt === 'price' && !priceUnlocked) { openPwdModal('price'); return; } document.querySelectorAll('.tab-item').forEach(x=>x.classList.remove('active')); document.querySelector('.tab-item[data-target="'+(tgt==='price'?'home':tgt)+'"]').classList.add('active'); showPageRaw(tgt); }; });
 document.querySelectorAll('.country-item[data-country]').forEach(item=>{ item.onclick=()=>{ const code = item.dataset.country; countrySelect.value = code; clearLclData(); autoSelectFirstChannel(code); document.querySelectorAll('.tab-item').forEach(x=>x.classList.remove('active')); document.querySelector('.tab-item[data-target="lcl"]').classList.add('active'); showPageRaw('lcl'); checkReportRequirement(); }; });
-document.querySelectorAll('.calc-tab').forEach(tb=>{ tb.onclick=()=>{ document.querySelectorAll('.calc-tab').forEach(x=>x.classList.remove('active')); tb.classList.add('active'); document.querySelectorAll('.calc-panel').forEach(p=>p.classList.remove('show')); document.getElementById(tb.dataset.tab).classList.add('show'); }; });
 
 /* ===== 语言切换 ===== */
 function applyLang(lang){
@@ -2338,32 +2302,6 @@ document.getElementById('genFcl').onclick=function(){
 };
 document.getElementById('copyFcl').onclick=async()=>{ await navigator.clipboard.writeText(document.getElementById('fclResult').value); document.getElementById('wxTipFcl').textContent = t("✅ 询价文本已复制","✅ Inquiry text copied"); };
 document.getElementById('copyWxFcl').onclick=async()=>{ await navigator.clipboard.writeText(WX_ACCOUNT); document.getElementById('wxTipFcl').textContent = t("✅ Emily微信已复制："+WX_ACCOUNT,"✅ Emily's WeChat copied: "+WX_ACCOUNT); };
-
-/* ===== 计算器 ===== */
-const num=v=>{const n=parseFloat(v);return isNaN(n)?0:n;};
-document.getElementById('calcCbmBtn').onclick=()=>{ const L=num(document.getElementById('cLen').value),W=num(document.getElementById('cWid').value),H=num(document.getElementById('cHei').value),Q=num(document.getElementById('cPkg').value)||1; const res=document.getElementById('cbmResult'); if(!L||!W||!H){res.innerHTML="<span class='tip-red'>"+t("请输入长宽高","Enter length, width and height")+"</span>";return;} const single=L*W*H/1000000, total=single*Q; if (LANG === 'zh') res.innerHTML='<p>单箱CBM：'+single.toFixed(6)+'</p><p>总CBM(方数)：<b>'+total.toFixed(4)+'</b></p><p>公式：单箱=长×宽×高÷1,000,000；总=单箱×件数</p>'; else res.innerHTML='<p>Unit CBM: '+single.toFixed(6)+'</p><p>Total CBM: <b>'+total.toFixed(4)+'</b></p><p>Formula: Unit = L×W×H ÷ 1,000,000; Total = Unit × Packages</p>'; };
-function bubbleCalc(div,resId){
-  const p=id=>num(document.getElementById(id).value);
-  const L=p(resId==='v6Result'?'v6Len':'v5Len'),W=p(resId==='v6Result'?'v6Wid':'v5Wid'),H=p(resId==='v6Result'?'v6Hei':'v5Hei'),Q=p(resId==='v6Result'?'v6Pkg':'v5Pkg')||1,act=p(resId==='v6Result'?'v6Act':'v5Act');
-  const res=document.getElementById(resId);
-  if(!L||!W||!H){res.innerHTML="<span class='tip-red'>"+t("请输入长宽高","Enter length, width and height")+"</span>";return;}
-  const vol=L*W*H/div*Q, half=(vol+act)/2, charge=Math.max(vol,act);
-  if (LANG === 'zh') res.innerHTML='<p>材积重(÷'+div+')：'+vol.toFixed(2)+' KG</p><p>实重：'+act.toFixed(2)+' KG</p><p>分半抛：'+half.toFixed(2)+' KG</p><p><b>计费重(取较大)：'+charge.toFixed(2)+' KG</b></p>';
-  else res.innerHTML='<p>Volumetric (÷'+div+'): '+vol.toFixed(2)+' KG</p><p>Actual: '+act.toFixed(2)+' KG</p><p>Half-volumetric: '+half.toFixed(2)+' KG</p><p><b>Chargeable (max): '+charge.toFixed(2)+' KG</b></p>';
-}
-document.getElementById('calc6Btn').onclick=()=>bubbleCalc(6000,'v6Result');
-document.getElementById('calc5Btn').onclick=()=>bubbleCalc(5000,'v5Result');
-document.getElementById('calcFsBtn').onclick=()=>{
-  const L=num(document.getElementById('fsLen').value),W=num(document.getElementById('fsWid').value),H=num(document.getElementById('fsHei').value),Q=num(document.getElementById('fsPkg').value)||1,act=num(document.getElementById('fsAct').value),div=num(document.getElementById('fsDiv').value)||6000,first=num(document.getElementById('fsFirstPrice').value),cont=num(document.getElementById('fsAddPrice').value),mode=document.getElementById('fsMode').value;
-  const res=document.getElementById('fsResult');
-  if(!L||!W||!H||!act){res.innerHTML="<span class='tip-red'>"+t("请完整填写长宽高、实重、抛比系数","Please fill in L/W/H, actual weight and divisor")+"</span>";return;}
-  const vol=L*W*H/div*Q, charge=Math.max(vol,act);
-  let total,formulaZh,formulaEn;
-  if(mode==='0.5'){ total=(charge*2-1)*cont+first; formulaZh='0.5KG模式：费用=(重量×2-1)×续重单价+首重费'; formulaEn='0.5KG mode: Fee = (Weight×2−1) × Additional + First'; }
-  else { total=(charge-1)*cont+first; formulaZh='1KG模式：费用=(重量-1)×续重单价+首重费'; formulaEn='1KG mode: Fee = (Weight−1) × Additional + First'; }
-  if (LANG === 'zh') res.innerHTML='<p>📦 体积重：'+vol.toFixed(2)+' KG</p><p>⚖️ 实重：'+act.toFixed(2)+' KG</p><p><b>✅ 计费重(取大)：'+charge.toFixed(2)+' KG</b></p><p>🔹'+formulaZh+'</p><p>🔹首重 '+first.toFixed(0)+'元 / 续重 '+cont.toFixed(0)+'元</p><p><b>💰 预估总运费：'+total.toFixed(2)+' 元</b></p><p class="tip-orange">⚠️ 最终运费以仓库实测、Emily确认为准</p>';
-  else res.innerHTML='<p>📦 Volumetric: '+vol.toFixed(2)+' KG</p><p>⚖️ Actual: '+act.toFixed(2)+' KG</p><p><b>✅ Chargeable (max): '+charge.toFixed(2)+' KG</b></p><p>🔹'+formulaEn+'</p><p>🔹First: '+first.toFixed(0)+' / Additional: '+cont.toFixed(0)+'</p><p><b>💰 Estimated total: '+total.toFixed(2)+' CNY</b></p>';
-};
 
 /* ===== 初始化 ===== */
 applyLang('zh');
